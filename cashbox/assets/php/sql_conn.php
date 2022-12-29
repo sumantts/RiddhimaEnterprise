@@ -5,6 +5,8 @@
 	$password = '';
 	$dbname = 'riddhi';
 
+	
+
 	// $username = 'theriddhi_riddhi';
 	// $password = 'riddhi123!@#';
 	// $dbname = 'theriddhi_riddhi';
