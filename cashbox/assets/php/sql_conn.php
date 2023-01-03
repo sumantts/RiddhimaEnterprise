@@ -1,15 +1,15 @@
 <?php
 	$host = 'localhost';
 	
-	$username = 'root';
-	$password = '';
-	$dbname = 'riddhi';
+	//Localhost connection
+	// $username = 'root';
+	// $password = '';
+	// $dbname = 'riddhi';
 
-	
-
-	// $username = 'theriddhi_riddhi';
-	// $password = 'riddhi123!@#';
-	// $dbname = 'theriddhi_riddhi';
+	//Server connection
+	$username = 'theriddhi_riddhi';
+	$password = 'riddhi123!@#';
+	$dbname = 'theriddhi_riddhi';
 
 	$sitename = 'Riddhi Enterprise';
 
