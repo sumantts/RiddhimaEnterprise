@@ -490,5 +490,6 @@
     $('#bill_customer_id').select2({
         dropdownParent: $('#myModalCustomer')
     });
+    $('#search_cu_id').select2();
 </script>
 <!-- //Select2 Dropdown -->
