@@ -1441,7 +1441,7 @@
 					if($bill_id == '0'){
 						const tr = $("<tr id=bill_row_"+$current_bill_id+" style='font-weight: bold;'><td>#0</td><td>"+$billDetail.billId+"</td><td>"+$billDetail.customer_name+"</td><td>"+$billDetail.phone_number+"</td><td style='text-align: right;'>"+$billDetail.roundedUpFineItemsSubTotal+"</td><td style='text-align: right;'>"+$billDetail.totalCash+"</td><td style='text-align: right;'>"+$billDetail.dueCash+"</td><td>"+$create_date+"</td><td>  <a style='cursor: pointer;' target='_blank' href='pages/bill_printer/bill_pdf.php?bill_id="+$current_bill_id+"' ><i class='fa fa-print' aria-hidden='true'></i></a>  <a style='cursor: pointer;' onclick=openBillModal("+$current_bill_id+")><i class='fa fa-edit' aria-hidden='true'></i></a> <a style='cursor: pointer;' onclick=deleteBill("+$current_bill_id+")><i class='fa fa-trash' aria-hidden='true'></i></a> </td></tr>");
 						
-						$('#todaysBill').prepend($(tr));
+						$('#dataTable').prepend($(tr));
 
 					} else{
 						console.log('Updatre the table row');

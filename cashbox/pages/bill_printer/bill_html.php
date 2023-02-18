@@ -9,7 +9,7 @@ $message .="<head>";
 	$message .="<title>Riddhima Enterprise - Tax Invoice</title>";
 $message .="</head>";
 
-//$message .="<body style='background-image: url(../../../assets/img/logo.jpg); background-repeat: no-repeat; background-attachment: fixed;  background-size: 100% 100%;'>";
+$message .="<body class='watermark'>";
 $message .="<body>";
 	
 $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; width: 100%;'>";
@@ -28,20 +28,31 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 		// $message .="</tr>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='8' style='text-align: center;width: 50%;'>BILL NO: ".strtoupper($formated_bill_no)."</th><th colspan='8' style='text-align: center;'>STATE CODE: 19 | DATE: ".date('d-M-Y', strtotime($create_date))."</th>";
+			$message .="<th colspan='4'><img src='../../../assets/img/riddhima_logo32.png'></th>
+			<th colspan='6' style='text-align: center; width: 50%;'>
+			BILL NO: ".strtoupper($formated_bill_no)."</br> 
+			SHIP TO </br> 
+			Shop: ".$customer_name."</br> 
+			Address: ".$customer_address."</th>
+			
+			<th colspan='6' style='text-align: center;'>
+			STATE CODE: 19 | DATE: ".date('d-M-Y', strtotime($create_date))."</br> 
+			BILL FROM </br> 
+			".$bill_description->createdBy->org_name."</br> 
+			Address: ".$bill_description->createdBy->address."</th>";
 		$message .="</tr>";
 		
-		$message .="<tr>";
-			$message .="<th colspan='8' style='text-align: center;'> SHIP TO </th><th colspan='8' style='text-align: center;'> BILL FROM </th>";
-		$message .="</tr>";
+		// $message .="<tr>";
+		// 	$message .="<th colspan='8' style='text-align: center;'> SHIP TO </th><th colspan='8' style='text-align: center;'> BILL FROM </th>";
+		// $message .="</tr>";
 		
-		$message .="<tr>";
-			$message .="<th colspan='8' style='text-align: center;'>Shop: ".$customer_name."</th><th colspan='8' style='text-align: center;'> ".$bill_description->createdBy->org_name." </th>";
-		$message .="</tr>";
+		// $message .="<tr>";
+		// 	$message .="<th colspan='8' style='text-align: center;'>Shop: ".$customer_name."</th><th colspan='8' style='text-align: center;'> ".$bill_description->createdBy->org_name." </th>";
+		// $message .="</tr>";
 		
-		$message .="<tr>";
-			$message .="<th colspan='8' style='text-align: center;'>Address: ".$customer_address."</th><th colspan='8' style='text-align: center;'>Address: ".$bill_description->createdBy->address." </th>";
-		$message .="</tr>";
+		// $message .="<tr>";
+		// 	$message .="<th colspan='8' style='text-align: center;'>Address: ".$customer_address."</th><th colspan='8' style='text-align: center;'>Address: ".$bill_description->createdBy->address." </th>";
+		// $message .="</tr>";
 		
 		$message .="<tr>";
 			$message .="<th colspan='4' style='text-align: center;'> Contact No: </th><th colspan='4' style='text-align: center;'> ".$phone_number." </th><th colspan='4' style='text-align: center;'> Contact No: </th><th colspan='4' style='text-align: center;'> ".$bill_description->createdBy->contact_no." </th>";
