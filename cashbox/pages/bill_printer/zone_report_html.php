@@ -15,7 +15,7 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 		$message .="<thead>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='6' style='text-align: center;'>Riddhima Enterprise - Zone Collection Report</th>";
+			$message .="<th colspan='6' style='text-align: center;'>Riddhima Enterprise - Zone Collection Report: ".$zone_name." Before dated: ".date('d-m-Y', strtotime($from_date))."</th>";
 		$message .="</tr>";
 		
 		

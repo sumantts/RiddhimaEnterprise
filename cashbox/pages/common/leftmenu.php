@@ -34,17 +34,18 @@
 					</nav>
 				</div>
 
-				<a class="nav-link collapsed <?php if($p == 'cashbook' || $p == 'gst_report' || $p == 'product_report' || $p == 'zone_report'){?>active<?php } ?>" href="#" data-toggle="collapse" data-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
+				<a class="nav-link collapsed <?php if($p == 'cashbook' || $p == 'gst_report' || $p == 'product_report' || $p == 'zone_report' || $p == 'zone_report_wi_bill'){?>active<?php } ?>" href="#" data-toggle="collapse" data-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
 					<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
 					Reports
 					<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
 				</a>
-				<div class="collapse  <?php if($p == 'cashbook' || $p == 'gst_report' || $p == 'product_report' || $p == 'zone_report'){?>show<?php } ?>" id="collapseLayouts2" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+				<div class="collapse  <?php if($p == 'cashbook' || $p == 'gst_report' || $p == 'product_report' || $p == 'zone_report' || $p == 'zone_report_wi_bill'){?>show<?php } ?>" id="collapseLayouts2" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
 					<nav class="sb-sidenav-menu-nested nav">
 					<a class="nav-link <?php if($p == 'cashbook'){?>active<?php } ?>" href="?p=cashbook">Cashbook</a>
 					<a class="nav-link <?php if($p == 'gst_report'){?>active<?php } ?>" href="?p=gst_report"> GST report</a>
 					<a class="nav-link <?php if($p == 'product_report'){?>active<?php } ?>" href="?p=product_report"> Product report</a>
 					<a class="nav-link <?php if($p == 'zone_report'){?>active<?php } ?>" href="?p=zone_report"> Zone Report</a>
+					<a class="nav-link <?php if($p == 'zone_report_wi_bill'){?>active<?php } ?>" href="?p=zone_report_wi_bill"> Zone Report W/I Bill</a>
 						
 					</nav>
 				</div>	

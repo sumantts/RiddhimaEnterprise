@@ -4,6 +4,7 @@
 	if(isset($_GET['from_date'])){
 		$from_date = $_GET['from_date'];
 		$search_zone_id = $_GET['search_zone_id'];
+		$zone_name = $_GET['zone_name'];
 		$search_cu_id = $_GET['search_cu_id'];
 		$user_type = $_GET['user_type'];
 		$created_by = $_GET['created_by'];

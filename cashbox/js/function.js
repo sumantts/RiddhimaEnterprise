@@ -335,7 +335,8 @@
 
 	function printZoneCollectionReport(){
 		$from_date = $('#from_date').val();
-		$search_zone_id = $('#search_zone_id').val();
+		$search_zone_id = $('#search_zone_id').val();	
+		$zone_name = $("#search_zone_id option:selected").text();
 		$search_cu_id = $('#search_cu_id').val();
 		$ser_user_type = $('#ser_user_type').val();
 		$ser_created_by = $('#ser_created_by').val();
@@ -344,7 +345,23 @@
 		if($search_zone_id == '0'){
 			alert('Please select Zone from the list')
 		}else{
-			window.open('pages/bill_printer/zone_report_pdf.php?from_date='+$from_date+'&search_zone_id='+$search_zone_id+'&search_cu_id='+$search_cu_id+'&user_type='+$ser_user_type+'&created_by='+$ser_created_by+'&login_id='+$ser_login_id, '_blank');
+			window.open('pages/bill_printer/zone_report_pdf.php?from_date='+$from_date+'&search_zone_id='+$search_zone_id+'&search_cu_id='+$search_cu_id+'&user_type='+$ser_user_type+'&created_by='+$ser_created_by+'&login_id='+$ser_login_id+'&zone_name='+$zone_name, '_blank');
+		}
+	}//end function
+
+	function zoneReportWithBill(){
+		$from_date = $('#from_date').val();
+		$search_zone_id = $('#search_zone_id').val();	
+		$zone_name = $("#search_zone_id option:selected").text();
+		$search_cu_id = $('#search_cu_id').val();
+		$ser_user_type = $('#ser_user_type').val();
+		$ser_created_by = $('#ser_created_by').val();
+		$ser_login_id = $('#ser_login_id').val();
+		
+		if($search_zone_id == '0'){
+			alert('Please select Zone from the list')
+		}else{
+			window.open('pages/bill_printer/zone_report_with_bill_pdf.php?from_date='+$from_date+'&search_zone_id='+$search_zone_id+'&search_cu_id='+$search_cu_id+'&user_type='+$ser_user_type+'&created_by='+$ser_created_by+'&login_id='+$ser_login_id+'&zone_name='+$zone_name, '_blank');
 		}
 	}//end function
 	////////////////// ZONE MANAGEMENT END ////////////////

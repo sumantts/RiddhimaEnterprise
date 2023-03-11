@@ -81,6 +81,11 @@
 		$title = "Zone Report";
 		include('pages/zone_report.php');		
 		break;
+		
+		case 'zone_report_wi_bill':
+		$title = "Zone Report With Bill";
+		include('pages/zone_report_wi_bill.php');		
+		break;
 				
 		default:
 		include('pages/login.php');
