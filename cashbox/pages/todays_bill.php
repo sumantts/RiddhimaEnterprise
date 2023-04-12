@@ -298,7 +298,7 @@
 							<div class="form-group">
 								<label for="exampleInputEmail1">Item*</label>
 								<select class="form-control" id="bill_item_id">
-									<option value="0" selected>Select Item</option>
+									<option value="0" selected>---- Select Item ----</option>
 								</select>
 								<small id="item_id_error" class="form-text text-muted"></small>
 							</div>
@@ -488,6 +488,9 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $('#bill_customer_id').select2({
+        dropdownParent: $('#myModalCustomer')
+    });
+    $('#bill_item_id').select2({
         dropdownParent: $('#myModalCustomer')
     });
     $('#search_cu_id').select2();

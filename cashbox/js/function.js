@@ -364,6 +364,22 @@
 			window.open('pages/bill_printer/zone_report_with_bill_pdf.php?from_date='+$from_date+'&search_zone_id='+$search_zone_id+'&search_cu_id='+$search_cu_id+'&user_type='+$ser_user_type+'&created_by='+$ser_created_by+'&login_id='+$ser_login_id+'&zone_name='+$zone_name, '_blank');
 		}
 	}//end function
+
+	function zoneDataSheet(){
+		//$from_date = $('#from_date').val();
+		$search_zone_id = $('#search_zone_id').val();	
+		$zone_name = $("#search_zone_id option:selected").text();
+		$search_cu_id = $('#search_cu_id').val();
+		$ser_user_type = $('#ser_user_type').val();
+		$ser_created_by = $('#ser_created_by').val();
+		$ser_login_id = $('#ser_login_id').val();
+		
+		if($search_zone_id == '0'){
+			alert('Please select Zone from the list')
+		}else{
+			window.open('pages/bill_printer/zone_data_sheet_pdf.php?search_zone_id='+$search_zone_id+'&search_cu_id='+$search_cu_id+'&user_type='+$ser_user_type+'&created_by='+$ser_created_by+'&login_id='+$ser_login_id+'&zone_name='+$zone_name, '_blank');
+		}
+	}//end function
 	////////////////// ZONE MANAGEMENT END ////////////////
 
 	//////////////////// CUSTOMER FUNCTION START //////////////////////////
@@ -994,7 +1010,7 @@
 						if($res1.status == true){
 							$items = $res1.items;
 							$('#bill_item_id').html('');
-							$options = "<option selected value='0'>Select Item</option>";
+							$options = "<option selected value='0'>---- Select Item ----</option>";
 							for(var i = 0; i < $items.length; i++){
 								$options += "<option value="+$items[i].item_id+" item_name="+$items[i].item_name+" hs_code="+$items[i].hs_code+" cgst_rate="+$items[i].cgst_rate+" sgst_rate="+$items[i].sgst_rate+" item_rate="+$items[i].item_rate+" item_quantity="+$items[i].item_quantity+" net_weight="+$items[i].net_weight+" >"+$items[i].item_name+"</option>";
 							}
@@ -1074,7 +1090,7 @@
 				if($res1.status == true){
 					$items = $res1.items;
 					$('#bill_item_id').html('');
-					$options = "<option selected value='0'>Select Item</option>";
+					$options = "<option selected value='0'>---- Select Item ----</option>";
 					for(var i = 0; i < $items.length; i++){
 						$options += "<option value="+$items[i].item_id+" item_name="+$items[i].item_name+" hs_code="+$items[i].hs_code+" cgst_rate="+$items[i].cgst_rate+" sgst_rate="+$items[i].sgst_rate+" item_rate="+$items[i].item_rate+" item_quantity="+$items[i].item_quantity+" net_weight="+$items[i].net_weight+">"+$items[i].item_name+"</option>";
 					}

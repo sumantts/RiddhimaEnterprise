@@ -1,16 +1,19 @@
 <?php
-	$host = 'localhost';
+
+	$host = 'localhost';	
+
+	if($_SERVER['HTTP_HOST'] == 'localhost'){
+		//Localhost connection
+		$username = 'root';
+		$password = '';
+		$dbname = 'riddhi';
+	}else{
+		//Server connection
+		$username = 'theriddhi_riddhi';
+		$password = 'riddhi123!@#';
+		$dbname = 'theriddhi_riddhi';
+	}
 	
-	//Localhost connection
-	// $username = 'root';
-	// $password = '';
-	// $dbname = 'riddhi';
-
-	//Server connection
-	$username = 'theriddhi_riddhi';
-	$password = 'riddhi123!@#';
-	$dbname = 'theriddhi_riddhi';
-
 	$sitename = 'Riddhi Enterprise';
 
 	// $bank_name = 'SBI';
