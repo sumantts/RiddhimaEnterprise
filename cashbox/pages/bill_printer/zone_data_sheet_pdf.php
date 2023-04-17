@@ -67,13 +67,14 @@
 	</style>
   </head>
   <body>
-    <h4 class="text-center">Zone Data Sheet Report</h4>
+    <h4 class="text-center">Zone Data Sheet Report (<?=$zone_name?>)</h4>
 	<table>
 		<thead>
 			<tr>
 			<th scope="col" class="text-center">Sl#</th>
 			<th scope="col" class="text-left">Customer Name</th>
 			<th scope="col" class="text-left">Contact Person</th>
+			<th scope="col" class="text-left"> Address</th>
 			<th scope="col" class="text-left"> Phone Number</th>
 			</tr>
 		</thead>
@@ -88,6 +89,7 @@
 				<th scope="row" class="text-center"><?=$i+1?></th>
 				<td class="text-left" ><?=$user_data->org_name?></td>
 				<td class="text-left" ><?=$user_data->contact_person?></td>
+				<td class="text-left" ><?=$user_data->address?></td>
 				<td class="text-left" ><?=$user_data->phone_number?></td>
 			
 				</tr>
