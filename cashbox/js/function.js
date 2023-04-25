@@ -857,7 +857,10 @@
 					contact_no: '',
 					gstin_no: '',
 					email: ''
-				}
+				},
+				discountType: '0',
+				discountRate: '0',
+				discountAmount: '0'
 			}
 
 			//Populate Customer List
@@ -865,6 +868,7 @@
 			$populate_item = false;
 			$('#bill_customer_id_block1').show();
 			$('#paymentHistoryList').hide();
+			$('#discountHistory').hide();
 			$('#bill_customer_id_block2').hide();
 			$('#edit_customer_name').html('');
 
@@ -926,6 +930,9 @@
 			$('#subTotalCgst').html('0.00');											
 			$('#subTotalSgst').html('0.00');
 			$('#hidden_totalCash').val('0.00');
+			//$('#discountType').val('0');
+			$('#discountRate').val('0.00');
+			$('#discountAmount').val('0.00');
 
 			modalCustomer.style.display = "block";
 		}else{
@@ -972,6 +979,9 @@
 					$('#old_due_amount').val($billDetail.dueCash);
 					$('#totalCash').val($billDetail.totalCash);
 					$('#hidden_totalCash').val($billDetail.totalCash);
+					$('#discountType').val('0');
+					$('#discountRate').val('0');
+					$('#discountAmount').val('0');
 					
 
 					//Payment Type Part
@@ -985,6 +995,28 @@
 						$('#totalCashBlock').show();
 						$('#totalDueBlock').show();
 						$('#dueCash').val($billDetail.dueCash);	
+						
+						$('#discountTypeBlock').show();
+						$('#discountRateBlock').show();
+						$('#discountAmountBlock').show();
+						$('#discountType').prop('disabled', false);
+						$('#discountRate').prop('disabled', false);
+						$('#discountAmount').prop('disabled', false);
+						
+						if($billDetail.discountType != undefined){
+							$('#discountType').val($billDetail.discountType);
+							$('#discountRate').val($billDetail.discountRate);
+							$('#discountAmount').val($billDetail.discountAmount);
+						}
+						console.log('discountType: '+$billDetail.discountType);
+						if(parseInt($billDetail.discountType) > 0){
+							$('#discountTypeBlock').show();
+							$('#discountRateBlock').show();
+							$('#discountAmountBlock').show();
+							$('#discountType').prop('disabled', true);
+							$('#discountRate').prop('disabled', true);
+							$('#discountAmount').prop('disabled', true);
+						}
 					}			
 
 					//Payment History
@@ -992,10 +1024,20 @@
 					for(var j = 0; j < $payHistory.length; j++){
 						$payHistoryText += "<div class='col-md-12'>Amount Rs. "+$payHistory[j].cb_amount+"/- Paid on "+$payHistory[j].cb_date+"</div>";
 					}//end for
+
+					$discountText = '';
+					if($billDetail.discountType == 1){
+						$discountText += 'Fixed Discount Rs. '+$billDetail.discountAmount+'/-';
+					}else if($billDetail.discountType == 2){
+						$discountText += 'Discount Percentage Rs.'+ $billDetail.discountRate +'% Discounted Amount Rs. '+$billDetail.discountAmount+'/-';
+					}
+
 					$('#paymentHistoryList').html($payHistoryText);
+					$('#discountHistory').html($discountText);
 
 					$('#bill_customer_id_block1').hide();
 					$('#paymentHistoryList').show();
+					$('#discountHistory').show();
 					$('#bill_customer_id_block2').show();
 					$('#edit_customer_name').html($billDetail.customer_name);					
 
@@ -1409,7 +1451,8 @@
 
 	//Calculate Net Metal Quantity
 	function calculateNetMetalQuantity(){
-		$bill_id = $('#current_bill_id').val();
+		$bill_id = $('#current_bill_id').val();	
+
 		if(parseInt($bill_id) == 0){
 			var bill_customer_id = $('#bill_customer_id').find('option:selected'); 
 			$customer_id_n = $('#bill_customer_id').val();
@@ -1432,6 +1475,11 @@
 		}else{
 			$dueCash = parseFloat($billDetail.roundedUpFineItemsSubTotal) - parseFloat($totalCash);
 		}
+
+		if(parseFloat($billDetail.discountAmount) > 0){
+			$dueCash = parseFloat($dueCash) - parseFloat($billDetail.discountAmount);
+		}
+		
 		$dueCash1 = toFixedTrunc($dueCash, 2);
 		$billDetail.dueCash = $dueCash1;
 		$('#dueCash').val($dueCash1);
@@ -1446,6 +1494,7 @@
 		$oldJama = 0;
 
 		console.log('fineItemsSubTotal: '+parseInt($billDetail.fineItemsSubTotal));
+
 		if(parseInt($customer_id_n) == 0){
 			$('#customer_id_error').html('Please select a customer');
 		}else{
@@ -1472,7 +1521,7 @@
 					$('#current_bill_id').val($current_bill_id);
 					
 					if($bill_id == '0'){
-						const tr = $("<tr id=bill_row_"+$current_bill_id+" style='font-weight: bold;'><td>#0</td><td>"+$billDetail.billId+"</td><td>"+$billDetail.customer_name+"</td><td>"+$billDetail.phone_number+"</td><td style='text-align: right;'>"+$billDetail.roundedUpFineItemsSubTotal+"</td><td style='text-align: right;'>"+$billDetail.totalCash+"</td><td style='text-align: right;'>"+$billDetail.dueCash+"</td><td>"+$create_date+"</td><td>  <a style='cursor: pointer;' target='_blank' href='pages/bill_printer/bill_pdf.php?bill_id="+$current_bill_id+"' ><i class='fa fa-print' aria-hidden='true'></i></a>  <a style='cursor: pointer;' onclick=openBillModal("+$current_bill_id+")><i class='fa fa-edit' aria-hidden='true'></i></a> <a style='cursor: pointer;' onclick=deleteBill("+$current_bill_id+")><i class='fa fa-trash' aria-hidden='true'></i></a> </td></tr>");
+						const tr = $("<tr id=bill_row_"+$current_bill_id+" style='font-weight: bold;'><td>#0</td><td>"+$billDetail.billId+"</td><td>"+$billDetail.customer_name+"</td><td>"+$billDetail.phone_number+"</td><td style='text-align: right;'>"+$billDetail.roundedUpFineItemsSubTotal+"</td><td style='text-align: right;'>"+$billDetail.totalCash+"</td><td style='text-align: right;'>"+$billDetail.discountAmount+"</td><td style='text-align: right;'>"+$billDetail.dueCash+"</td><td>"+$create_date+"</td><td>  <a style='cursor: pointer;' target='_blank' href='pages/bill_printer/bill_pdf.php?bill_id="+$current_bill_id+"' ><i class='fa fa-print' aria-hidden='true'></i></a>  <a style='cursor: pointer;' onclick=openBillModal("+$current_bill_id+")><i class='fa fa-edit' aria-hidden='true'></i></a> <a style='cursor: pointer;' onclick=deleteBill("+$current_bill_id+")><i class='fa fa-trash' aria-hidden='true'></i></a> </td></tr>");
 						
 						$('#dataTable').prepend($(tr));
 
@@ -1480,7 +1529,7 @@
 						console.log('Updatre the table row');
 						$('#bill_row_'+$current_bill_id).html('');
 
-						$('#bill_row_'+$current_bill_id).html("<td style='font-weight: bold;'>#0</td><td style='font-weight: bold;'>"+$billDetail.billId+"</td><td style='font-weight: bold;'>"+$billDetail.customer_name+"</td><td style='font-weight: bold;'>"+$billDetail.phone_number+"</td><td style='text-align: right;font-weight: bold;'>"+$billDetail.roundedUpFineItemsSubTotal+"</td><td style='text-align: right;'>"+$billDetail.totalCash+"</td><td style='text-align: right;'>"+$billDetail.dueCash+"</td><td>"+$create_date+"</td><td>  <a style='cursor: pointer;' target='_blank' href='pages/bill_printer/bill_pdf.php?bill_id="+$current_bill_id+"' ><i class='fa fa-print' aria-hidden='true'></i></a> <a style='cursor: pointer;' onclick=openBillModal("+$current_bill_id+")><i class='fa fa-edit' aria-hidden='true'></i></a> <a style='cursor: pointer;' onclick=deleteBill("+$current_bill_id+")><i class='fa fa-trash' aria-hidden='true'></i></a> </td>");
+						$('#bill_row_'+$current_bill_id).html("<td style='font-weight: bold;'>#0</td><td style='font-weight: bold;'>"+$billDetail.billId+"</td><td style='font-weight: bold;'>"+$billDetail.customer_name+"</td><td style='font-weight: bold;'>"+$billDetail.phone_number+"</td><td style='text-align: right;font-weight: bold;'>"+$billDetail.roundedUpFineItemsSubTotal+"</td><td style='text-align: right;'>"+$billDetail.totalCash+"</td><td style='text-align: right;'>"+$billDetail.discountAmount+"</td><td style='text-align: right;'>"+$billDetail.dueCash+"</td><td>"+$create_date+"</td><td>  <a style='cursor: pointer;' target='_blank' href='pages/bill_printer/bill_pdf.php?bill_id="+$current_bill_id+"' ><i class='fa fa-print' aria-hidden='true'></i></a> <a style='cursor: pointer;' onclick=openBillModal("+$current_bill_id+")><i class='fa fa-edit' aria-hidden='true'></i></a> <a style='cursor: pointer;' onclick=deleteBill("+$current_bill_id+")><i class='fa fa-trash' aria-hidden='true'></i></a> </td>");
 					}
 
 					//Redirect to the printer page
@@ -1522,6 +1571,9 @@
 			//$('#rateBlock').show();
 			$('#totalCashBlock').show();
 			$('#totalDueBlock').show();
+			$('#discountTypeBlock').show();
+			$('#discountRateBlock').show();
+			$('#discountAmountBlock').show();
 			$billDetail.paymentType = 'cash';
 			$('#createFinalBill').prop('disabled', false);			
         }    
@@ -1532,6 +1584,9 @@
 			//$('#rateBlock').hide();
 			$('#totalCashBlock').hide();
 			$('#totalDueBlock').hide();
+			$('#discountTypeBlock').hide();
+			$('#discountRateBlock').hide();
+			$('#discountAmountBlock').hide();
 			$billDetail.paymentType = 'due';
 			$('#createFinalBill').prop('disabled', false);
 			//$billDetail.ratePerGm = '0.00';
@@ -1539,7 +1594,7 @@
         }     
     });
 
-	$("#totalCash").blur(function(){
+	$("#totalCash, #discountType, #discountRate").blur(function(){
 		console.log('call fun totalCash');		
 		$bill_id = $('#current_bill_id').val();
 		$totalCash = $('#totalCash').val();	
@@ -1552,6 +1607,32 @@
 		}else{
 			$dueCash = parseFloat($billDetail.roundedUpFineItemsSubTotal) - parseFloat($totalCash);
 		}
+
+		if(parseInt($bill_id) > 0 && parseFloat($billDetail.discountAmount) > 0){
+			$dueCash = parseFloat($dueCash) - parseFloat($billDetail.discountAmount);
+		}
+		//Discount and Rebate		
+		if($dueCash > 0){			
+			$discountType = $('#discountType').val();						
+			$discountRate = $('#discountRate').val();					
+			$discountAmount = $('#discountAmount').val();
+			console.log('discountType:' + $discountType + ' discountRate: '+$discountRate+ ' discountAmount: ' + $discountAmount + 'discountAmount:'+$billDetail.discountAmount);
+			if($billDetail.discountAmount == '0' || $billDetail.discountAmount == '0.00' || $billDetail.discountAmount == undefined){
+				$billDetail.discountType = $discountType;
+				$billDetail.discountRate = $discountRate;
+			
+				if(parseInt($discountType) == 1){
+					$discountAmount = parseFloat($discountRate);
+				}
+				if(parseInt($discountType) == 2){
+					$discountAmount = parseInt($billDetail.fineItemsSubTotal) * parseFloat($discountRate) / 100;
+				}	
+				$dueCash = parseFloat($dueCash) - parseFloat($discountAmount);	
+				$billDetail.discountAmount = $discountAmount;	
+				$('#discountAmount').val($discountAmount);
+			}//end if
+		}//end if
+
 		$dueCash1 = toFixedTrunc($dueCash, 2);
 		$billDetail.dueCash = $dueCash1;
 		$('#dueCash').val($dueCash1);

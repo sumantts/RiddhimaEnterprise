@@ -150,6 +150,7 @@
 														<th>Phone Number</th>
 														<th>Total Bill Amount</th>
 														<th>Paid Amount</th>
+														<th>Discount</th>
 														<th>Due Amount</th>
 														<th>Bill Created On</th>
 														<th>Action</th>
@@ -163,6 +164,7 @@
 														<th>Phone Number</th>
 														<th>Total Bill Amount</th>
 														<th>Paid Amount</th>
+														<th>Discount</th>
 														<th>Due Amount</th>
 														<th>Bill Created On</th>
 														<th>Action</th>
@@ -186,6 +188,11 @@
 														if(isset($_POST["search_cu_id"])){
 															if(strtotime($create_date) >= strtotime($from_date) && strtotime($create_date) <= strtotime($to_date)){
 																$formated_bill_no = 'RE/'.date('M', strtotime($create_date)).'/'.$bill_id;
+																if(isset($bill_description->discountAmount)){
+																	$discountAmount = $bill_description->discountAmount;
+																}else{
+																	$discountAmount = '0.00';
+																}
 																?>
 																<tr id="bill_row_<?=$bill_id?>">
 																	<td><?=$i?></td>
@@ -194,6 +201,7 @@
 																	<td><?=$bill_description->phone_number?></td>
 																	<td style="text-align: right;"><?=$bill_description->roundedUpFineItemsSubTotal?></td>
 																	<td style="text-align: right;"><?=$bill_description->totalCash?></td>
+																	<td style="text-align: right;"><?=$discountAmount?></td>
 																	<td style="text-align: right;"><?=$bill_description->dueCash?></td>
 																	<td><?=date('d-M-Y H:i', strtotime($create_date))?></td>
 																	
@@ -210,6 +218,12 @@
 														}else{
 															//if(strtotime($create_date) >= strtotime($from_date) && strtotime($create_date) <= strtotime($to_date)){
 																$formated_bill_no = 'RE/'.date('M', strtotime($create_date)).'/'.$bill_id;
+																if(isset($bill_description->discountAmount)){
+																	$discountAmount = $bill_description->discountAmount;
+																}else{
+																	$discountAmount = '0.00';
+																}
+																
 																?>
 																<tr id="bill_row_<?=$bill_id?>">
 																	<td><?=$i?></td>
@@ -218,6 +232,7 @@
 																	<td><?=$bill_description->phone_number?></td>
 																	<td style="text-align: right;"><?=$bill_description->roundedUpFineItemsSubTotal?></td>
 																	<td style="text-align: right;"><?=$bill_description->totalCash?></td>
+																	<td style="text-align: right;"><?=$discountAmount?></td>
 																	<td style="text-align: right;"><?=$bill_description->dueCash?></td>
 																	<td><?=date('d-M-Y H:i', strtotime($create_date))?></td>
 																	
@@ -235,7 +250,7 @@
 													}//end while
 													}else{
 													?>												
-														</tr><td colspan='9'>No record found</td></tr>
+														</tr><td colspan='10'>No record found</td></tr>
 													<?php 
 													} 
 													?>
@@ -430,6 +445,37 @@
 								<small id="totalCash_error" class="form-text text-muted"></small>
 							</div>
 						</div>
+
+						<div class="col-md-2" id="discountTypeBlock" style="display: none;">
+							<div class="form-group">
+								<label for="discountType"> Discount Type</label>
+								<select id="discountType" class="form-control" name="discountType">
+									<option value="0">Choose Discount Type</option>
+									<option value="1">Fixed</option>
+									<option value="2">Percentage</option>
+								</select>
+								<input type="hidden" id="hidden_discountType" value="0.00" >
+								<small id="discountType_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+
+						<div class="col-md-1" id="discountRateBlock" style="display: none;">
+							<div class="form-group">
+								<label for="discountRate"> Rate</label>
+								<input type="number" class="form-control text-right" id="discountRate" value="0.00">
+								<input type="hidden" id="hidden_discountRate" value="0.00" >
+								<small id="discountRate_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+
+						<div class="col-md-1" id="discountAmountBlock" style="display: none;">
+							<div class="form-group">
+								<label for="discountAmount"> Amount</label>
+								<input type="number" class="form-control text-right" id="discountAmount" value="0.00" readonly>
+								<input type="hidden" id="hidden_discountAmount" value="0.00" >
+								<small id="discountAmount_error" class="form-text text-muted"></small>
+							</div>
+						</div>
 						
 						<div class="col-md-2" id="totalDueBlock" style="display: none;">
 							<div class="form-group">
@@ -470,6 +516,8 @@
 
 					<!-- Payment History -->
 					<div class="form-row" id="paymentHistoryList">					
+					</div>
+					<div class="form-row" id="discountHistory">					
 					</div>
 					<!-- Payment History -->
 

@@ -1027,6 +1027,7 @@
 
 		$totalCash = $_POST["totalCash"];
 		$hidden_totalCash = $_POST["hidden_totalCash"];
+
 		$receive_payment = 0;
 		$cb_amount = 0;
 		$cb_narration = '';

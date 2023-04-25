@@ -109,8 +109,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			$message .="</tr>";	
 		}			
 		
-		if($netWeight > 999){
-			
+		if($netWeight > 999){			
 			$netWeightTxt = $netWeight / 1000 ." kg";
 		}else{
 			$netWeightTxt = $netWeight." gm";
@@ -132,10 +131,19 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$bill_description->fineItemsSubTotal."</td>";
 		$message .="</tr>";						
 		
+		$discount_text = '';
+		if($bill_description->discountType == 1){
+			$discount_text = 'Fixed';
+		}else if($bill_description->discountType == 2){
+			$discount_text = 'Percentage ('.$bill_description->discountRate.'%)';
+		}else{}
+
 		$message .="<tr>";
 			$message .="<td colspan='6' style='text-align: center; padding-left: 5px;'>TOTAL AMOUNT IN WORD</td>";
-			$message .="<td colspan='3' style='text-align: center; padding-left: 5px;'>PAID AMOUNT</td>";
+			$message .="<td style='text-align: center; padding-left: 5px;'>PAID AMOUNT</td>";
 			$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$bill_description->totalCash."</td>";
+			$message .="<td style='text-align: center; padding-left: 5px;'>DISCOUNT ".$discount_text."</td>";
+			$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$bill_description->discountAmount."</td>";
 			$message .="<td colspan='3' style='text-align: center; padding-left: 5px;'>TOTAL AMOUNT</td>";
 			$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$bill_description->fineItemsSubTotal."</td>";
 		$message .="</tr>";							
