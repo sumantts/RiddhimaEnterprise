@@ -1625,7 +1625,7 @@
 					$discountAmount = parseFloat($discountRate);
 				}
 				if(parseInt($discountType) == 2){
-					$discountAmount = parseInt($billDetail.fineItemsSubTotal) * parseFloat($discountRate) / 100;
+					$discountAmount = parseInt($billDetail.subTotalAmount) * parseFloat($discountRate) / 100;
 				}	
 				$dueCash = parseFloat($dueCash) - parseFloat($discountAmount);	
 				$billDetail.discountAmount = $discountAmount;	
