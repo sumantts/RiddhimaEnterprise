@@ -37,6 +37,21 @@
 		include('pages/users.php');		
 		break;
 		
+		case 'emp-list':
+		$title = "Employee List";
+		include('pages/emp_list.php');		
+		break;
+		
+		case 'emp-attendance':
+		$title = "Employee Attendance";
+		include('pages/emp_attendance.php');		
+		break;
+		
+		case 'emp-pay':
+		$title = "Employee Pay";
+		include('pages/emp_pay.php');		
+		break;
+		
 		case 'todays-bill':
 		$title = "Today's Bill";
 		include('pages/todays_bill.php');		

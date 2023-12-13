@@ -65,6 +65,92 @@
 		$('#first_tunch_error').html('');
 	});
 
+	//Save Employee Function
+	$("#saveEmployee").click(function(){
+		$item_id = $('#item_id').val();
+		$item_name = $('#item_name').val();
+		$hs_code = $('#hs_code').val();
+		$cgst_rate = $('#cgst_rate').val();
+		$sgst_rate = $('#sgst_rate').val();
+		$item_rate = 0;//$('#item_rate').val();
+		$item_quantity = $('#item_quantity').val();		
+		$hidden_stock_lower_limit = $('#hidden_stock_lower_limit').val();
+		
+		$stokist_price = $('#stokist_price').val();
+		$dealer_price = $('#dealer_price').val();
+		$wholesaler_price = $('#wholesaler_price').val();
+		$retailer_price = $('#retailer_price').val();
+		$net_weight = $('#net_weight').val();
+		$login_id = $('#login_id').val();
+		console.log('login_id: '+$login_id);
+
+		if($item_name == ''){
+			$('#item_name_error').html('Please Enter Item Name');
+		}else if($hs_code == ''){
+			$('#hs_code_error').html('Please Enter HS Code');
+		}else if(parseInt($item_quantity) < parseInt($hidden_stock_lower_limit)){
+			$('#item_quantity_error').html('Please Enter Quantity');
+		}else if($stokist_price < 1){
+			$('#stokist_price_error').html('Please Enter Stokist Price');
+		}else if($dealer_price < 1){
+			$('#dealer_price_error').html('Please Enter Dealer Price');
+		}else if($wholesaler_price < 1){
+			$('#wholesaler_price_error').html('Please Enter Wholesaler Price');
+		}else if($retailer_price < 1){
+			$('#retailer_price_error').html('Please Enter Retailer Price');
+		}else if($net_weight < 1){
+			$('#net_weight_error').html('Please Enter Net Weight/Packet');
+		}else{
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "saveItem", item_id: $item_id, item_name: $item_name, hs_code: $hs_code, cgst_rate: $cgst_rate, sgst_rate: $sgst_rate, item_quantity: $item_quantity, stokist_price: $stokist_price, dealer_price: $dealer_price, wholesaler_price: $wholesaler_price, retailer_price: $retailer_price, net_weight: $net_weight, login_id: $login_id }
+			})
+			.done(function( res ) {
+				console.log(res);
+				$res1 = JSON.parse(res);
+				if($res1.status == true){					
+					$('#item_name_error').html('');
+					$('#hs_code_error').html('');
+					$('#item_quantity').val('0');
+					$('#item_quantity_error').html('');
+					$('#item_name').val('');
+					$('#hs_code').val('');
+					$('#cgst_rate').val('2.50');
+					$('#sgst_rate').val('2.50');
+					$('#item_rate').val('');
+					
+					$('#stokist_price').val('0.00');
+					$('#dealer_price').val('0.00');
+					$('#wholesaler_price').val('0.00');
+					$('#retailer_price').val('0.00');
+					$('#net_weight').val('0.00');
+
+					$('#stokist_price_error').html('');
+					$('#dealer_price_error').html('');
+					$('#wholesaler_price_error').html('');
+					$('#retailer_price_error').html('');
+					
+					if($item_id == '0'){	
+						//start
+						const table = $("#dataTable").DataTable();
+						// or using tr
+						const tr = $("<tr id=item_id_"+$res1.item_id+"> <td>"+$item_name+"<br>"+$hs_code+"</td><td style='text-align: right;'>"+$cgst_rate+"<br>"+$sgst_rate+"</td><td style='text-align: right;'>"+$item_quantity+"</td> <td style='text-align: right;'>"+$stokist_price+"</td> <td style='text-align: right;'>"+$dealer_price+"</td> <td style='text-align: right;'>"+$wholesaler_price+"</td> <td style='text-align: right;'>"+$retailer_price+"</td> <td><a style='cursor: pointer;' onclick=updateItemModal("+$res1.item_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteItem("+$res1.item_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td></tr>");
+						table.row.add(tr[0]).draw();
+					} else{
+						console.log('Updatre the table row');
+						$('#item_id_'+$item_id).html('');
+
+						$('#item_id_'+$item_id).html("<td>"+$item_name+"<br>"+$hs_code+"</td><td style='text-align: right;'>"+$cgst_rate+"<br>"+$sgst_rate+"</td><td style='text-align: right;'>"+$item_quantity+"</td> <td style='text-align: right;'>"+$stokist_price+"</td> <td style='text-align: right;'>"+$dealer_price+"</td> <td style='text-align: right;'>"+$wholesaler_price+"</td> <td style='text-align: right;'>"+$retailer_price+"</td> <td><a style='cursor: pointer;' onclick=updateItemModal("+$item_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteItem("+$item_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td>");
+					}	
+					modal.style.display = "none";
+				}else{
+					$('#item_name_error').html('Item Name already exists');
+				}
+			});//end ajax
+		}//end if
+	});//end save Employee function
+
 	//Save Function
 	$("#saveItem").click(function(){
 		$item_id = $('#item_id').val();
