@@ -7,7 +7,7 @@
 	$login_id = $_SESSION["login_id"];
 	$created_by = $_SESSION["created_by"];
 
-	$sql = "SELECT * FROM item_master ORDER BY item_id DESC";	
+	$sql = "SELECT * FROM employee_list ORDER BY emp_id DESC";	
 	$result = $mysqli->query($sql);
 
 ?>
@@ -37,108 +37,35 @@
 											<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 												<thead>
 													<tr>
-														<th>Item Name</th>
-														<th>CGST & SGST</th>
-														<th>Quantity</th>
-														<?php if($user_type > 0 && $user_type < 4){?>
-														<th>Price</th>
-														<?php }?>
-														<?php if($user_type == 0){?>
-														<th>Stokist Price</th>														
-														<th>Dealer Price</th>
-														<th>Wholesaler Price</th>
-														<th>Retailer Price</th>
+														<th>Sl#</th>
+														<th>Emp. Name</th>
+														<th>Phone</th>
+														<th>Email</th>
+														<th>Address</th>	
 														<th>Action</th>
-														<?php }?>
 													</tr>
 												</thead>
-												<tfoot>
-													<tr>
-														<th>Item Name</th>
-														<th>CGST & SGST</th>
-														<th>Quantity</th>
-														<?php if($user_type > 0 && $user_type < 4){?>
-														<th>Price</th>
-														<?php }?>
-														<?php if($user_type == 0){?>
-														<th>Stokist Price</th>														
-														<th>Dealer Price</th>
-														<th>Wholesaler Price</th>
-														<th>Retailer Price</th>
-														<th>Action</th>
-														<?php }?>
-													</tr>
-												</tfoot>
 												<tbody>	
 												<?php
+												$i = 1;
 												while ($row = $result->fetch_array()){ 
-													//Fetch customer start												
 													
-													if($user_type == '5'){
-														$get_sql = "SELECT * FROM login WHERE login_id = '" .$created_by. "'";														
-													}else{
-														$get_sql = "SELECT * FROM login WHERE login_id = '".$login_id."'";															
-													}
-													if($user_type == '1'){
-														$rate_type_txt = 'stokist_price';
-													}else if($user_type == '2'){
-														$rate_type_txt = 'dealer_price';
-													}else if($user_type == '3'){
-														$rate_type_txt = 'wholesaler_price';
-													}else{
-														$rate_type_txt = '';
-													}
-													if($rate_type_txt != ''){
-														$rate_price = $row[$rate_type_txt];
-													}else{
-														$rate_price = 0;
-													}
-
-													$get_sql_result = $mysqli->query($get_sql);
-													$get_sql_row = $get_sql_result->fetch_array();
-													$stock_quantity1 = $get_sql_row['stock_quantity'];
-													$stock_quantity = json_decode($stock_quantity1);
-													$item_quantity = 0;
-													for($i = 0; $i < sizeof($stock_quantity); $i++){
-														if($stock_quantity[$i]->item_id == $row['item_id']){
-															$item_quantity = $stock_quantity[$i]->item_quantity;
-														}
-													}
 													
 												?>
-													<tr id="item_id_<?=$row['item_id']?>">
-														<td><?=$row['item_name']?><br><?=$row['hs_code']?></td>
-														<td style="text-align: right;"><?=$row['cgst_rate']?> & <?=$row['sgst_rate']?></td>
-														<td style="text-align: right;">
-															<?php
-															if($item_quantity <= $stock_lower_limit){
-															?>
-																<span class="badge badge-pill badge-danger">Below Stock</span>
-															<?php	
-															echo $item_quantity;
-															}else{
-																echo $item_quantity;
-															}
-															?>
-														</td>
-														<?php if($user_type > 0 && $user_type < 4){?>
-															<td style="text-align: right;"><?=$rate_price?></td>
-														<?php }?>
-
-														<?php if($user_type == 0){?>
-														<td style="text-align: right;"><?=$row['stokist_price']?></td>
-														<td style="text-align: right;"><?=$row['dealer_price']?></td>
-														<td style="text-align: right;"><?=$row['wholesaler_price']?></td>
-														<td style="text-align: right;"><?=$row['retailer_price']?></td>
-
-														
+													<tr id="emp_id_<?=$row['emp_id']?>">
+														<td><?=$i?></td>
+														<td><?=$row['emp_name']?></td>
+														<td><?=$row['emp_ph_primary']?> / <?=$row['emp_ph_secondary']?></td>
+														<td><?=$row['emp_email']?></td>
+														<td><?=$row['emp_address']?></td>
 														<td>
-														<a onclick="updateItemModal('<?=$row['item_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
-														<a onclick="deleteItem('<?=$row['item_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+															<a onclick="updateEmpModal('<?=$row['emp_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
+															<a onclick="deleteItem('<?=$row['emp_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
 														</td>
-														<?php }?>
 													</tr>
-												<?php } ?>
+												<?php 
+												$i++;
+												} ?>
 												</tbody>
 											</table>
 										</div>
@@ -155,7 +82,7 @@
 				  <div class="modal-content">
 					<div class="modal-header">
 						<h3>Add/Update Employee</h3>
-					  <span class="close" onClick="closeItemModal()">&times;</span>
+					  <span class="close" onClick="closeEmployeeModal()">&times;</span>
 					  
 					</div>
 					<div class="modal-body">
@@ -252,10 +179,16 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="form-row">							
+						<div class="col-md-12">
+							<span id="emp_form_error" class="text-danger"> </span>
+						</div>
+					</div>
 					
 					<button type="button" class="btn btn-primary" id="saveEmployee">OK</button>	
-					<input type="hidden" id="user_type" value="<?=$_SESSION["user_type"]?>">
-					<input type="hidden" id="created_by" value="<?=$created_by?>">
+					<input type="hidden" id="emp_id" name="emp_id" value="0">
+					<input type="hidden" id="created_by" value="<?=$login_id?>">
 					</form>	
 					</div>
 					<div class="modal-footer">

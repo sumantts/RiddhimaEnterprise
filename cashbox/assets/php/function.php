@@ -39,6 +39,62 @@
 		echo json_encode($return_result);
 	}//end function doLogin
 	
+	//Save Employee function start
+	if($fn == 'saveEmployee'){
+		$return_result = array();
+		$emp_id = $_POST['emp_id'];
+		$emp_name = $_POST['emp_name'];
+		$emp_ph_primary = $_POST['emp_ph_primary'];
+		$emp_ph_secondary = $_POST['emp_ph_secondary'];
+		$emp_email = $_POST['emp_email'];
+		$emp_aadhar_no = $_POST['emp_aadhar_no'];
+		$emp_pan_no = $_POST['emp_pan_no'];		
+		$emp_pf_no = $_POST['emp_pf_no'];		
+		$emp_basic_pay = $_POST['emp_basic_pay'];
+		$payment_type = $_POST['payment_type'];
+		$emp_address = $_POST['emp_address'];
+		$created_by = $_POST['created_by'];
+
+		$message = '';
+		
+		if ($emp_id > 0) {
+			$status = true;	
+			//update
+			$sql_update = "UPDATE employee_list SET item_name = '".$item_name."', hs_code = '".$hs_code."', cgst_rate = '".$cgst_rate."', sgst_rate = '".$sgst_rate."', item_quantity = '".$item_quantity."', stokist_price = '".$stokist_price."', dealer_price = '".$dealer_price."', wholesaler_price = '".$wholesaler_price."', retailer_price = '".$retailer_price."', net_weight = '" .$net_weight. "' WHERE emp_id = '" .$emp_id. "' ";
+			$mysqli->query($sql_update);
+		} else {
+			$sql = "SELECT * FROM employee_list WHERE emp_ph_primary = '".$emp_ph_primary."' OR emp_email = '".$emp_email."' OR emp_aadhar_no = '".$emp_aadhar_no."' OR emp_pf_no = '".$emp_pf_no."' ";
+			$result = $mysqli->query($sql);
+
+			if ($result->num_rows > 0) {
+				$status = false;	
+				$message = 'Primary Phone or Email or Aadhar No or PF No Duplicate';
+			}else{	
+				//Insert
+				$sql_insert = "INSERT INTO employee_list (emp_name, emp_ph_primary,	emp_ph_secondary, emp_email, emp_aadhar_no,	emp_pan_no, emp_pf_no, emp_basic_pay, payment_type, emp_address, created_by) VALUES('".$emp_name."', '".$emp_ph_primary."', '".$emp_ph_secondary."', '".$emp_email."', '".$emp_aadhar_no."', '".$emp_pan_no."', '".$emp_pf_no."', '".$emp_basic_pay."', '".$payment_type."', '".$emp_address."', '".$created_by. "')";
+				$result_insert = $mysqli->query($sql_insert);
+				$emp_id = $mysqli->insert_id;
+
+				if($emp_id > 0){
+					$status = true;
+				}else{
+					$status = false;	
+					$message = 'Employee Insert Query Error';
+				}
+			}
+
+		}//end if else
+
+		
+		$mysqli->close();
+
+		$return_result['emp_id'] = $emp_id;
+		$return_result['status'] = $status;
+		$return_result['message'] = $message;
+		//sleep(1);
+		echo json_encode($return_result);
+	}//end function save Employee
+	
 	//Save Item function
 	if($fn == 'saveItem'){
 		$return_result = array();
@@ -242,6 +298,45 @@
 		sleep(1);
 		echo json_encode($return_result);
 	}//end function getItem
+
+	//Get Emp
+	if($fn == 'getEmployee'){
+		$return_result = array();
+		$emp_id = $_POST["emp_id"];
+		$status = true;	
+	
+		$sql = "SELECT * FROM employee_list WHERE emp_id = '".$emp_id."'";
+		$result = $mysqli->query($sql);
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_array();
+			$emp_name = $row['emp_name'];
+			$emp_ph_primary = $row['emp_ph_primary'];
+			$emp_ph_secondary = $row['emp_ph_secondary'];
+			$emp_email = $row['emp_email'];
+			$emp_aadhar_no = $row['emp_aadhar_no'];
+			$emp_pan_no = $row['emp_pan_no'];
+			$emp_pf_no = $row['emp_pf_no'];
+			$emp_basic_pay = $row['emp_basic_pay'];
+			$payment_type = $row['payment_type'];
+			$emp_address = $row['emp_address'];
+		}
+
+		$return_result['emp_name'] = $emp_name;
+		$return_result['emp_ph_primary'] = $emp_ph_primary;
+		$return_result['emp_ph_secondary'] = $emp_ph_secondary;
+		$return_result['emp_email'] = $emp_email;
+		$return_result['emp_aadhar_no'] = $emp_aadhar_no;
+		$return_result['emp_pan_no'] = $emp_pan_no;		
+		$return_result['emp_pf_no'] = $emp_pf_no;
+		$return_result['emp_basic_pay'] = $emp_basic_pay;
+		$return_result['payment_type'] = $payment_type;
+		$return_result['emp_address'] = $emp_address;
+
+		$return_result['status'] = $status;
+		sleep(1);
+		echo json_encode($return_result);
+	}//end function getEmployee
 
 	//Delete Item function
 	if($fn == 'deleteItem'){
