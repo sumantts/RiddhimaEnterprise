@@ -68,7 +68,7 @@
 
 			if ($result->num_rows > 0) {
 				$status = false;	
-				$message = 'Primary Phone or Email or Aadhar No or PF No Duplicate';
+				$message = 'Primary Phone No Duplicate';
 			}else{	
 				//Insert
 				$sql_insert = "INSERT INTO employee_list (emp_name, emp_ph_primary,	emp_ph_secondary, emp_email, emp_aadhar_no,	emp_pan_no, emp_pf_no, emp_basic_pay, payment_type, emp_address, created_by) VALUES('".$emp_name."', '".$emp_ph_primary."', '".$emp_ph_secondary."', '".$emp_email."', '".$emp_aadhar_no."', '".$emp_pan_no."', '".$emp_pf_no."', '".$emp_basic_pay."', '".$payment_type."', '".$emp_address."', '".$created_by. "')";
