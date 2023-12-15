@@ -136,13 +136,13 @@
 						//start
 						const table = $("#dataTable").DataTable();
 						// or using tr
-						const tr = $("<tr id=emp_id_"+$res1.emp_id+"> <td>1</td> <td>"+$emp_name+"<br>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td><a style='cursor: pointer;' onclick=updateEmpModal("+$res1.emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteItem("+$res1.emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td></tr>");
+						const tr = $("<tr id=emp_id_"+$res1.emp_id+"> <td>1</td> <td>"+$emp_name+"</td><td>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td><a style='cursor: pointer;' onclick=updateEmpModal("+$res1.emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteEmployee("+$res1.emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td></tr>");
 						table.row.add(tr[0]).draw();
 					} else{
 						console.log('Updatre the table row');
 						$('#emp_id_'+$emp_id).html('');
 
-						$('#emp_id_'+$emp_id).html("<td>1</td> <td>"+$emp_name+"<br>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td><a style='cursor: pointer;' onclick=updateEmpModal("+$emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteItem("+$emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td>");
+						$('#emp_id_'+$emp_id).html("<td>1</td> <td>"+$emp_name+"</td><td>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td><a style='cursor: pointer;' onclick=updateEmpModal("+$emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteEmployee("+$emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td>");
 					}	
 					modal.style.display = "none";
 					//closeEmployeeModal();
@@ -304,6 +304,26 @@
 			}
 		});//end ajax
 	}//end fun
+
+	//Delete Employee function	
+	function deleteEmployee($emp_id){
+		console.log('Delete Item: '+$emp_id);
+		if (confirm('Are you sure to delete the Employee?')) {
+			$login_id = $('#login_id').val();
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "deleteEmployee", emp_id: $emp_id }
+			})
+			.done(function( res ) {
+				console.log(res);
+				$res1 = JSON.parse(res);
+				if($res1.status == true){
+					$('#emp_id_'+$emp_id).remove();
+				}
+			});//end ajax
+		}		
+	}//end Employee delete
 
 	//Delete function	
 	function deleteItem($item_id){

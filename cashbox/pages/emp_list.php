@@ -49,8 +49,6 @@
 												<?php
 												$i = 1;
 												while ($row = $result->fetch_array()){ 
-													
-													
 												?>
 													<tr id="emp_id_<?=$row['emp_id']?>">
 														<td><?=$i?></td>
@@ -60,7 +58,7 @@
 														<td><?=$row['emp_address']?></td>
 														<td>
 															<a onclick="updateEmpModal('<?=$row['emp_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
-															<a onclick="deleteItem('<?=$row['emp_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+															<a onclick="deleteEmployee('<?=$row['emp_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
 														</td>
 													</tr>
 												<?php 

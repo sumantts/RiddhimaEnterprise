@@ -60,7 +60,7 @@
 		if ($emp_id > 0) {
 			$status = true;	
 			//update
-			$sql_update = "UPDATE employee_list SET item_name = '".$item_name."', hs_code = '".$hs_code."', cgst_rate = '".$cgst_rate."', sgst_rate = '".$sgst_rate."', item_quantity = '".$item_quantity."', stokist_price = '".$stokist_price."', dealer_price = '".$dealer_price."', wholesaler_price = '".$wholesaler_price."', retailer_price = '".$retailer_price."', net_weight = '" .$net_weight. "' WHERE emp_id = '" .$emp_id. "' ";
+			$sql_update = "UPDATE employee_list SET emp_name = '".$emp_name."', emp_ph_primary = '".$emp_ph_primary."', emp_ph_secondary = '".$emp_ph_secondary."', emp_email = '".$emp_email."', emp_aadhar_no = '".$emp_aadhar_no."', emp_pan_no = '".$emp_pan_no."', emp_pf_no = '".$emp_pf_no."', emp_basic_pay = '".$emp_basic_pay."', payment_type = '".$payment_type."', emp_address = '" .$emp_address. "' WHERE emp_id = '" .$emp_id. "' ";
 			$mysqli->query($sql_update);
 		} else {
 			$sql = "SELECT * FROM employee_list WHERE emp_ph_primary = '".$emp_ph_primary."' OR emp_email = '".$emp_email."' OR emp_aadhar_no = '".$emp_aadhar_no."' OR emp_pf_no = '".$emp_pf_no."' ";
@@ -82,9 +82,7 @@
 					$message = 'Employee Insert Query Error';
 				}
 			}
-
 		}//end if else
-
 		
 		$mysqli->close();
 
@@ -337,6 +335,19 @@
 		sleep(1);
 		echo json_encode($return_result);
 	}//end function getEmployee
+
+	//Delete Employee function
+	if($fn == 'deleteEmployee'){
+		$return_result = array();
+		$emp_id = $_POST["emp_id"];
+		$status = true;	
+
+		$sql = "DELETE FROM employee_list WHERE emp_id = '".$emp_id."'";
+		$result = $mysqli->query($sql);
+		$return_result['status'] = $status;
+		sleep(1);
+		echo json_encode($return_result);
+	}//end function delete Employee
 
 	//Delete Item function
 	if($fn == 'deleteItem'){
