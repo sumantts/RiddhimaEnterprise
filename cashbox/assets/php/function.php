@@ -63,7 +63,7 @@
 			$sql_update = "UPDATE employee_list SET emp_name = '".$emp_name."', emp_ph_primary = '".$emp_ph_primary."', emp_ph_secondary = '".$emp_ph_secondary."', emp_email = '".$emp_email."', emp_aadhar_no = '".$emp_aadhar_no."', emp_pan_no = '".$emp_pan_no."', emp_pf_no = '".$emp_pf_no."', emp_basic_pay = '".$emp_basic_pay."', payment_type = '".$payment_type."', emp_address = '" .$emp_address. "' WHERE emp_id = '" .$emp_id. "' ";
 			$mysqli->query($sql_update);
 		} else {
-			$sql = "SELECT * FROM employee_list WHERE emp_ph_primary = '".$emp_ph_primary."' OR emp_email = '".$emp_email."' OR emp_aadhar_no = '".$emp_aadhar_no."' OR emp_pf_no = '".$emp_pf_no."' ";
+			$sql = "SELECT * FROM employee_list WHERE emp_ph_primary = '".$emp_ph_primary."'";
 			$result = $mysqli->query($sql);
 
 			if ($result->num_rows > 0) {
