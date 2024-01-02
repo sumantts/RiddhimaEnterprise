@@ -123,7 +123,7 @@
 
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="emp_aadhar_no" class="text-danger">Aadhar Card No*</label>
+								<label for="emp_aadhar_no">Aadhar Card No</label>
 								<input type="number" class="form-control" id="emp_aadhar_no" name="emp_aadhar_no" maxlength="12">
 								<small id="emp_aadhar_no_error" class="form-text text-muted"></small>
 							</div>

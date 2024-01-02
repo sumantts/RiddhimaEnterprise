@@ -106,8 +106,6 @@
 			$('#emp_name_error').html('Please Enter Employee Name');
 		}else if($emp_ph_primary == ''){
 			$('#emp_ph_primary_error').html('Please Enter Primary Phone Number');
-		}else if($emp_aadhar_no == ''){
-			$('#emp_aadhar_no_error').html('Please Enter Aadhar Card No');
 		}else if($emp_basic_pay == ''){
 			$('#emp_basic_pay_error').html('Please Enter Basic Pay');
 		}else if($payment_type == 0){
@@ -2126,6 +2124,37 @@
 		// return `${v[0]}.${f}`
 	}
 
+
+	
+	
+	//Check uncheck
+	$('#myTable').on('click', '.check_class', function(){
+		$emp_id = $(this).data('emp_id');
+		console.log('checkbox emp_id: ' + $emp_id);
+		
+		if ($('#attendance_' + $emp_id).is(':checked')) {
+		// The checkbox is checked
+			console.log('checked');	
+			$val = 1;
+			$('#present_status_text_' + $emp_id).val($val);
+		} else {
+		// The checkbox is not checked
+			console.log('unchecked: ');
+			$val = 0;
+			$('#present_status_text_' + $emp_id).val($val);
+		}
+
+	});	
+
+	//Pay: On Change Employee list
+	$('#emp_name').on('change', function(){
+		$emp_id = $('#emp_name').val();
+		var emp_name = $('#emp_name').find('option:selected'); 
+        $emp_basic_pay = emp_name.attr("emp_basic_pay"); 
+		console.log('emp_basic_pay: ' + $emp_basic_pay)
+		$('#emp_basic_pay').val($emp_basic_pay);
+		//ajax call from here
+	});
 	
 	//Loading screen
 	$body = $("body");

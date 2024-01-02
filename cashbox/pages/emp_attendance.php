@@ -7,8 +7,47 @@
 	$login_id = $_SESSION["login_id"];
 	$created_by = $_SESSION["created_by"];
 
-	$sql = "SELECT * FROM item_master ORDER BY item_id DESC";	
-	$result = $mysqli->query($sql);
+	//$sql = "SELECT * FROM employee_list ORDER BY emp_id DESC";	
+	//$result = $mysqli->query($sql);
+
+	if(isset($_POST['search_present_date'])){
+		$search_present_date = $_POST['search_present_date'];
+		$sql = "SELECT employee_attendance.emp_att_id, employee_attendance.present_status, employee_list.emp_name, employee_list.emp_id FROM employee_attendance JOIN employee_list ON employee_list.emp_id = employee_attendance.emp_id WHERE employee_attendance.present_date = '" .$search_present_date. "' ";	
+		$result = $mysqli->query($sql);
+	}else{
+		$search_present_date = date('Y-m-d');
+		$sql = "SELECT * FROM employee_list ORDER BY emp_id DESC";	
+		$result = $mysqli->query($sql);
+	}//end if
+
+	if(isset($_POST['save_attendance'])){
+		$emp_id_all = $_POST['emp_id_all'];
+		$present_status = $_POST['present_status'];
+		$present_status_text = $_POST['present_status_text'];
+
+		/*echo 'emp_id_all: ' . json_encode($emp_id_all);
+
+		echo 'present_status: ' . json_encode($present_status);
+
+		echo 'present_status_text: ' . json_encode($present_status_text);
+		exit();*/
+
+		for($i = 0; $i < sizeof($emp_id_all); $i++){
+			$emp_id = $emp_id_all[$i];
+			$present_date = date('Y-m-d');
+			$present_status = $present_status_text[$i];
+
+			$chk_sql = "SELECT * FROM employee_attendance WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";	
+			$chk_result = $mysqli->query($chk_sql);
+			if($chk_result->num_rows > 0){
+				$upd_sql = "UPDATE employee_attendance SET present_status = '".$present_status."' WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";
+				$mysqli->query($upd_sql);
+			}else{
+				$sql2 = "INSERT INTO employee_attendance (emp_id, present_date, present_status) VALUES ('" .$emp_id. "', '" .$present_date. "', '".$present_status."')";	
+				$result2 = $mysqli->query($sql2);
+			}
+		}//end for
+	}//end if
 
 ?>
         <div id="layoutSidenav">
@@ -22,10 +61,28 @@
                             <li class="breadcrumb-item active"><?=$title?></li>
                         </ol>
                         <div class="row">
+							<!-- Search Panel -->
+							<div class="col-lg-12">
+							<form action="" method="POST" name="form_search">
+								<div class="form-row">
+									<div class="form-group col-md-3">
+									<label for="inputCity">Date</label>
+									<input type="date" class="form-control" id="search_present_date" name="search_present_date" value="<?=date('Y-m-d', strtotime($search_present_date))?>">
+									</div>
+
+									<div class="form-group col-md-3" style="margin-top: 25px;">	
+									<label for="inputState">&nbsp;</label>	
+									<button type="submit" class="btn btn-primary" name="search_btn">Search</button>	
+									</div>
+								</div>
+								</form>
+							</div>
+							<!-- Search Panel end -->
+
                             <div class="col-lg-12">
 							
 							<?php if($user_type == 0){?>
-								<div class="form-group mt-1 mb-1"><a class="btn btn-primary" href="#" id="btn" onClick="openItemModal()">Add Items</a></div>
+								<!-- <div class="form-group mt-1 mb-1"><a class="btn btn-primary" href="#" id="btn" onClick="openItemModal()">Add Employee</a></div> -->
 							<?php }?>
 								<div class="card mb-4">
 									<div class="card-header">
@@ -34,111 +91,47 @@
 									</div>
 									<div class="card-body">
 										<div class="table-responsive">
-											<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+											<table class="table table-bordered" id="myTable"  cellspacing="0">
 												<thead>
 													<tr>
-														<th>Item Name</th>
-														<th>CGST & SGST</th>
-														<th>Quantity</th>
-														<?php if($user_type > 0 && $user_type < 4){?>
-														<th>Price</th>
-														<?php }?>
-														<?php if($user_type == 0){?>
-														<th>Stokist Price</th>														
-														<th>Dealer Price</th>
-														<th>Wholesaler Price</th>
-														<th>Retailer Price</th>
-														<th>Action</th>
-														<?php }?>
+														<th>Sl#</th>
+														<th>Emp. Name</th>	
+														<th>Attendance</th>
 													</tr>
 												</thead>
-												<tfoot>
-													<tr>
-														<th>Item Name</th>
-														<th>CGST & SGST</th>
-														<th>Quantity</th>
-														<?php if($user_type > 0 && $user_type < 4){?>
-														<th>Price</th>
-														<?php }?>
-														<?php if($user_type == 0){?>
-														<th>Stokist Price</th>														
-														<th>Dealer Price</th>
-														<th>Wholesaler Price</th>
-														<th>Retailer Price</th>
-														<th>Action</th>
-														<?php }?>
-													</tr>
-												</tfoot>
 												<tbody>	
-												<?php
-												while ($row = $result->fetch_array()){ 
-													//Fetch customer start												
-													
-													if($user_type == '5'){
-														$get_sql = "SELECT * FROM login WHERE login_id = '" .$created_by. "'";														
-													}else{
-														$get_sql = "SELECT * FROM login WHERE login_id = '".$login_id."'";															
-													}
-													if($user_type == '1'){
-														$rate_type_txt = 'stokist_price';
-													}else if($user_type == '2'){
-														$rate_type_txt = 'dealer_price';
-													}else if($user_type == '3'){
-														$rate_type_txt = 'wholesaler_price';
-													}else{
-														$rate_type_txt = '';
-													}
-													if($rate_type_txt != ''){
-														$rate_price = $row[$rate_type_txt];
-													}else{
-														$rate_price = 0;
-													}
+													<form name="attendance_sheet" id="attendance_sheet" action="" method="POST">
+														<?php
+														$i = 1;
+														while ($row = $result->fetch_array()){ 
+														?>
+															<tr id="emp_id_<?=$row['emp_id']?>">
+																<td><?=$i?></td>
+																<td>
+																	<?=$row['emp_name']?>
+																	<input type="hidden" name="emp_id_all[]" value="<?=$row['emp_id']?>">
+																</td>
+																<?php if(isset($_POST['search_present_date'])){ ?>
+																	<td><?=($row['present_status'] == 1)? 'Present' : 'Absent'?></td>
+																<?php } else {?>
+																	<td>
+																		<input type="checkbox" name="present_status[]" id="attendance_<?=$row['emp_id']?>" class="check_class" data-emp_id="<?=$row['emp_id']?>">
+																		<input type="hidden" name="present_status_text[]" id="present_status_text_<?=$row['emp_id']?>" value="0" >
+																	</td>
+																<?php } ?>
 
-													$get_sql_result = $mysqli->query($get_sql);
-													$get_sql_row = $get_sql_result->fetch_array();
-													$stock_quantity1 = $get_sql_row['stock_quantity'];
-													$stock_quantity = json_decode($stock_quantity1);
-													$item_quantity = 0;
-													for($i = 0; $i < sizeof($stock_quantity); $i++){
-														if($stock_quantity[$i]->item_id == $row['item_id']){
-															$item_quantity = $stock_quantity[$i]->item_quantity;
-														}
-													}
-													
-												?>
-													<tr id="item_id_<?=$row['item_id']?>">
-														<td><?=$row['item_name']?><br><?=$row['hs_code']?></td>
-														<td style="text-align: right;"><?=$row['cgst_rate']?> & <?=$row['sgst_rate']?></td>
-														<td style="text-align: right;">
-															<?php
-															if($item_quantity <= $stock_lower_limit){
-															?>
-																<span class="badge badge-pill badge-danger">Below Stock</span>
-															<?php	
-															echo $item_quantity;
-															}else{
-																echo $item_quantity;
-															}
-															?>
-														</td>
-														<?php if($user_type > 0 && $user_type < 4){?>
-															<td style="text-align: right;"><?=$rate_price?></td>
-														<?php }?>
-
-														<?php if($user_type == 0){?>
-														<td style="text-align: right;"><?=$row['stokist_price']?></td>
-														<td style="text-align: right;"><?=$row['dealer_price']?></td>
-														<td style="text-align: right;"><?=$row['wholesaler_price']?></td>
-														<td style="text-align: right;"><?=$row['retailer_price']?></td>
-
-														
-														<td>
-														<a onclick="updateItemModal('<?=$row['item_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
-														<a onclick="deleteItem('<?=$row['item_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
-														</td>
-														<?php }?>
-													</tr>
-												<?php } ?>
+															</tr>
+														<?php 
+														$i++;
+														} ?>
+														<?php if(!isset($_POST['search_present_date'])){ ?>
+														<tr>
+															<td colspan="3">
+																<input type="submit" class="btn btn-primary" name="save_attendance" id="save_attendance" value="Save">
+															</td>
+														</tr>
+														<?php } ?>
+													</form>
 												</tbody>
 											</table>
 										</div>
@@ -154,8 +147,8 @@
 				  <!-- Modal content -->
 				  <div class="modal-content">
 					<div class="modal-header">
-						<h3>Add/Update Item</h3>
-					  <span class="close" onClick="closeItemModal()">&times;</span>
+						<h3>Add/Update Employee</h3>
+					  <span class="close" onClick="closeEmployeeModal()">&times;</span>
 					  
 					</div>
 					<div class="modal-body">
@@ -164,105 +157,104 @@
 					<div class="form-row">
                         <div class="col-md-4">
 							<div class="form-group">
-								<label for="exampleInputEmail1">Item Name</label>
-								<input type="hidden" class="form-control" id="item_id" value="0">
-								<input type="text" class="form-control" id="item_name" placeholder="Item Name">
-								<small id="item_name_error" class="form-text text-muted"></small>
+								<label for="emp_name" class="text-danger">Employee Name*</label>
+								<input type="text" class="form-control" id="emp_name" name="emp_name" maxlength="50">
+								<small id="emp_name_error" class="form-text text-muted"></small>
 							</div>
 						</div>
 						
-						<!-- <div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Rate</label>
-								<input type="number" class="form-control" id="item_rate" placeholder="Rate" value="0">
-								<small id="item_rate_error" class="form-text text-muted"></small>
-							</div>
-						</div> -->
-						
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="exampleInputEmail1">HS Code</label>
-								<input type="number" class="form-control" id="hs_code" placeholder="HS Code">
-								<small id="hs_code_error" class="form-text text-muted"></small>
+								<label for="emp_ph_primary" class="text-danger">Primary Phone Number*</label>
+								<input type="number" class="form-control" id="emp_ph_primary" name="emp_ph_primary" maxlength="10">
+								<small id="emp_ph_primary_error" class="form-text text-muted"></small>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="exampleInputEmail1">CGST Rate</label>
-								<input type="number" class="form-control" id="cgst_rate" placeholder="CGST Rate" value="2.50">
-								<small id="cgst_rate_error" class="form-text text-muted"></small>
+								<label for="emp_ph_secondary">Secondary Phone Number</label>
+								<input type="number" class="form-control" id="emp_ph_secondary" name="emp_ph_secondary" maxlength="10">
+								<small id="emp_ph_secondary_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="emp_email">Email ID</label>
+								<input type="text" class="form-control" id="emp_email" name="emp_email" >
+								<small id="emp_email_error" class="form-text text-muted"></small>
+							</div>
+						</div>	
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="emp_aadhar_no">Aadhar Card No</label>
+								<input type="number" class="form-control" id="emp_aadhar_no" name="emp_aadhar_no" maxlength="12">
+								<small id="emp_aadhar_no_error" class="form-text text-muted"></small>
+							</div>
+						</div>	
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="emp_pan_no">PAN Card No</label>
+								<input type="text" class="form-control" id="emp_pan_no" name="emp_pan_no" >
+								<small id="emp_pan_no_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-row">	
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="emp_pf_no">PF No</label>
+								<input type="text" class="form-control" id="emp_pf_no" name="emp_pf_no" >
+								<small id="emp_pf_no_error" class="form-text text-muted"></small>
+							</div>
+						</div>	
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="emp_basic_pay" class="text-danger">Basic Pay*</label>
+								<input type="number" class="form-control" id="emp_basic_pay" name="emp_basic_pay" >
+								<small id="emp_basic_pay_error" class="form-text text-muted"></small>
+							</div>
+						</div>	
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="payment_type" class="text-danger">Payment Type*</label>
+								<select class="form-control" id="payment_type" name="payment_type">
+									<option value="0">Select</option>
+									<option value="1">Salaried</option>
+									<option value="2">No Work No Pay</option>
+								</select>
+								<small id="payment_type_error" class="form-text text-muted"></small>
 							</div>
 						</div>
 					</div>
 
 					<div class="form-row">							
-						<div class="col-md-4">
+						<div class="col-md-12">
 							<div class="form-group">
-								<label for="exampleInputEmail1">SGST Rate</label>
-								<input type="number" class="form-control" id="sgst_rate" placeholder="SGST Rate" value="2.50">
-								<small id="sgst_rate_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-						
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Quantity</label>
-								<input type="number" class="form-control" id="item_quantity" placeholder="Quantity" value="<?=$stock_lower_limit?>">
-								<input type="hidden" id="hidden_stock_lower_limit" value="<?=$stock_lower_limit?>">
-								<small id="item_quantity_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-						
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Stokist Price</label>
-								<input type="number" class="form-control" id="stokist_price" placeholder="Stokist Price" value="0.00">
-								<small id="stokist_price_error" class="form-text text-muted"></small>
+								<label for="emp_address" class="text-danger">Address*</label>
+								<textarea class="form-control" id="emp_address" name="emp_address"></textarea>
+								<small id="emp_address_error" class="form-text text-muted"></small>
 							</div>
 						</div>
 					</div>
 
 					<div class="form-row">							
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Dealer Price</label>
-								<input type="number" class="form-control" id="dealer_price" placeholder="Dealer Price" value="0.00">
-								<small id="dealer_price_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-						
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Wholesaler Price</label>
-								<input type="number" class="form-control" id="wholesaler_price" placeholder="Wholesaler Price" value="0.00">
-								<small id="wholesaler_price_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-						
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Retailer Price</label>
-								<input type="number" class="form-control" id="retailer_price" placeholder="Retailer Price" value="0.00">
-								<small id="retailer_price_error" class="form-text text-muted"></small>
-							</div>
+						<div class="col-md-12">
+							<span id="emp_form_error" class="text-danger"> </span>
 						</div>
 					</div>
-
-					<div class="form-row">							
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="exampleInputEmail1">Net Weight/Packet(gm)</label>
-								<input type="number" class="form-control" id="net_weight" placeholder="Net Weight/Packet" value="0.00">
-								<small id="net_weight_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-					</div>
-
 					
-					<button type="button" class="btn btn-primary" id="saveItem">OK</button>	
-					<input type="hidden" id="user_type" value="<?=$_SESSION["user_type"]?>">
-					<input type="hidden" id="created_by" value="<?=$created_by?>">
+					<button type="button" class="btn btn-primary" id="saveEmployee">OK</button>	
+					<input type="hidden" id="emp_id" name="emp_id" value="0">
+					<input type="hidden" id="created_by" value="<?=$login_id?>">
 					</form>	
 					</div>
 					<div class="modal-footer">
