@@ -1472,6 +1472,36 @@
 		$return_result['status'] = $status;
 		sleep(1);
 		echo json_encode($return_result);
+	}//end function 	
+	
+	//Get Attendance
+	if($fn == 'getUserAttendance'){
+		$return_result = array();
+		$month_name = $_POST["month_name"];
+		$emp_id = $_POST["emp_id"];
+		$status = true;	
+		$total_attendance = 0;
+	
+		if($month_name < 10){
+			$present_date_start = date('Y').'-0'.$month_name.'-01';
+			$present_date_end = date('Y').'-0'.$month_name.'-31';
+		}else{
+			$present_date_start = date('Y').'-'.$month_name.'-01';
+			$present_date_end = date('Y').'-'.$month_name.'-31';
+		}
+
+		$sql = "SELECT * FROM employee_attendance WHERE emp_id = '".$emp_id."' AND present_date >= '".$present_date_start."' AND  present_date <= '" .$present_date_end. "' AND present_status = 1";
+		$result = $mysqli->query($sql);
+
+		if ($result->num_rows > 0) {
+			$total_attendance = $result->num_rows;
+		}
+		
+		$mysqli->close();
+		$return_result['status'] = $status;
+		$return_result['total_attendance'] = $total_attendance;
+		sleep(1);
+		echo json_encode($return_result);
 	}//end function 
 
 	//Delete Item function

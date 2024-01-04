@@ -2148,13 +2148,50 @@
 
 	//Pay: On Change Employee list
 	$('#emp_name').on('change', function(){
+		$month_name = $('#month_name').val();
 		$emp_id = $('#emp_name').val();
 		var emp_name = $('#emp_name').find('option:selected'); 
         $emp_basic_pay = emp_name.attr("emp_basic_pay"); 
 		console.log('emp_basic_pay: ' + $emp_basic_pay)
 		$('#emp_basic_pay').val($emp_basic_pay);
 		//ajax call from here
+		
+		$.ajax({
+			method: "POST",
+			url: "assets/php/function.php",
+			data: { fn: "getUserAttendance", month_name: $month_name, emp_id: $emp_id,  }
+		})
+		.done(function( res ) {
+			console.log(res);
+			$res1 = JSON.parse(res);
+			if($res1.status == true){
+				$('#attendance_count').val($res1.total_attendance);
+			}
+		});//end ajax
 	});
+
+	$("#calculatePaySlip").on("click", function() {
+		$net_pay = 0;
+		$emp_basic_pay = $('#emp_basic_pay').val();
+		$attendance_count = $('#attendance_count').val();
+
+		$allounce_1 = $('#allounce_1').val();
+		$allounce_2 = $('#allounce_2').val();
+		$allounce_3 = $('#allounce_3').val();
+		$allounce_4 = $('#allounce_4').val();
+		
+		$deduction_1 = $('#deduction_1').val();
+		$deduction_2 = $('#deduction_2').val();
+		$deduction_3 = $('#deduction_3').val();
+		$deduction_4 = $('#deduction_4').val();
+		
+		$total_allounce = parseFloat($allounce_1) + parseFloat($allounce_2) + parseFloat($allounce_3) + parseFloat($allounce_4);
+		$total_deduction = parseFloat($deduction_1) + parseFloat($deduction_2) + parseFloat($deduction_3) + parseFloat($deduction_4);
+
+		$net_pay = parseFloat($emp_basic_pay) + parseFloat($total_allounce) - parseFloat($total_deduction);
+		$('#net_pay').val($net_pay);
+
+	});//end function
 	
 	//Loading screen
 	$body = $("body");

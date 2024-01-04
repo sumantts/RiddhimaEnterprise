@@ -81,9 +81,9 @@
 
 												<div class="col-md-3">
 													<div class="form-group">
-														<label for="exampleInputEmail1">Attendance</label>
-														<input type="number" class="form-control" id="cgst_rate" value="">
-														<small id="cgst_rate_error" class="form-text text-muted"></small>
+														<label for="attendance_count">Attendance</label>
+														<input type="number" class="form-control" id="attendance_count" readonly>
+														<small id="attendance_count_error" class="form-text text-muted"></small>
 													</div>
 												</div>
 
@@ -104,25 +104,41 @@
 									<div class="card-body">
 										<form>
 											<div class="form-row">
-												<div class="col-md-4">
+												<div class="col-md-3">
 													<div class="form-group">
-														<label for="exampleInputEmail1">Allounce 1</label>
-														<input type="number" class="form-control" id="item_name" >
-														<small id="item_name_error" class="form-text text-muted"></small>
+														<label for="allounce_1">Allounce 1</label>
+														<input type="number" class="form-control" id="allounce_1" >
+														<small id="allounce_1_error" class="form-text text-muted"></small>
 													</div>
 												</div>
 
-												<div class="col-md-4">
+												<div class="col-md-3">
 													<div class="form-group">
-														<label for="exampleInputEmail1">Allounce 2</label>
-														<input type="number" class="form-control" id="cgst_rate" value="">
-														<small id="cgst_rate_error" class="form-text text-muted"></small>
+														<label for="allounce_2">Allounce 2</label>
+														<input type="number" class="form-control" id="allounce_2">
+														<small id="allounce_2_error" class="form-text text-muted"></small>
 													</div>
 												</div>
 
-												<div class="col-md-4 mt-4">					
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="allounce_3">Allounce 3</label>
+														<input type="number" class="form-control" id="allounce_3">
+														<small id="allounce_3_error" class="form-text text-muted"></small>
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="allounce_4">Allounce 4</label>
+														<input type="number" class="form-control" id="allounce_4">
+														<small id="allounce_4_error" class="form-text text-muted"></small>
+													</div>
+												</div>
+
+												<!-- <div class="col-md-4 mt-4">					
 												<button type="button" class="btn btn-primary" id="saveItem">OK</button>
-												</div>
+												</div> -->
 											</div>
 										</form>
 									</div>
@@ -137,25 +153,38 @@
 									<div class="card-body">
 										<form>
 											<div class="form-row">
-												<div class="col-md-4">
+												<div class="col-md-3">
 													<div class="form-group">
-														<label for="exampleInputEmail1">Deduction 1</label>
-														<input type="number" class="form-control" id="item_name" >
-														<small id="item_name_error" class="form-text text-muted"></small>
+														<label for="deduction_1">Deduction 1</label>
+														<input type="number" class="form-control" id="deduction_1" >
+														<small id="deduction_1_error" class="form-text text-muted"></small>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="deduction_2">Deduction 2</label>
+														<input type="number" class="form-control" id="deduction_2" >
+														<small id="deduction_2_error" class="form-text text-muted"></small>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="deduction_3">Deduction 3</label>
+														<input type="number" class="form-control" id="deduction_3" >
+														<small id="deduction_3_error" class="form-text text-muted"></small>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group">
+														<label for="deduction_4">Deduction 4</label>
+														<input type="number" class="form-control" id="deduction_4" >
+														<small id="deduction_4_error" class="form-text text-muted"></small>
 													</div>
 												</div>
 
-												<div class="col-md-4">
-													<div class="form-group">
-														<label for="exampleInputEmail1">Deduction 2</label>
-														<input type="number" class="form-control" id="cgst_rate" value="">
-														<small id="cgst_rate_error" class="form-text text-muted"></small>
-													</div>
-												</div>
-
-												<div class="col-md-4 mt-4">					
+												<!-- <div class="col-md-4 mt-4">					
 												<button type="button" class="btn btn-primary" id="saveItem">OK</button>
-												</div>
+												</div> -->
 											</div>
 										</form>
 									</div>
@@ -170,17 +199,22 @@
 									<div class="card-body">
 										<form>
 											<div class="form-row">
-												<div class="col-md-4">
+												<div class="col-md-3">
 													<div class="form-group">
-														<label for="exampleInputEmail1">Net Pay</label>
-														<input type="number" class="form-control" id="item_name" >
-														<small id="item_name_error" class="form-text text-muted"></small>
+														<label for="net_pay">Net Pay</label>
+														<input type="number" class="form-control" id="net_pay" >
+														<small id="net_pay_error" class="form-text text-muted"></small>
 													</div>
 												</div>
 
-												<div class="col-md-4 mt-4">					
-												<button type="button" class="btn btn-primary" id="saveItem">OK</button>
+												<div class="col-md-2 mt-4">					
+												<button type="button" class="btn btn-primary" id="calculatePaySlip">Calculate</button>
 												</div>
+
+												<div class="col-md-2 mt-4">					
+												<button type="button" class="btn btn-primary" id="generatePaySlip">Generate PaySlip</button>
+												</div>
+
 											</div>
 										</form>
 									</div>
