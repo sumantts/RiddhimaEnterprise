@@ -42,6 +42,27 @@
 		console.log('Open the Item Modal');
 		modal.style.display = "block";
 	}
+	function openPaySlipModal(){
+		console.log('Open the payslip Modal');
+		$('#emp_sal_id').val('0');
+		$('#month_name').val('0').trigger('change');
+		$('#emp_name').val('0').trigger('change');
+		$('#emp_basic_pay').val('0');
+		$('#attendance_count').val('0');
+
+		$('#allounce_1').val('0');
+		$('#allounce_2').val('0');
+		$('#allounce_3').val('0');
+		$('#allounce_4').val('0');
+		
+		$('#deduction_1').val('0');
+		$('#deduction_2').val('0');
+		$('#deduction_3').val('0');
+		$('#deduction_4').val('0');
+
+		$('#net_pay').val('0');
+		modal.style.display = "block";
+	}
 
 	//Close Modal
 	function closeItemModal(){
@@ -2156,18 +2177,20 @@
 		$('#emp_basic_pay').val($emp_basic_pay);
 		//ajax call from here
 		
-		$.ajax({
-			method: "POST",
-			url: "assets/php/function.php",
-			data: { fn: "getUserAttendance", month_name: $month_name, emp_id: $emp_id,  }
-		})
-		.done(function( res ) {
-			console.log(res);
-			$res1 = JSON.parse(res);
-			if($res1.status == true){
-				$('#attendance_count').val($res1.total_attendance);
-			}
-		});//end ajax
+		if(parseInt($month_name) > 0 && parseInt($emp_id) > 0){
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "getUserAttendance", month_name: $month_name, emp_id: $emp_id,  }
+			})
+			.done(function( res ) {
+				console.log(res);
+				$res1 = JSON.parse(res);
+				if($res1.status == true){
+					$('#attendance_count').val($res1.total_attendance);
+				}
+			});//end ajax
+		}
 	});
 
 	//Calculate PaySlip
@@ -2195,6 +2218,7 @@
 
 	//Generate PaySlip
 	$("#generatePaySlip").on("click", function() {
+		$emp_sal_id = $('#emp_sal_id').val();
 		$month_name = $('#month_name').val();
 		$month_name_txt = $('#month_name option:selected').text();
 		$emp_id = $('#emp_name').val();
@@ -2232,22 +2256,75 @@
 				attendance_count: $attendance_count
 			};
 
-
 			$.ajax({
 				method: "POST",
 				url: "assets/php/function.php",
-				data: { fn: "generatePaySlip", month_name: $month_name, emp_id: $emp_id, total_allounce: $total_allounce, total_deduction: $total_deduction, net_pay: $net_pay, emp_basic_pay: $emp_basic_pay, salary_detail_data: JSON.stringify($salary_detail_data)}
+				data: { fn: "generatePaySlip", emp_sal_id: $emp_sal_id, month_name: $month_name, emp_id: $emp_id, total_allounce: $total_allounce, total_deduction: $total_deduction, net_pay: $net_pay, emp_basic_pay: $emp_basic_pay, salary_detail_data: JSON.stringify($salary_detail_data)}
 			})
 			.done(function( res ) {
 				console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
-					
+					window.location.href = '?p=emp-pay-slip';
 				}
 			});//end ajax
 		}//end if
 	});//end function
-	
+
+	//Edit PaySlip	
+	function editPaySlip($emp_sal_id){
+		$('#emp_sal_id').val($emp_sal_id);
+		$.ajax({
+			method: "POST",
+			url: "assets/php/function.php",
+			data: { fn: "getPaySlip", emp_sal_id: $emp_sal_id }
+		})
+		.done(function( res ) {
+			console.log(res);
+			$res1 = JSON.parse(res);
+
+			if($res1.status == true){
+				$('#month_name').val($res1.month_name).trigger('change');
+				$('#emp_name').val($res1.emp_id).trigger('change');
+				$('#emp_basic_pay').val($res1.basic_pay);
+				$salary_detail_data = JSON.parse($res1.salary_detail_data);
+
+				$('#allounce_1').val($salary_detail_data.allounce_1);
+				$('#allounce_2').val($salary_detail_data.allounce_2);
+				$('#allounce_3').val($salary_detail_data.allounce_3);
+				$('#allounce_4').val($salary_detail_data.allounce_4);
+				
+				$('#deduction_1').val($salary_detail_data.deduction_1);
+				$('#deduction_2').val($salary_detail_data.deduction_2);
+				$('#deduction_3').val($salary_detail_data.deduction_3);
+				$('#deduction_4').val($salary_detail_data.deduction_4);
+
+				$('#net_pay').val($res1.net_pay);
+				
+				modal.style.display = "block";
+			}
+		});//end ajax
+	}//end fun
+
+	//Delete PaySlip	
+	function deletePaySlip($emp_sal_id){
+		console.log('Delete : '+$emp_sal_id);
+		if (confirm('Are you sure to delete the record?')) {
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "deletePaySlip", emp_sal_id: $emp_sal_id }
+			})
+			.done(function( res ) {
+				console.log(res);
+				$res1 = JSON.parse(res);
+				if($res1.status == true){
+					$('#emp_sal_id_'+$emp_sal_id).remove();
+				}
+			});//end ajax
+		}		
+	}//end PaySlip delete
+
 	//Loading screen
 	$body = $("body");
 	$(document).on({

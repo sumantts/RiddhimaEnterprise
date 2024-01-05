@@ -28,7 +28,7 @@
                             <div class="col-lg-12">
 							
 							<?php if($user_type == 0){?>
-								<div class="form-group mt-1 mb-1"><a class="btn btn-primary" href="#" id="btn" onClick="openItemModal()">Add Employee</a></div>
+								<div class="form-group mt-1 mb-1"><a class="btn btn-primary" href="#" id="btn" onClick="openPaySlipModal()">Add New</a></div>
 							<?php }?>
 								<div class="card mb-4">
 									<div class="card-header">
@@ -63,9 +63,9 @@
 															<td style="text-align: right;"><?=$ps_row['total_deduction']?></td>
 															<td style="text-align: right;"><?=$ps_row['net_pay']?></td>
 															<td>
-																<a onclick="deleteEmployee('<?=$ps_row['emp_sal_id']?>')" style="cursor: pointer;"><i class="fa fa-print" aria-hidden="true"></i></a>
-																<a onclick="updateEmpModal('<?=$ps_row['emp_sal_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
-																<a onclick="deleteEmployee('<?=$ps_row['emp_sal_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+																<a style="cursor: pointer;" target="_blank" href="pages/pay_slip_printer/pay_slip_pdf.php?emp_sal_id=<?=$ps_row['emp_sal_id']?>"><i class="fa fa-print" aria-hidden="true"></i></a>
+																<a onclick="editPaySlip('<?=$ps_row['emp_sal_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
+																<a onclick="deletePaySlip('<?=$ps_row['emp_sal_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
 															</td>
 														</tr>
 													<?php 
@@ -137,7 +137,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="exampleInputEmail1">Basic Pay</label>
-									<input type="text" class="form-control" id="emp_basic_pay" readonly>
+									<input type="text" class="form-control" id="emp_basic_pay" readonly  value="0">
 									<small id="emp_basic_pay_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -145,7 +145,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="attendance_count">Attendance</label>
-									<input type="number" class="form-control" id="attendance_count" readonly>
+									<input type="number" class="form-control" id="attendance_count" readonly  value="0">
 									<small id="attendance_count_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -161,7 +161,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="allounce_1">Allounce 1</label>
-									<input type="number" class="form-control" id="allounce_1" >
+									<input type="number" class="form-control" id="allounce_1" value="0">
 									<small id="allounce_1_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -169,7 +169,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="allounce_2">Allounce 2</label>
-									<input type="number" class="form-control" id="allounce_2">
+									<input type="number" class="form-control" id="allounce_2" value="0">
 									<small id="allounce_2_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -177,7 +177,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="allounce_3">Allounce 3</label>
-									<input type="number" class="form-control" id="allounce_3">
+									<input type="number" class="form-control" id="allounce_3" value="0">
 									<small id="allounce_3_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -185,7 +185,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="allounce_4">Allounce 4</label>
-									<input type="number" class="form-control" id="allounce_4">
+									<input type="number" class="form-control" id="allounce_4" value="0">
 									<small id="allounce_4_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -197,28 +197,28 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="deduction_1">Deduction 1</label>
-									<input type="number" class="form-control" id="deduction_1" >
+									<input type="number" class="form-control" id="deduction_1"  value="0">
 									<small id="deduction_1_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="deduction_2">Deduction 2</label>
-									<input type="number" class="form-control" id="deduction_2" >
+									<input type="number" class="form-control" id="deduction_2"  value="0">
 									<small id="deduction_2_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="deduction_3">Deduction 3</label>
-									<input type="number" class="form-control" id="deduction_3" >
+									<input type="number" class="form-control" id="deduction_3"  value="0">
 									<small id="deduction_3_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="deduction_4">Deduction 4</label>
-									<input type="number" class="form-control" id="deduction_4" >
+									<input type="number" class="form-control" id="deduction_4"  value="0">
 									<small id="deduction_4_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -230,7 +230,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="net_pay">Net Pay</label>
-									<input type="number" class="form-control" id="net_pay" value="0.00" >
+									<input type="number" class="form-control" id="net_pay" value="0" >
 									<small id="net_pay_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -239,7 +239,8 @@
 							<button type="button" class="btn btn-primary" id="calculatePaySlip">Calculate</button>
 							</div>
 
-							<div class="col-md-4 mt-4">					
+							<div class="col-md-4 mt-4">	
+								<input type="hidden" name="emp_sal_id" id="emp_sal_id" value="0">
 							<button type="button" class="btn btn-primary" id="generatePaySlip">Generate PaySlip</button>
 							</div>
 						</div>

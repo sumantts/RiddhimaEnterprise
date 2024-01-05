@@ -1507,6 +1507,7 @@
 	//Generate PaySlip
 	if($fn == 'generatePaySlip'){
 		$return_result = array();
+		$emp_sal_id = $_POST["emp_sal_id"];
 		$month_name = $_POST["month_name"];
 		$emp_id = $_POST["emp_id"];
 		$total_allounce = $_POST["total_allounce"];
@@ -1516,18 +1517,17 @@
 		$salary_detail_data = $_POST["salary_detail_data"];
 
 		$status = true;	
-		$emp_sal_id = 0;
 	
 		if($month_name < 10){
 			$for_the_month = date('Y').'-0'.$month_name.'-01';
 		}else{
 			$for_the_month = date('Y').'-'.$month_name.'-01';
 		}
-
-		$sql = "SELECT * FROM employee_salary WHERE emp_id = '".$emp_id."' AND for_the_month = '".$for_the_month."'";
-		$result = $mysqli->query($sql);
-		if ($result->num_rows > 0) {
+		
+		if ($emp_sal_id > 0) {
 			//Update SQL
+			$sql_update = "UPDATE employee_salary SET emp_id = '" .$emp_id. "', total_allounce = '" .$total_allounce. "', total_deduction = '" .$total_deduction. "', basic_pay = '" .$emp_basic_pay. "', net_pay = '" .$net_pay. "', salary_detail_data = '" .$salary_detail_data. "', for_the_month = '" .$for_the_month. "' WHERE emp_sal_id = '".$emp_sal_id."' ";
+			$result_sql_update = $mysqli->query($sql_update);	
 		}else{
 			//Insert SQL
 			$sql_insert = "INSERT INTO employee_salary (emp_id, total_allounce, total_deduction, basic_pay, net_pay, salary_detail_data, for_the_month) VALUES ('" .$emp_id. "', '" .$total_allounce. "', '" .$total_deduction. "', '" .$emp_basic_pay. "', '" .$net_pay. "', '" .$salary_detail_data. "', '" .$for_the_month. "')";
@@ -1541,6 +1541,53 @@
 		sleep(1);
 		echo json_encode($return_result);
 	}//end function 
+
+	//Edit PaySlip
+	if($fn == 'getPaySlip'){
+		$return_result = array();
+		$emp_sal_id = $_POST["emp_sal_id"];
+		$status = true;	
+	
+		$sql = "SELECT * FROM employee_salary WHERE emp_sal_id = '".$emp_sal_id."'";
+		$result = $mysqli->query($sql);
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_array();
+			$emp_id = $row['emp_id'];
+			$total_allounce = $row['total_allounce'];
+			$total_deduction = $row['total_deduction'];
+			$basic_pay = $row['basic_pay'];
+			$net_pay = $row['net_pay'];
+			$salary_detail_data = $row['salary_detail_data'];
+			$for_the_month = $row['for_the_month'];
+		}
+
+		$month_name1 = date('m', strtotime($for_the_month));
+		$return_result['month_name'] = (int) $month_name1;
+		$return_result['emp_id'] = $emp_id;
+		$return_result['total_allounce'] = $total_allounce;
+		$return_result['total_deduction'] = $total_deduction;
+		$return_result['basic_pay'] = $basic_pay;
+		$return_result['net_pay'] = $net_pay;
+		$return_result['salary_detail_data'] = $salary_detail_data;	
+
+		$return_result['status'] = $status;
+		sleep(1);
+		echo json_encode($return_result);
+	}//end function 
+
+	//Delete PaySlip function
+	if($fn == 'deletePaySlip'){
+		$return_result = array();
+		$emp_sal_id = $_POST["emp_sal_id"];
+		$status = true;	
+
+		$sql = "DELETE FROM employee_salary WHERE emp_sal_id = '".$emp_sal_id."'";
+		$result = $mysqli->query($sql);
+		$return_result['status'] = $status;
+		sleep(1);
+		echo json_encode($return_result);
+	}//end 
 
 	//Delete Item function
 	if($fn == 'deleteCashbook'){
