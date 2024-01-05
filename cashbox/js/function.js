@@ -2170,6 +2170,7 @@
 		});//end ajax
 	});
 
+	//Calculate PaySlip
 	$("#calculatePaySlip").on("click", function() {
 		$net_pay = 0;
 		$emp_basic_pay = $('#emp_basic_pay').val();
@@ -2190,7 +2191,61 @@
 
 		$net_pay = parseFloat($emp_basic_pay) + parseFloat($total_allounce) - parseFloat($total_deduction);
 		$('#net_pay').val($net_pay);
+	});//end function
 
+	//Generate PaySlip
+	$("#generatePaySlip").on("click", function() {
+		$month_name = $('#month_name').val();
+		$month_name_txt = $('#month_name option:selected').text();
+		$emp_id = $('#emp_name').val();
+		$emp_name = $('#emp_name option:selected').text();
+		$emp_basic_pay = $('#emp_basic_pay').val();
+		$attendance_count = $('#attendance_count').val();
+		$net_pay = $('#net_pay').val();
+
+		$allounce_1 = $('#allounce_1').val();
+		$allounce_2 = $('#allounce_2').val();
+		$allounce_3 = $('#allounce_3').val();
+		$allounce_4 = $('#allounce_4').val();
+		
+		$deduction_1 = $('#deduction_1').val();
+		$deduction_2 = $('#deduction_2').val();
+		$deduction_3 = $('#deduction_3').val();
+		$deduction_4 = $('#deduction_4').val();
+
+		$('#net_pay_error').html('');
+		console.log('net pay: '+parseFloat($net_pay))
+		if(parseFloat($net_pay) <= 0){
+			$('#net_pay_error').html('Please calculate Net Pay')
+		}else{
+			$salary_detail_data = {
+				emp_name: $emp_name,
+				month_name_txt: $month_name_txt,
+				allounce_1: $allounce_1,
+				allounce_2: $allounce_2,
+				allounce_3: $allounce_3,
+				allounce_4: $allounce_4,
+				deduction_1: $deduction_1,
+				deduction_2: $deduction_2,
+				deduction_3: $deduction_3,
+				deduction_4: $deduction_4,
+				attendance_count: $attendance_count
+			};
+
+
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "generatePaySlip", month_name: $month_name, emp_id: $emp_id, total_allounce: $total_allounce, total_deduction: $total_deduction, net_pay: $net_pay, emp_basic_pay: $emp_basic_pay, salary_detail_data: JSON.stringify($salary_detail_data)}
+			})
+			.done(function( res ) {
+				console.log(res);
+				$res1 = JSON.parse(res);
+				if($res1.status == true){
+					
+				}
+			});//end ajax
+		}//end if
 	});//end function
 	
 	//Loading screen

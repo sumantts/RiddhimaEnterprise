@@ -202,7 +202,7 @@
 												<div class="col-md-3">
 													<div class="form-group">
 														<label for="net_pay">Net Pay</label>
-														<input type="number" class="form-control" id="net_pay" >
+														<input type="number" class="form-control" id="net_pay" value="0.00" >
 														<small id="net_pay_error" class="form-text text-muted"></small>
 													</div>
 												</div>
@@ -214,7 +214,6 @@
 												<div class="col-md-2 mt-4">					
 												<button type="button" class="btn btn-primary" id="generatePaySlip">Generate PaySlip</button>
 												</div>
-
 											</div>
 										</form>
 									</div>

@@ -1502,6 +1502,44 @@
 		$return_result['total_attendance'] = $total_attendance;
 		sleep(1);
 		echo json_encode($return_result);
+	}//end function 	
+	
+	//Generate PaySlip
+	if($fn == 'generatePaySlip'){
+		$return_result = array();
+		$month_name = $_POST["month_name"];
+		$emp_id = $_POST["emp_id"];
+		$total_allounce = $_POST["total_allounce"];
+		$total_deduction = $_POST["total_deduction"];
+		$net_pay = $_POST["net_pay"];
+		$emp_basic_pay = $_POST["emp_basic_pay"];
+		$salary_detail_data = $_POST["salary_detail_data"];
+
+		$status = true;	
+		$emp_sal_id = 0;
+	
+		if($month_name < 10){
+			$for_the_month = date('Y').'-0'.$month_name.'-01';
+		}else{
+			$for_the_month = date('Y').'-'.$month_name.'-01';
+		}
+
+		$sql = "SELECT * FROM employee_salary WHERE emp_id = '".$emp_id."' AND for_the_month = '".$for_the_month."'";
+		$result = $mysqli->query($sql);
+		if ($result->num_rows > 0) {
+			//Update SQL
+		}else{
+			//Insert SQL
+			$sql_insert = "INSERT INTO employee_salary (emp_id, total_allounce, total_deduction, basic_pay, net_pay, salary_detail_data, for_the_month) VALUES ('" .$emp_id. "', '" .$total_allounce. "', '" .$total_deduction. "', '" .$emp_basic_pay. "', '" .$net_pay. "', '" .$salary_detail_data. "', '" .$for_the_month. "')";
+			$result_sql_insert = $mysqli->query($sql_insert);			
+			$emp_sal_id = $mysqli->insert_id;
+		}
+
+		$mysqli->close();
+		$return_result['status'] = $status;
+		$return_result['emp_sal_id'] = $emp_sal_id;
+		sleep(1);
+		echo json_encode($return_result);
 	}//end function 
 
 	//Delete Item function

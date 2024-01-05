@@ -52,6 +52,11 @@
 		include('pages/emp_pay.php');		
 		break;
 		
+		case 'emp-pay-slip':
+		$title = "Employee PaySlip";
+		include('pages/emp_pay_slip.php');		
+		break;
+		
 		case 'todays-bill':
 		$title = "Today's Bill";
 		include('pages/todays_bill.php');		
