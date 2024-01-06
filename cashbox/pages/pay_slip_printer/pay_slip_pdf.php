@@ -5,7 +5,7 @@
 		$emp_sal_id = $_GET['emp_sal_id'];
 	}
 	
-	$sql = "SELECT * FROM employee_salary WHERE emp_sal_id = '".$emp_sal_id."'";
+	$sql = "SELECT employee_salary.emp_id, employee_salary.total_allounce, employee_salary.total_deduction, employee_salary.basic_pay, employee_salary.net_pay, employee_salary.salary_detail_data, employee_salary.for_the_month, employee_list.emp_ph_primary FROM employee_salary JOIN employee_list ON employee_list.emp_id = employee_salary.emp_id WHERE employee_salary.emp_sal_id = '".$emp_sal_id."'";
 	$result = $mysqli->query($sql);
 
 	if ($result->num_rows > 0) {
@@ -15,10 +15,25 @@
 		$total_deduction = $row['total_deduction'];
 		$basic_pay = $row['basic_pay'];
 		$net_pay = $row['net_pay'];
-		$salary_detail_data = $row['salary_detail_data'];
+		$salary_detail_data = json_decode($row['salary_detail_data']);
 		$for_the_month = $row['for_the_month'];
+		$emp_ph_primary = $row['emp_ph_primary'];
 	}
 	
+	$curmnth = date('m', strtotime($for_the_month));
+	$curyear = date('Y', strtotime($for_the_month));
+	function get_days_in_month($month, $year)
+	{
+		if ($month == "02")
+		{
+			if ($year % 4 == 0) return 29;
+			else return 28;
+		}
+		else if ($month == "01" || $month == "03" || $month == "05" || $month == "07" || $month == "08" || $month == "10" || $month == "12") return 31;
+		else return 30;
+	}
+	$totDays = get_days_in_month($curmnth, $curyear);
+
 	function digitToinWordConverter($number){
 		$no = floor($number);
 		$point = round($number - $no, 2) * 100;
@@ -26,17 +41,17 @@
 		$digits_1 = strlen($no);
 		$i = 0;
 		$str = array();
-		$words = array('0' => '', '1' => 'one', '2' => 'two',
-			'3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
-			'7' => 'seven', '8' => 'eight', '9' => 'nine',
-			'10' => 'ten', '11' => 'eleven', '12' => 'twelve',
-			'13' => 'thirteen', '14' => 'fourteen',
-			'15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
-			'18' => 'eighteen', '19' =>'nineteen', '20' => 'twenty',
-			'30' => 'thirty', '40' => 'forty', '50' => 'fifty',
-			'60' => 'sixty', '70' => 'seventy',
-			'80' => 'eighty', '90' => 'ninety');
-		$digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+		$words = array('0' => '', '1' => 'One', '2' => 'Two',
+			'3' => 'Three', '4' => 'Four', '5' => 'Five', '6' => 'Six',
+			'7' => 'Seven', '8' => 'Eight', '9' => 'Nine',
+			'10' => 'Ten', '11' => 'Eleven', '12' => 'Twelve',
+			'13' => 'Thirteen', '14' => 'Fourteen',
+			'15' => 'Fifteen', '16' => 'Sixteen', '17' => 'Seventeen',
+			'18' => 'Eighteen', '19' =>'Nineteen', '20' => 'Twenty',
+			'30' => 'Thirty', '40' => 'Forty', '50' => 'Fifty',
+			'60' => 'Sixty', '70' => 'Seventy',
+			'80' => 'Eighty', '90' => 'Ninety');
+		$digits = array('', 'Hundred', 'Thousand', 'Lakh', 'Crore');
 		while ($i < $digits_1) {
 			$divider = ($i == 2) ? 10 : 100;
 			$number = floor($no % $divider);

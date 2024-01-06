@@ -26,14 +26,13 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 		
 		$message .="<tr>";
 			$message .="<th colspan='6' style='text-align: left; padding-left: 5px;'>
-			Emp. Name: <br>
-			Emp. Ph: <br>
-			Emp. Designation.
+			Emp. Name: ".$salary_detail_data->emp_name."<br>
+			Emp. Ph: ".$emp_ph_primary."<br>
 			</th>
 			<th colspan='6' style='text-align: left; padding-left: 5px;'>
-			Pay Slip For: January 2024<br>
-			Total Days: 30<br>
-			Effective Days: 30<br>
+			Pay Slip For: ".date('F-Y', strtotime($for_the_month))."<br>
+			Total Days: ".$totDays."<br>
+			Effective Days: ".$salary_detail_data->attendance_count."<br>
 			</th>";
 		$message .="</tr>";
 		
@@ -47,43 +46,43 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 
 		$message .="<tbody>";		
 		$message .="<tr>";
-			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'> Basic </th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>0.00</th>
-			<th colspan='3' style='text-align: left; padding-left: 5px;'> Professional Tax </th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>0.00</th>";
+			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Allowance 1 </th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->allounce_1, 2, '.', '')."</th>
+			<th colspan='3' style='text-align: left; padding-left: 5px;'>Deduction 1</th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->deduction_1, 2, '.', '')."</th>";
 		$message .="</tr>";		
 		$message .="<tr>";
-			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: left; padding-left: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>&nbsp;</th>";
+			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Allowance 2</th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->allounce_2, 2, '.', '')."</th>
+			<th colspan='3' style='text-align: left; padding-left: 5px;'>Deduction 2</th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->deduction_2, 2, '.', '')."</th>";
 		$message .="</tr>";		
 		$message .="<tr>";
-			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: left; padding-left: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>&nbsp;</th>";
+			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Allowance 3</th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->allounce_3, 2, '.', '')."</th>
+			<th colspan='3' style='text-align: left; padding-left: 5px;'>Deduction 3</th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->deduction_3, 2, '.', '')."</th>";
 		$message .="</tr>";		
 		$message .="<tr>";
-			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: left; padding-left: 5px;'>&nbsp;</th>
-			<th colspan='3' style='text-align: right; padding-right: 5px;'>&nbsp;</th>";
+			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Allowance 4</th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->allounce_4, 2, '.', '')."</th>
+			<th colspan='3' style='text-align: left; padding-left: 5px;'>Deduction 4</th>
+			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->deduction_4, 2, '.', '')."</th>";
 		$message .="</tr>";	
 		
 		$message .="<tr>";
 			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'> Gross Total </th>
-			<th colspan='3' style='text-align: right;padding-right: 5px;'>00.00</th>
+			<th colspan='3' style='text-align: right;padding-right: 5px;'>".number_format($salary_detail_data->total_allounce, 2, '.', '')."</th>
 			<th colspan='3' style='text-align: left; padding-left: 5px;'> Deduction Total </th>
-			<th colspan='3' style='text-align: right;padding-right: 5px;'>00.00</th>";
+			<th colspan='3' style='text-align: right;padding-right: 5px;'>".number_format($salary_detail_data->total_deduction, 2, '.', '')."</th>";
 		$message .="</tr>";
 		
 		$message .="<tr> <th colspan='12' style='text-align: center;'>&nbsp;</th> </tr>";
 		
 		$message .="<tr> <th colspan='12' style='text-align: left; padding-left: 5px;'>
-		3 Days Extra Work<br>
-		Net Pay: 0.00<br>
-		Net pay in word<br>
+		
+		Net Pay: ".number_format($net_pay, 2, '.', '')."<br>
+		".digitToinWordConverter($net_pay)."<br>
 		</th> </tr>";
 		
 		$message .="</tbody>";

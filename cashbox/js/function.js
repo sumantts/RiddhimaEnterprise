@@ -2253,7 +2253,9 @@
 				deduction_2: $deduction_2,
 				deduction_3: $deduction_3,
 				deduction_4: $deduction_4,
-				attendance_count: $attendance_count
+				attendance_count: $attendance_count,
+				total_allounce: $total_allounce,
+				total_deduction: $total_deduction
 			};
 
 			$.ajax({
