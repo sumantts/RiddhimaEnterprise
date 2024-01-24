@@ -2162,11 +2162,17 @@
 			console.log('checked');	
 			$val = 1;
 			$('#present_status_text_' + $emp_id).val($val);
+			$('#full_day_text_' + $emp_id).val($val);
+			$('#full_day_' + $emp_id).prop('checked', true);
 		} else {
 		// The checkbox is not checked
 			console.log('unchecked: ');
 			$val = 0;
 			$('#present_status_text_' + $emp_id).val($val);
+			$('#half_day_text_' + $emp_id).val($val);
+			$('#full_day_text_' + $emp_id).val($val);
+			$('#half_day_' + $emp_id).prop('checked', false);
+			$('#full_day_' + $emp_id).prop('checked', false);
 		}
 	});	
 	//Half Day

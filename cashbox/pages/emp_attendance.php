@@ -12,7 +12,7 @@
 
 	if(isset($_POST['search_present_date'])){
 		$search_present_date = $_POST['search_present_date'];
-		$sql = "SELECT employee_attendance.emp_att_id, employee_attendance.present_status, employee_list.emp_name, employee_list.emp_id FROM employee_attendance JOIN employee_list ON employee_list.emp_id = employee_attendance.emp_id WHERE employee_attendance.present_date = '" .$search_present_date. "' ";	
+		$sql = "SELECT employee_attendance.emp_att_id, employee_attendance.present_status, employee_attendance.half_day, employee_attendance.full_day, employee_attendance.late_hours, employee_attendance.overtime_hours, employee_attendance.attendance_note, employee_list.emp_name, employee_list.emp_id FROM employee_attendance JOIN employee_list ON employee_list.emp_id = employee_attendance.emp_id WHERE employee_attendance.present_date = '" .$search_present_date. "' ";	
 		$result = $mysqli->query($sql);
 	}else{
 		$search_present_date = date('Y-m-d');
@@ -25,18 +25,28 @@
 		$present_status = $_POST['present_status'];
 		$present_status_text = $_POST['present_status_text'];
 		$present_date = $_POST['present_date'];
+		$half_day_text = $_POST['half_day_text'];
+		$full_day_text = $_POST['full_day_text'];
+		$late_hours = $_POST['late_hours'];
+		$overtime_hours = $_POST['overtime_hours'];
+		$attendance_note = $_POST['attendance_note'];
 
 		for($i = 0; $i < sizeof($emp_id_all); $i++){
 			$emp_id = $emp_id_all[$i];
 			$present_status = $present_status_text[$i];
+			$half_day = $half_day_text[$i];
+			$full_day = $full_day_text[$i];
+			$late_hours1 = $late_hours[$i];
+			$overtime_hours1 = $overtime_hours[$i];
+			$attendance_note1 = $attendance_note[$i];
 
 			$chk_sql = "SELECT * FROM employee_attendance WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";	
 			$chk_result = $mysqli->query($chk_sql);
 			if($chk_result->num_rows > 0){
-				$upd_sql = "UPDATE employee_attendance SET present_status = '".$present_status."' WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";
+				$upd_sql = "UPDATE employee_attendance SET present_status = '".$present_status."', half_day = '".$half_day."', full_day = '".$full_day."', late_hours = '".$late_hours1."', overtime_hours = '".$overtime_hours1."', attendance_note = '".$attendance_note1."') WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";
 				$mysqli->query($upd_sql);
 			}else{
-				$sql2 = "INSERT INTO employee_attendance (emp_id, present_date, present_status) VALUES ('" .$emp_id. "', '" .$present_date. "', '".$present_status."')";	
+				$sql2 = "INSERT INTO employee_attendance (emp_id, present_date, present_status, half_day, full_day, late_hours, overtime_hours, attendance_note) VALUES ('" .$emp_id. "', '" .$present_date. "', '".$present_status."', '".$half_day."', '".$full_day."', '".$late_hours1."', '".$overtime_hours1."', '".$attendance_note1."')";	
 				$result2 = $mysqli->query($sql2);
 			}
 		}//end for
@@ -113,8 +123,8 @@
 																	<td><?=($row['present_status'] == 1)? 'Present' : 'Absent'?></td>
 																	<td><?=($row['half_day'] == 1)? 'Yes' : 'No'?></td>
 																	<td><?=($row['full_day'] == 1)? 'Yes' : 'No'?></td>
-																	<td><?=($row['late_hours'] == 1)? '00:01' : '00:00'?></td>
-																	<td><?=($row['overtime_hours'] == 1)? '00:01' : '00:00'?></td>
+																	<td style="text-align: right;"><?=$row['late_hours']?></td>
+																	<td style="text-align: right;"><?=$row['overtime_hours']?></td>
 																	<td><?=$row['attendance_note']?></td>
 																<?php } else {?>
 																	<td>
@@ -130,13 +140,13 @@
 																		<input type="hidden" name="full_day_text[]" id="full_day_text_<?=$row['emp_id']?>" value="0" >
 																	</td>
 																	<td>
-																		<input type="text" name="late_hours[]" value="0" >
+																		<input type="text" class="form-control" name="late_hours[]" value="0" style="text-align: right;">
 																	</td>
 																	<td>
-																		<input type="text" name="overtime_hours[]" value="0" >
+																		<input type="text" class="form-control" name="overtime_hours[]" value="0" style="text-align: right;">
 																	</td>
 																	<td>
-																		<input type="text" name="attendance_note[]" value="" >
+																		<input type="text" class="form-control" name="attendance_note[]" value="" >
 																	</td>
 																<?php } ?>
 
