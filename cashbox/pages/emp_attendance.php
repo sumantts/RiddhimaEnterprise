@@ -43,7 +43,7 @@
 			$chk_sql = "SELECT * FROM employee_attendance WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";	
 			$chk_result = $mysqli->query($chk_sql);
 			if($chk_result->num_rows > 0){
-				$upd_sql = "UPDATE employee_attendance SET present_status = '".$present_status."', half_day = '".$half_day."', full_day = '".$full_day."', late_hours = '".$late_hours1."', overtime_hours = '".$overtime_hours1."', attendance_note = '".$attendance_note1."') WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";
+				$upd_sql = "UPDATE employee_attendance SET present_status = '".$present_status."', half_day = '".$half_day."', full_day = '".$full_day."', late_hours = '".$late_hours1."', overtime_hours = '".$overtime_hours1."', attendance_note = '".$attendance_note1."' WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";
 				$mysqli->query($upd_sql);
 			}else{
 				$sql2 = "INSERT INTO employee_attendance (emp_id, present_date, present_status, half_day, full_day, late_hours, overtime_hours, attendance_note) VALUES ('" .$emp_id. "', '" .$present_date. "', '".$present_status."', '".$half_day."', '".$full_day."', '".$late_hours1."', '".$overtime_hours1."', '".$attendance_note1."')";	
@@ -127,23 +127,23 @@
 																	<td style="text-align: right;"><?=$row['overtime_hours']?></td>
 																	<td><?=$row['attendance_note']?></td>
 																<?php } else {?>
-																	<td>
+																	<td style="text-align: center;">
 																		<input type="checkbox" name="present_status[]" id="attendance_<?=$row['emp_id']?>" class="check_class" data-emp_id="<?=$row['emp_id']?>">
 																		<input type="hidden" name="present_status_text[]" id="present_status_text_<?=$row['emp_id']?>" value="0" >
 																	</td>
-																	<td>
+																	<td style="text-align: center;">
 																		<input type="checkbox" name="half_day[]" id="half_day_<?=$row['emp_id']?>" class="check_class_hd" data-emp_id="<?=$row['emp_id']?>">
 																		<input type="hidden" name="half_day_text[]" id="half_day_text_<?=$row['emp_id']?>" value="0" >
 																	</td>
-																	<td>
+																	<td style="text-align: center;">
 																		<input type="checkbox" name="full_day[]" id="full_day_<?=$row['emp_id']?>" class="check_class_fd" data-emp_id="<?=$row['emp_id']?>">
 																		<input type="hidden" name="full_day_text[]" id="full_day_text_<?=$row['emp_id']?>" value="0" >
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" name="late_hours[]" value="0" style="text-align: right;">
+																		<input type="text" class="form-control" name="late_hours[]" value="0" style="text-align: right; width: 100px;">
 																	</td>
 																	<td>
-																		<input type="text" class="form-control" name="overtime_hours[]" value="0" style="text-align: right;">
+																		<input type="text" class="form-control" name="overtime_hours[]" value="0" style="text-align: right; width: 100px;">
 																	</td>
 																	<td>
 																		<input type="text" class="form-control" name="attendance_note[]" value="" >
