@@ -111,6 +111,11 @@
 		$title = "Zone Data Sheet";
 		include('pages/zone_data_sheet.php');		
 		break;
+		
+		case 'attendance_report':
+		$title = "Attendance Report";
+		include('pages/attendance_report.php');		
+		break;
 				
 		default:
 		include('pages/login.php');

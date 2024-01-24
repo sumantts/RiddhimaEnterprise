@@ -2209,6 +2209,20 @@
 			$('#full_day_text_' + $emp_id).val($val);
 		}
 	});	
+	
+	//Attendance Report
+	function attendanceReport(){
+		$sr_month_name = $('#sr_month_name').val();	
+		$sr_month_name_text = $("#sr_month_name option:selected").text();
+		$sr_emp_name = $('#sr_emp_name').val();	
+		$sr_emp_name_text = $("#sr_emp_name option:selected").text();
+		
+		if($sr_month_name == '0' || $sr_emp_name == '0'){
+			alert('Please select Month Name and Employee Name')
+		}else{
+			window.open('pages/bill_printer/attendance_pdf.php?sr_month_name='+$sr_month_name+'&sr_emp_name='+$sr_emp_name+'&sr_month_name_text='+$sr_month_name_text+'&sr_emp_name_text='+$sr_emp_name_text, '_blank');
+		}
+	}//end function
 
 	//Pay: On Change Employee list
 	$('#emp_name').on('change', function(){
