@@ -2146,9 +2146,13 @@
 	}
 
 
+	//Attendance page function
+	$('#search_present_date').on('change', function(){
+		$search_present_date = $('#search_present_date').val();
+		$('#present_date').val($search_present_date);
+	});	
 	
-	
-	//Check uncheck
+	//Attendance Check uncheck
 	$('#myTable').on('click', '.check_class', function(){
 		$emp_id = $(this).data('emp_id');
 		console.log('checkbox emp_id: ' + $emp_id);
@@ -2164,7 +2168,40 @@
 			$val = 0;
 			$('#present_status_text_' + $emp_id).val($val);
 		}
-
+	});	
+	//Half Day
+	$('#myTable').on('click', '.check_class_hd', function(){
+		$emp_id = $(this).data('emp_id');
+		console.log('checkbox emp_id: ' + $emp_id);
+		
+		if ($('#half_day_' + $emp_id).is(':checked')) {
+		// The checkbox is checked
+			console.log('checked');	
+			$val = 1;
+			$('#half_day_text_' + $emp_id).val($val);
+		} else {
+		// The checkbox is not checked
+			console.log('unchecked: ');
+			$val = 0;
+			$('#half_day_text_' + $emp_id).val($val);
+		}
+	});	
+	//Full Day
+	$('#myTable').on('click', '.check_class_fd', function(){
+		$emp_id = $(this).data('emp_id');
+		console.log('checkbox emp_id: ' + $emp_id);
+		
+		if ($('#full_day_' + $emp_id).is(':checked')) {
+		// The checkbox is checked
+			console.log('checked');	
+			$val = 1;
+			$('#full_day_text_' + $emp_id).val($val);
+		} else {
+		// The checkbox is not checked
+			console.log('unchecked: ');
+			$val = 0;
+			$('#full_day_text_' + $emp_id).val($val);
+		}
 	});	
 
 	//Pay: On Change Employee list

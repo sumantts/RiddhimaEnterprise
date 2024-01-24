@@ -24,17 +24,10 @@
 		$emp_id_all = $_POST['emp_id_all'];
 		$present_status = $_POST['present_status'];
 		$present_status_text = $_POST['present_status_text'];
-
-		/*echo 'emp_id_all: ' . json_encode($emp_id_all);
-
-		echo 'present_status: ' . json_encode($present_status);
-
-		echo 'present_status_text: ' . json_encode($present_status_text);
-		exit();*/
+		$present_date = $_POST['present_date'];
 
 		for($i = 0; $i < sizeof($emp_id_all); $i++){
 			$emp_id = $emp_id_all[$i];
-			$present_date = date('Y-m-d');
 			$present_status = $present_status_text[$i];
 
 			$chk_sql = "SELECT * FROM employee_attendance WHERE emp_id = '" .$emp_id. "' AND present_date = '" .$present_date. "' ";	
@@ -96,7 +89,12 @@
 													<tr>
 														<th>Sl#</th>
 														<th>Emp. Name</th>	
-														<th>Attendance</th>
+														<th>Attendance</th>	
+														<th>Half Day</th>	
+														<th>Full Day</th>	
+														<th>Late Hour</th>	
+														<th>Overtime Hour</th>	
+														<th>Note</th>
 													</tr>
 												</thead>
 												<tbody>	
@@ -113,10 +111,32 @@
 																</td>
 																<?php if(isset($_POST['search_present_date'])){ ?>
 																	<td><?=($row['present_status'] == 1)? 'Present' : 'Absent'?></td>
+																	<td><?=($row['half_day'] == 1)? 'Yes' : 'No'?></td>
+																	<td><?=($row['full_day'] == 1)? 'Yes' : 'No'?></td>
+																	<td><?=($row['late_hours'] == 1)? '00:01' : '00:00'?></td>
+																	<td><?=($row['overtime_hours'] == 1)? '00:01' : '00:00'?></td>
+																	<td><?=$row['attendance_note']?></td>
 																<?php } else {?>
 																	<td>
 																		<input type="checkbox" name="present_status[]" id="attendance_<?=$row['emp_id']?>" class="check_class" data-emp_id="<?=$row['emp_id']?>">
 																		<input type="hidden" name="present_status_text[]" id="present_status_text_<?=$row['emp_id']?>" value="0" >
+																	</td>
+																	<td>
+																		<input type="checkbox" name="half_day[]" id="half_day_<?=$row['emp_id']?>" class="check_class_hd" data-emp_id="<?=$row['emp_id']?>">
+																		<input type="hidden" name="half_day_text[]" id="half_day_text_<?=$row['emp_id']?>" value="0" >
+																	</td>
+																	<td>
+																		<input type="checkbox" name="full_day[]" id="full_day_<?=$row['emp_id']?>" class="check_class_fd" data-emp_id="<?=$row['emp_id']?>">
+																		<input type="hidden" name="full_day_text[]" id="full_day_text_<?=$row['emp_id']?>" value="0" >
+																	</td>
+																	<td>
+																		<input type="text" name="late_hours[]" value="0" >
+																	</td>
+																	<td>
+																		<input type="text" name="overtime_hours[]" value="0" >
+																	</td>
+																	<td>
+																		<input type="text" name="attendance_note[]" value="" >
 																	</td>
 																<?php } ?>
 
@@ -126,7 +146,8 @@
 														} ?>
 														<?php if(!isset($_POST['search_present_date'])){ ?>
 														<tr>
-															<td colspan="3">
+															<td colspan="8">
+																<input type="hidden" name="present_date" id="present_date" value="<?=date('Y-m-d')?>">
 																<input type="submit" class="btn btn-primary" name="save_attendance" id="save_attendance" value="Save">
 															</td>
 														</tr>
@@ -142,125 +163,4 @@
                     </div>
                 </main>
 				
-				<!-- The Modal -->
-				<div id="myModal" class="modal">
-				  <!-- Modal content -->
-				  <div class="modal-content">
-					<div class="modal-header">
-						<h3>Add/Update Employee</h3>
-					  <span class="close" onClick="closeEmployeeModal()">&times;</span>
-					  
-					</div>
-					<div class="modal-body">
-						
-					<form>
-					<div class="form-row">
-                        <div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_name" class="text-danger">Employee Name*</label>
-								<input type="text" class="form-control" id="emp_name" name="emp_name" maxlength="50">
-								<small id="emp_name_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-						
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_ph_primary" class="text-danger">Primary Phone Number*</label>
-								<input type="number" class="form-control" id="emp_ph_primary" name="emp_ph_primary" maxlength="10">
-								<small id="emp_ph_primary_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_ph_secondary">Secondary Phone Number</label>
-								<input type="number" class="form-control" id="emp_ph_secondary" name="emp_ph_secondary" maxlength="10">
-								<small id="emp_ph_secondary_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_email">Email ID</label>
-								<input type="text" class="form-control" id="emp_email" name="emp_email" >
-								<small id="emp_email_error" class="form-text text-muted"></small>
-							</div>
-						</div>	
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_aadhar_no">Aadhar Card No</label>
-								<input type="number" class="form-control" id="emp_aadhar_no" name="emp_aadhar_no" maxlength="12">
-								<small id="emp_aadhar_no_error" class="form-text text-muted"></small>
-							</div>
-						</div>	
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_pan_no">PAN Card No</label>
-								<input type="text" class="form-control" id="emp_pan_no" name="emp_pan_no" >
-								<small id="emp_pan_no_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-row">	
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_pf_no">PF No</label>
-								<input type="text" class="form-control" id="emp_pf_no" name="emp_pf_no" >
-								<small id="emp_pf_no_error" class="form-text text-muted"></small>
-							</div>
-						</div>	
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emp_basic_pay" class="text-danger">Basic Pay*</label>
-								<input type="number" class="form-control" id="emp_basic_pay" name="emp_basic_pay" >
-								<small id="emp_basic_pay_error" class="form-text text-muted"></small>
-							</div>
-						</div>	
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="payment_type" class="text-danger">Payment Type*</label>
-								<select class="form-control" id="payment_type" name="payment_type">
-									<option value="0">Select</option>
-									<option value="1">Salaried</option>
-									<option value="2">No Work No Pay</option>
-								</select>
-								<small id="payment_type_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-row">							
-						<div class="col-md-12">
-							<div class="form-group">
-								<label for="emp_address" class="text-danger">Address*</label>
-								<textarea class="form-control" id="emp_address" name="emp_address"></textarea>
-								<small id="emp_address_error" class="form-text text-muted"></small>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-row">							
-						<div class="col-md-12">
-							<span id="emp_form_error" class="text-danger"> </span>
-						</div>
-					</div>
-					
-					<button type="button" class="btn btn-primary" id="saveEmployee">OK</button>	
-					<input type="hidden" id="emp_id" name="emp_id" value="0">
-					<input type="hidden" id="created_by" value="<?=$login_id?>">
-					</form>	
-					</div>
-					<div class="modal-footer">
-					  <h3> </h3>
-					</div>
-				  </div>
-				</div>
-				<!-- //The Modal -->
 				<?php include('common/footer.php'); ?>
