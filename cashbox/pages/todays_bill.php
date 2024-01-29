@@ -3,6 +3,7 @@
 	include('common/header.php');
 
 	
+	
 	//Fetch customer start
 	$user_type = $_SESSION["user_type"];
 	$username = $_SESSION["username"];
@@ -42,13 +43,12 @@
 		$collectionReport = 1;
 	}else{
 		$collectionReport = 0;
-		$from_date = date('d-m-Y');
-		$to_date = date('d-m-Y');
+		$create_date = date("Y-m-d H:i:s", strtotime("-2 months"));
 		$search_cu_id = 0;
 		if($user_type == '5'){
-			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' ORDER BY bill_id DESC";	
+			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date > '".$create_date."' ORDER BY bill_id DESC";	
 		}else{
-			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' ORDER BY bill_id DESC";
+			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date > '".$create_date."' ORDER BY bill_id DESC";
 		}
 	}
 	
