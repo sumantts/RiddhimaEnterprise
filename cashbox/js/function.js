@@ -1846,6 +1846,8 @@
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#bill_row_'+$bill_id).remove();
+				}else{
+					alert('Sorry! Can Not be Deleted, Partial payment Done.')
 				}
 			});//end ajax
 		}		

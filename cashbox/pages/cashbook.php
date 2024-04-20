@@ -20,10 +20,11 @@
 			$sql = "SELECT * FROM cashbook_entry WHERE cb_created_by = '".$login_id."' AND cb_date BETWEEN '".$from_date." 00:00:01' AND '" .$to_date. " 23:59:00' ";
 		}
 	}else{
+		$create_date = date("Y-m-d H:i:s", strtotime("-2 months"));
 		if($user_type == 5){
-			$sql = "SELECT * FROM cashbook_entry WHERE cb_created_by = '" .$created_by. "'";
+			$sql = "SELECT * FROM cashbook_entry WHERE cb_created_by = '" .$created_by. "' AND cb_date > '".$create_date."' ORDER BY cb_id DESC";
 		}else{
-			$sql = "SELECT * FROM cashbook_entry WHERE cb_created_by = '" .$login_id. "'";
+			$sql = "SELECT * FROM cashbook_entry WHERE cb_created_by = '" .$login_id. "' AND cb_date > '".$create_date."' ORDER BY cb_id DESC";
 		}	
 	}
 

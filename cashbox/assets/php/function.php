@@ -1276,82 +1276,110 @@
 			$customer_id = $row['customer_id'];
 			$bill_description = json_decode(base64_decode($row['bill_description']));
 
-			$items = $bill_description->fineItems;
-			$item_id = 0;
-			$qty = 0;
-			for($i = 0; $i < sizeof($items); $i++){
-				$item_id = $items[$i]->item_id;
-				$qty = $items[$i]->qty;
-								
-				//Deduct Item quantity from the customer start				
-				$sql_byr = "SELECT * FROM login WHERE login_id = '".$customer_id."'";	
-				$result_byr = $mysqli->query($sql_byr);
-				$row_byr = $result_byr->fetch_array();
-				$byr_stock_quantity1 = $row_byr['stock_quantity'];
-				$byr_stock_quantity = json_decode($byr_stock_quantity1);
-				
-				for($j = 0; $j < sizeof($byr_stock_quantity); $j++){
-					if($byr_stock_quantity[$j]->item_id == $item_id){
-						$old_item_quantity_byr = $byr_stock_quantity[$j]->item_quantity;
-						$now_item_quantity_byr = $old_item_quantity_byr - $qty;
-						$byr_stock_quantity[$j]->item_quantity = $now_item_quantity_byr;
-						break;
-					}
-				}//end for
-			
-				$byr_stock_quantity_temp = json_encode($byr_stock_quantity);
-				
-				$sql_update = "UPDATE login SET  stock_quantity = '".$byr_stock_quantity_temp."' WHERE login_id = '".$customer_id."'";
-				
-				$mysqli->query($sql_update);
-				//Deduct Item quantity from the customer end
+			//Update Due Amount of this customer
+			$dueCash = $bill_description->dueCash;
+			$roundedUpFineItemsSubTotal = $bill_description->roundedUpFineItemsSubTotal;
 
-				//Add Item quantity to the saler start
-				if($user_type == '5'){
-					$sql = "SELECT * FROM login WHERE created_by = '".$created_by."'";	
-					$result = $mysqli->query($sql);
-				}else{
-					$sql = "SELECT * FROM login WHERE login_id = '".$login_id."'";	
-					$result = $mysqli->query($sql);
-				}
-				$row_customer = $result->fetch_array();
-				$b_stock_quantity1 = $row_customer['stock_quantity'];
-				$b_stock_quantity = json_decode($b_stock_quantity1);
-				
-				for($k = 0; $k < sizeof($b_stock_quantity); $k++){
-					if($b_stock_quantity[$k]->item_id == $item_id){
-						$old_item_quantity = $b_stock_quantity[$k]->item_quantity;
-						$now_item_quantity = $old_item_quantity + $qty;
-						$b_stock_quantity[$k]->item_quantity = $now_item_quantity;
-						break;
-					}
-				}//end for
-				
-				$stock_quantity_temp = json_encode($b_stock_quantity);
-				if($user_type == '5'){
-					$sql_update = "UPDATE login SET  stock_quantity = '".$stock_quantity_temp."' WHERE created_by = '".$created_by."'";
-				}else{
-					$sql_update = "UPDATE login SET  stock_quantity = '".$stock_quantity_temp."' WHERE login_id = '".$login_id."'";
-				}
-				$mysqli->query($sql_update);
-				//Add Item quantity to the saler end
-
-				$sql = "SELECT * FROM item_master WHERE item_id = '".$item_id."'";
+			if($dueCash == $roundedUpFineItemsSubTotal){
+				$status = true;	
+				$latest_due = 0;
+				$sql = "SELECT * FROM login WHERE login_id = '".$customer_id."'";
 				$result = $mysqli->query($sql);
 
 				if ($result->num_rows > 0) {
 					$row = $result->fetch_array();
-					$item_quantity = $row['item_quantity'];
+					$net_due_amount = $row['net_due_amount'];
 				}
-				//$sql_update = "UPDATE item_master SET  item_quantity = '".$now_stock."' WHERE item_id = '" .$item_id. "' ";
-				//$mysqli->query($sql_update);
 
-			}//end for
+				$latest_due = $net_due_amount - $dueCash;
+				$update_sql1 = "UPDATE login SET net_due_amount = '" .$latest_due. "' WHERE login_id = '".$customer_id."'";
+				$mysqli->query($update_sql1);
+			}else{
+				$status = false;	
+			}//end if
+			//end due amount update
+
+			if($status == true){
+				$items = $bill_description->fineItems;
+				$item_id = 0;
+				$qty = 0;
+				for($i = 0; $i < sizeof($items); $i++){
+					$item_id = $items[$i]->item_id;
+					$qty = $items[$i]->qty;
+									
+					//Deduct Item quantity from the customer start				
+					$sql_byr = "SELECT * FROM login WHERE login_id = '".$customer_id."'";	
+					$result_byr = $mysqli->query($sql_byr);
+					$row_byr = $result_byr->fetch_array();
+					$byr_stock_quantity1 = $row_byr['stock_quantity'];
+					$byr_stock_quantity = json_decode($byr_stock_quantity1);
+					
+					for($j = 0; $j < sizeof($byr_stock_quantity); $j++){
+						if($byr_stock_quantity[$j]->item_id == $item_id){
+							$old_item_quantity_byr = $byr_stock_quantity[$j]->item_quantity;
+							$now_item_quantity_byr = $old_item_quantity_byr - $qty;
+							$byr_stock_quantity[$j]->item_quantity = $now_item_quantity_byr;
+							break;
+						}
+					}//end for
+				
+					$byr_stock_quantity_temp = json_encode($byr_stock_quantity);
+					
+					$sql_update = "UPDATE login SET  stock_quantity = '".$byr_stock_quantity_temp."' WHERE login_id = '".$customer_id."'";
+					
+					$mysqli->query($sql_update);
+					//Deduct Item quantity from the customer end
+
+					//Add Item quantity to the saler start
+					if($user_type == '5'){
+						$sql = "SELECT * FROM login WHERE created_by = '".$created_by."'";	
+						$result = $mysqli->query($sql);
+					}else{
+						$sql = "SELECT * FROM login WHERE login_id = '".$login_id."'";	
+						$result = $mysqli->query($sql);
+					}
+					$row_customer = $result->fetch_array();
+					$b_stock_quantity1 = $row_customer['stock_quantity'];
+					$b_stock_quantity = json_decode($b_stock_quantity1);
+					
+					for($k = 0; $k < sizeof($b_stock_quantity); $k++){
+						if($b_stock_quantity[$k]->item_id == $item_id){
+							$old_item_quantity = $b_stock_quantity[$k]->item_quantity;
+							$now_item_quantity = $old_item_quantity + $qty;
+							$b_stock_quantity[$k]->item_quantity = $now_item_quantity;
+							break;
+						}
+					}//end for
+					
+					$stock_quantity_temp = json_encode($b_stock_quantity);
+					if($user_type == '5'){
+						$sql_update = "UPDATE login SET  stock_quantity = '".$stock_quantity_temp."' WHERE created_by = '".$created_by."'";
+					}else{
+						$sql_update = "UPDATE login SET  stock_quantity = '".$stock_quantity_temp."' WHERE login_id = '".$login_id."'";
+					}
+					$mysqli->query($sql_update);
+					//Add Item quantity to the saler end
+
+					$sql = "SELECT * FROM item_master WHERE item_id = '".$item_id."'";
+					$result = $mysqli->query($sql);
+
+					if ($result->num_rows > 0) {
+						$row = $result->fetch_array();
+						$item_quantity = $row['item_quantity'];
+					}
+					//$sql_update = "UPDATE item_master SET  item_quantity = '".$now_stock."' WHERE item_id = '" .$item_id. "' ";
+					//$mysqli->query($sql_update);
+
+				}//end for
+			}//end if
 		}//end if
 
 		//Delete Original Bill
-		$sql = "DELETE FROM bill_details WHERE bill_id = '".$bill_id."'";
-		$result = $mysqli->query($sql);
+		if($status == true){
+			$sql = "DELETE FROM bill_details WHERE bill_id = '".$bill_id."'";
+			$result = $mysqli->query($sql);
+		}//end if
+
 		$return_result['status'] = $status;
 		sleep(1);
 		echo json_encode($return_result);
