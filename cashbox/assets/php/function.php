@@ -1537,6 +1537,7 @@
 		$return_result = array();
 		$emp_sal_id = $_POST["emp_sal_id"];
 		$month_name = $_POST["month_name"];
+		$pay_year = $_POST["pay_year"];
 		$emp_id = $_POST["emp_id"];
 		$total_allounce = $_POST["total_allounce"];
 		$total_deduction = $_POST["total_deduction"];
@@ -1547,9 +1548,9 @@
 		$status = true;	
 	
 		if($month_name < 10){
-			$for_the_month = date('Y').'-0'.$month_name.'-01';
+			$for_the_month = $pay_year.'-0'.$month_name.'-01';
 		}else{
-			$for_the_month = date('Y').'-'.$month_name.'-01';
+			$for_the_month = $pay_year.'-'.$month_name.'-01';
 		}
 		
 		if ($emp_sal_id > 0) {

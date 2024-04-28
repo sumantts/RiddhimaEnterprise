@@ -10,7 +10,7 @@
 	$sql = "SELECT * FROM employee_list ORDER BY emp_id DESC";	
 	$result = $mysqli->query($sql);
 
-	$ps_sql = "SELECT * FROM employee_salary ORDER BY emp_id DESC";	
+	$ps_sql = "SELECT * FROM employee_salary ORDER BY emp_sal_id DESC";	
 	$ps_result = $mysqli->query($ps_sql);
 
 ?>
@@ -41,6 +41,7 @@
 												<thead>
 													<tr>
 														<th>Sl#</th>
+														<th>Month & Year</th>
 														<th>Emp. Name</th>
 														<th>Basic Pay</th>
 														<th>Allowance</th>
@@ -57,6 +58,7 @@
 													?>
 														<tr id="emp_sal_id_<?=$ps_row['emp_sal_id']?>">
 															<td><?=$i?></td>
+															<td><?=date('F-Y', strtotime($ps_row['for_the_month']))?></td>
 															<td><?=$salary_detail_data->emp_name?></td>
 															<td style="text-align: right;"> <?=$ps_row['basic_pay']?></td>
 															<td style="text-align: right;"><?=$ps_row['total_allounce']?></td>
@@ -94,7 +96,7 @@
 						
 					<form>
 						<div class="form-row">
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label for="month_name">Month Name</label>
 									<select class="form-control" id="month_name" >
@@ -115,8 +117,22 @@
 									<small id="month_name_error" class="form-text text-muted"></small>
 								</div>
 							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label for="pay_year">Year</label>
+									<select class="form-control" id="pay_year" >
+										<option value="0">Select</option>
+										<?php
+										for($i = date('Y'); $i >= date('Y')-1; $i--){
+										?>
+										<option value='<?=$i?>'><?=$i?></option>
+										<?php } ?>
+									</select>
+									<small id="pay_year_error" class="form-text text-muted"></small>
+								</div>
+							</div>
 
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<div class="form-group">
 									<label for="exampleInputEmail1">Employee Name</label>
 									<select class="form-control" id="emp_name" >
@@ -134,7 +150,7 @@
 								</div>
 							</div>
 
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label for="exampleInputEmail1">Basic Pay</label>
 									<input type="text" class="form-control" id="emp_basic_pay" readonly  value="0">
@@ -142,7 +158,7 @@
 								</div>
 							</div>
 
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label for="attendance_count">Attendance</label>
 									<input type="number" class="form-control" id="attendance_count" readonly  value="0">
@@ -156,28 +172,65 @@
 						</div>
 						
 						<hr>
-
+						<!-- Allowance percentage start -->
 						<div class="form-row">
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="allounce_1">Allounce 1</label>
-									<input type="number" class="form-control" id="allounce_1" value="0">
+									<label for="allounce_1_percent">HRA(in %)</label>
+									<input type="number" class="form-control" id="allounce_1_percent" value="0">
+									<small id="allounce_1_percent_error" class="form-text text-muted"></small>
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="allounce_2_percent">Medical (in %)</label>
+									<input type="number" class="form-control" id="allounce_2_percent" value="0">
+									<small id="allounce_2_percent" class="form-text text-muted"></small>
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="allounce_3_percent">OT(in %)</label>
+									<input type="number" class="form-control" id="allounce_3_percent" value="0">
+									<small id="allounce_3_percent_error" class="form-text text-muted"></small>
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="allounce_4_percent">Allounce 4(in %)</label>
+									<input type="number" class="form-control" id="allounce_4_percent" value="0">
+									<small id="allounce_4_percent_error" class="form-text text-muted"></small>
+								</div>
+							</div>
+						</div>
+						<!-- Allowance percentage end -->
+						
+						<hr>
+						<!-- Allowance Amount start -->
+						<div class="form-row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="allounce_1">HRA</label>
+									<input type="number" class="form-control" id="allounce_1" value="0" readonly>
 									<small id="allounce_1_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="allounce_2">Allounce 2</label>
-									<input type="number" class="form-control" id="allounce_2" value="0">
+									<label for="allounce_2">Medical </label>
+									<input type="number" class="form-control" id="allounce_2" value="0" readonly>
 									<small id="allounce_2_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="allounce_3">Allounce 3</label>
-									<input type="number" class="form-control" id="allounce_3" value="0">
+									<label for="allounce_3">OT</label>
+									<input type="number" class="form-control" id="allounce_3" value="0" readonly>
 									<small id="allounce_3_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -185,11 +238,12 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="allounce_4">Allounce 4</label>
-									<input type="number" class="form-control" id="allounce_4" value="0">
+									<input type="number" class="form-control" id="allounce_4" value="0" readonly>
 									<small id="allounce_4_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 						</div>
+						<!-- Allowance Amount end -->
 
 						<hr>
 

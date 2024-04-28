@@ -28,6 +28,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			$message .="<th colspan='6' style='text-align: left; padding-left: 5px;'>
 			Emp. Name: ".$salary_detail_data->emp_name."<br>
 			Emp. Ph: ".$emp_ph_primary."<br>
+			Basic Pay: ".$basic_pay."<br>
 			</th>
 			<th colspan='6' style='text-align: left; padding-left: 5px;'>
 			Pay Slip For: ".date('F-Y', strtotime($for_the_month))."<br>
@@ -46,19 +47,19 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 
 		$message .="<tbody>";		
 		$message .="<tr>";
-			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Allowance 1 </th>
+			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>HRA</th>
 			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->allounce_1, 2, '.', '')."</th>
 			<th colspan='3' style='text-align: left; padding-left: 5px;'>Deduction 1</th>
 			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->deduction_1, 2, '.', '')."</th>";
 		$message .="</tr>";		
 		$message .="<tr>";
-			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Allowance 2</th>
+			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Medical</th>
 			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->allounce_2, 2, '.', '')."</th>
 			<th colspan='3' style='text-align: left; padding-left: 5px;'>Deduction 2</th>
 			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->deduction_2, 2, '.', '')."</th>";
 		$message .="</tr>";		
 		$message .="<tr>";
-			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>Allowance 3</th>
+			$message .="<th colspan='3' style='text-align: left; padding-left: 5px;'>OT</th>
 			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->allounce_3, 2, '.', '')."</th>
 			<th colspan='3' style='text-align: left; padding-left: 5px;'>Deduction 3</th>
 			<th colspan='3' style='text-align: right; padding-right: 5px;'>".number_format($salary_detail_data->deduction_3, 2, '.', '')."</th>";

@@ -2258,6 +2258,21 @@
 		$emp_basic_pay = $('#emp_basic_pay').val();
 		$attendance_count = $('#attendance_count').val();
 
+		$allounce_1_percent = $('#allounce_1_percent').val();
+		$allounce_2_percent = $('#allounce_2_percent').val();
+		$allounce_3_percent = $('#allounce_3_percent').val();
+		$allounce_4_percent = $('#allounce_4_percent').val();
+
+		$allounce_1 = (parseFloat($emp_basic_pay) * parseFloat($allounce_1_percent)) / 100;
+		$allounce_2 = (parseFloat($emp_basic_pay) * parseFloat($allounce_2_percent)) / 100;
+		$allounce_3 = (parseFloat($emp_basic_pay) * parseFloat($allounce_3_percent)) / 100;
+		$allounce_4 = (parseFloat($emp_basic_pay) * parseFloat($allounce_4_percent)) / 100;
+
+		$('#allounce_1').val($allounce_1);
+		$('#allounce_2').val($allounce_2);
+		$('#allounce_3').val($allounce_3);
+		$('#allounce_4').val($allounce_4);
+
 		$allounce_1 = $('#allounce_1').val();
 		$allounce_2 = $('#allounce_2').val();
 		$allounce_3 = $('#allounce_3').val();
@@ -2279,12 +2294,18 @@
 	$("#generatePaySlip").on("click", function() {
 		$emp_sal_id = $('#emp_sal_id').val();
 		$month_name = $('#month_name').val();
+		$pay_year = $('#pay_year').val();
 		$month_name_txt = $('#month_name option:selected').text();
 		$emp_id = $('#emp_name').val();
 		$emp_name = $('#emp_name option:selected').text();
 		$emp_basic_pay = $('#emp_basic_pay').val();
 		$attendance_count = $('#attendance_count').val();
 		$net_pay = $('#net_pay').val();
+
+		$allounce_1_percent = $('#allounce_1_percent').val();
+		$allounce_2_percent = $('#allounce_2_percent').val();
+		$allounce_3_percent = $('#allounce_3_percent').val();
+		$allounce_4_percent = $('#allounce_4_percent').val();
 
 		$allounce_1 = $('#allounce_1').val();
 		$allounce_2 = $('#allounce_2').val();
@@ -2304,6 +2325,11 @@
 			$salary_detail_data = {
 				emp_name: $emp_name,
 				month_name_txt: $month_name_txt,
+				pay_year: $pay_year,
+				allounce_1_percent: $allounce_1_percent,
+				allounce_2_percent: $allounce_2_percent,
+				allounce_3_percent: $allounce_3_percent,
+				allounce_4_percent: $allounce_4_percent,
 				allounce_1: $allounce_1,
 				allounce_2: $allounce_2,
 				allounce_3: $allounce_3,
@@ -2320,7 +2346,7 @@
 			$.ajax({
 				method: "POST",
 				url: "assets/php/function.php",
-				data: { fn: "generatePaySlip", emp_sal_id: $emp_sal_id, month_name: $month_name, emp_id: $emp_id, total_allounce: $total_allounce, total_deduction: $total_deduction, net_pay: $net_pay, emp_basic_pay: $emp_basic_pay, salary_detail_data: JSON.stringify($salary_detail_data)}
+				data: { fn: "generatePaySlip", emp_sal_id: $emp_sal_id, month_name: $month_name, pay_year: $pay_year, emp_id: $emp_id, total_allounce: $total_allounce, total_deduction: $total_deduction, net_pay: $net_pay, emp_basic_pay: $emp_basic_pay, salary_detail_data: JSON.stringify($salary_detail_data)}
 			})
 			.done(function( res ) {
 				console.log(res);
@@ -2349,6 +2375,12 @@
 				$('#emp_name').val($res1.emp_id).trigger('change');
 				$('#emp_basic_pay').val($res1.basic_pay);
 				$salary_detail_data = JSON.parse($res1.salary_detail_data);
+				$('#pay_year').val($salary_detail_data.pay_year).trigger('change');
+
+				$('#allounce_1_percent').val($salary_detail_data.allounce_1_percent);
+				$('#allounce_2_percent').val($salary_detail_data.allounce_2_percent);
+				$('#allounce_3_percent').val($salary_detail_data.allounce_3_percent);
+				$('#allounce_4_percent').val($salary_detail_data.allounce_4_percent);
 
 				$('#allounce_1').val($salary_detail_data.allounce_1);
 				$('#allounce_2').val($salary_detail_data.allounce_2);
