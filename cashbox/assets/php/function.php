@@ -1137,6 +1137,7 @@
 		$receive_payment = 0;
 		$cb_amount = 0;
 		$cb_narration = '';
+		$create_date = date('Y-md H:i:s');
 		
 
 		$status = true;	
@@ -1149,10 +1150,10 @@
 		} else {
 			//Insert
 			if($user_type == '5'){
-				$sql_insert = "INSERT INTO bill_details (customer_id, bill_description, created_by, salesman_id) VALUES('".$customer_id."', '".base64_encode($bill_description)."', '".$created_by."', '" .$login_id. "')";
+				$sql_insert = "INSERT INTO bill_details (customer_id, bill_description, created_by, salesman_id, create_date) VALUES('".$customer_id."', '".base64_encode($bill_description)."', '".$created_by."', '" .$login_id. "', '" .$create_date. "')";
 			}else{
 				$salesman_id = 0;
-				$sql_insert = "INSERT INTO bill_details (customer_id, bill_description, created_by, salesman_id) VALUES('".$customer_id."', '".base64_encode($bill_description)."', '".$login_id."', '" .$salesman_id. "')";
+				$sql_insert = "INSERT INTO bill_details (customer_id, bill_description, created_by, salesman_id, create_date) VALUES('".$customer_id."', '".base64_encode($bill_description)."', '".$login_id."', '" .$salesman_id. "', '" .$create_date. "')";
 			}
 			$result_insert = $mysqli->query($sql_insert);
 			$current_bill_id = $mysqli->insert_id;
