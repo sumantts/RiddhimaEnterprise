@@ -36,11 +36,11 @@
 	$ifsc_code = $bank_ac_info->ifsc_code;//'SBIN0017370';
 	$branch_code = $bank_ac_info->branch_code;//'17370';
 
-	if(isset($bill_description->create_date_new)){
+	/*if(isset($bill_description->create_date_new)){
 		$create_date = $bill_description->create_date_new;
 	}else{
 		$create_date = $row_bill['create_date'];
-	}
+	}*/
 
 	$formated_bill_no = 'RE/'.date('M', strtotime($create_date)).'/'.$bill_id;
 

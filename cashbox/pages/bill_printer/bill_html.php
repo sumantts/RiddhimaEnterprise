@@ -36,7 +36,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			Address: ".$customer_address."</th>
 			
 			<th colspan='6' style='text-align: center;'>
-			STATE CODE: 19 | DATE: ".date('d-M-Y', strtotime($create_date))."</br> 
+			STATE CODE: 19 | DATE: ".date('d-M-Y h:i A', strtotime($create_date))."</br> 
 			BILL FROM </br> 
 			".$bill_description->createdBy->org_name."</br> 
 			Address: ".$bill_description->createdBy->address."</th>";

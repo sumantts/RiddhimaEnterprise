@@ -175,15 +175,17 @@
 												if(mysqli_num_rows($result_bill) > 0){
 													$i = 0;
 													while ($row_bill = $result_bill->fetch_array()){ 
+														$create_date = '';
 														$i++;
 														$bill_id = $row_bill['bill_id'];
 														$bill_description = json_decode(base64_decode($row_bill['bill_description']));
-
-														if(isset($bill_description->create_date_new)){
+														
+														/*if(isset($bill_description->create_date_new)){
 															$create_date = $bill_description->create_date_new;
 														}else{
 															$create_date = $row_bill['create_date'];
-														}
+														}*/
+														$create_date = $row_bill['create_date'];
 
 														if(isset($_POST["search_cu_id"])){
 															if(strtotime($create_date) >= strtotime($from_date) && strtotime($create_date) <= strtotime($to_date)){
@@ -203,7 +205,7 @@
 																	<td style="text-align: right;"><?=$bill_description->totalCash?></td>
 																	<td style="text-align: right;"><?=$discountAmount?></td>
 																	<td style="text-align: right;"><?=$bill_description->dueCash?></td>
-																	<td><?=date('d-M-Y H:i', strtotime($create_date))?></td>
+																	<td><?=date('d-M-Y h:i A', strtotime($create_date))?></td>
 																	
 																	<td>
 																		<a style="cursor: pointer;" onclick="openBillModal('<?=$bill_id?>')"><i class="fa fa-edit" aria-hidden="true"></i></a>
@@ -234,7 +236,7 @@
 																	<td style="text-align: right;"><?=$bill_description->totalCash?></td>
 																	<td style="text-align: right;"><?=$discountAmount?></td>
 																	<td style="text-align: right;"><?=$bill_description->dueCash?></td>
-																	<td><?=date('d-M-Y H:i', strtotime($create_date))?></td>
+																	<td><?=date('d-M-Y h:i A', strtotime($create_date))?></td>
 																	
 																	<td>
 																		<a style="cursor: pointer;" onclick="openBillModal('<?=$bill_id?>')"><i class="fa fa-edit" aria-hidden="true"></i></a>
