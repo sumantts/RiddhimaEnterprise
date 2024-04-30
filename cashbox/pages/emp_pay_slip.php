@@ -200,7 +200,7 @@
 
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="allounce_4_percent">Allounce 4(in %)</label>
+									<label for="allounce_4_percent">Special Allowance(in %)</label>
 									<input type="number" class="form-control" id="allounce_4_percent" value="0">
 									<small id="allounce_4_percent_error" class="form-text text-muted"></small>
 								</div>
@@ -237,7 +237,7 @@
 
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="allounce_4">Allounce 4</label>
+									<label for="allounce_4">Special Allowance</label>
 									<input type="number" class="form-control" id="allounce_4" value="0" readonly>
 									<small id="allounce_4_error" class="form-text text-muted"></small>
 								</div>
@@ -250,28 +250,28 @@
 						<div class="form-row">
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="deduction_1">Deduction 1</label>
+									<label for="deduction_1">PF</label>
 									<input type="number" class="form-control" id="deduction_1"  value="0">
 									<small id="deduction_1_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="deduction_2">Deduction 2</label>
+									<label for="deduction_2">ESI</label>
 									<input type="number" class="form-control" id="deduction_2"  value="0">
 									<small id="deduction_2_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="deduction_3">Deduction 3</label>
+									<label for="deduction_3">Gratuity</label>
 									<input type="number" class="form-control" id="deduction_3"  value="0">
 									<small id="deduction_3_error" class="form-text text-muted"></small>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="deduction_4">Deduction 4</label>
+									<label for="deduction_4">Late fine</label>
 									<input type="number" class="form-control" id="deduction_4"  value="0">
 									<small id="deduction_4_error" class="form-text text-muted"></small>
 								</div>
