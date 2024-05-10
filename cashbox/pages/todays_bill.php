@@ -1,8 +1,6 @@
 <?php 
 	if(!$_SESSION["login_id"]){header('location:?p=login');}
 	include('common/header.php');
-
-	
 	
 	//Fetch customer start
 	$user_type = $_SESSION["user_type"];
@@ -42,6 +40,8 @@
 		//Collection Report
 		$collectionReport = 1;
 	}else{
+	    $from_date = date('Y-m-d');
+	    $to_date = date('Y-m-d');
 		$collectionReport = 0;
 		$create_date = date("Y-m-d H:i:s", strtotime("-2 months"));
 		$search_cu_id = 0;
@@ -205,7 +205,7 @@
 																	<td style="text-align: right;"><?=$bill_description->totalCash?></td>
 																	<td style="text-align: right;"><?=$discountAmount?></td>
 																	<td style="text-align: right;"><?=$bill_description->dueCash?></td>
-																	<td><?=date('d-M-Y h:i A', strtotime($create_date))?></td>
+																	<td><?=date('d-M-Y h:i a', strtotime($create_date))?></td>
 																	
 																	<td>
 																		<a style="cursor: pointer;" onclick="openBillModal('<?=$bill_id?>')"><i class="fa fa-edit" aria-hidden="true"></i></a>
@@ -236,7 +236,7 @@
 																	<td style="text-align: right;"><?=$bill_description->totalCash?></td>
 																	<td style="text-align: right;"><?=$discountAmount?></td>
 																	<td style="text-align: right;"><?=$bill_description->dueCash?></td>
-																	<td><?=date('d-M-Y h:i A', strtotime($create_date))?></td>
+																	<td><?=date('d-M-Y h:i a', strtotime($create_date))?></td>
 																	
 																	<td>
 																		<a style="cursor: pointer;" onclick="openBillModal('<?=$bill_id?>')"><i class="fa fa-edit" aria-hidden="true"></i></a>

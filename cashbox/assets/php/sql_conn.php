@@ -1,5 +1,5 @@
 <?php
-
+	date_default_timezone_set("Asia/Calcutta");
 	$host = 'localhost';	
 
 	if($_SERVER['HTTP_HOST'] == 'localhost'){

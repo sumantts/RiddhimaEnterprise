@@ -1113,6 +1113,7 @@
 
 	//Save Bill function
 	if($fn == 'saveBill'){
+	    date_default_timezone_set("Asia/Calcutta");
 		$return_result = array();
 		$customer_id = $_POST["customer_id"];
 		$bill_description = $_POST["bill_description"];
@@ -1137,7 +1138,7 @@
 		$receive_payment = 0;
 		$cb_amount = 0;
 		$cb_narration = '';
-		$create_date = date('Y-md H:i:s');
+		$create_date = date('Y-m-d H:i:s');
 		
 
 		$status = true;	
