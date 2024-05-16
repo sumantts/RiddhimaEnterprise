@@ -42,6 +42,8 @@
 	exit();
 	}
 	session_start();
+	// Turn off error reporting
+	error_reporting(0);
 	
 	// $sql = "SELECT login.login_id, login.user_data, login.net_due_amount, login.zone_id, bill_details.bill_id, bill_details.customer_id, bill_details.create_date, cashbook_entry.bill_id, cashbook_entry.cb_amount, cashbook_entry.cb_date FROM login LEFT JOIN bill_details ON login.login_id = bill_details.customer_id LEFT JOIN cashbook_entry ON bill_details.bill_id = cashbook_entry.bill_id WHERE login.net_due_amount >= 0 AND login.zone_id = 2 GROUP BY login.login_id";
 	// $result = $mysqli->query($sql);

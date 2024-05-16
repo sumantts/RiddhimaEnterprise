@@ -36,11 +36,21 @@
 	$ifsc_code = $bank_ac_info->ifsc_code;//'SBIN0017370';
 	$branch_code = $bank_ac_info->branch_code;//'17370';
 
-	/*if(isset($bill_description->create_date_new)){
-		$create_date = $bill_description->create_date_new;
-	}else{
-		$create_date = $row_bill['create_date'];
-	}*/
+	//Get Payment History	
+	$payHistory = array();
+	$payHistoryText = '';
+	$sqlPay = "SELECT * FROM cashbook_entry WHERE bill_id = '".$bill_id."'";
+	$resultPay = $mysqli->query($sqlPay);
+
+	if ($resultPay->num_rows > 0) {
+		while($rowPay = $resultPay->fetch_array()){
+			$payHistoryObj = new stdClass();
+			$payHistoryObj->cb_amount = $rowPay['cb_amount'];
+			$payHistoryObj->cb_date = $rowPay['cb_date'];
+			array_push($payHistory, $payHistoryObj);
+			$payHistoryText .= "<div class='col-md-12'>Rs. ".$rowPay['cb_amount']."/- Paid on ".date('d-F-Y h:i A', strtotime($rowPay['cb_date']))."</div>";
+		}
+	}//end if
 
 	$formated_bill_no = 'RE/'.date('M', strtotime($create_date)).'/'.$bill_id;
 

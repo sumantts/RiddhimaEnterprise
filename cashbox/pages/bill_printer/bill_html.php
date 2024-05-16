@@ -154,6 +154,11 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$bill_description->dueCash."</td>";
 			$message .="<td colspan='3' style='text-align: center; padding-left: 5px;'>ROUNDED</td>";
 			$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$bill_description->roundedUpFineItemsSubTotal."</td>";
+		$message .="</tr>";								
+		
+		$message .="<tr>";
+			$message .="<td colspan='8' style='text-align: left; padding-left: 5px;'>".$payHistoryText."</td>";
+			$message .="<td colspan='7' style='text-align: center; padding-left: 5px;'>Authorize Signature</td>";
 		$message .="</tr>";	
 		
 
@@ -169,7 +174,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 				A/c name: ".$ac_name."</br>
 				IFSC Code: ".$ifsc_code."; Branch Code: ".$branch_code."
 				</td>";
-				$message .="<td colspan='4' style='text-align: center;' > Authorize Signature </td>";
+				$message .="<td colspan='4' style='text-align: center;' >  </td>";
 			$message .="</tr>";
 		$message .="</tbody>";
 	$message .="</table>";
