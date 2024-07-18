@@ -80,7 +80,7 @@
         <script src="js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         
 		<script src="assets/demo/datatables-demo.js"></script>
-		<script src="js/function.js"></script>
+		<script src="js/function.js?dt=<?=date('YmdHis')?>"></script>
 
     </body>
 </html>

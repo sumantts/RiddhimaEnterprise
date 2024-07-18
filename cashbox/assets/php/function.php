@@ -1509,8 +1509,18 @@
 		$return_result = array();
 		$month_name = $_POST["month_name"];
 		$emp_id = $_POST["emp_id"];
+		$emp_basic_pay = $_POST["emp_basic_pay"];
 		$status = true;	
 		$total_attendance = 0;
+		$absent_count = 0;
+		$half_day_count = 0;
+		$full_day_count = 0;
+		$effectiveBasicPay = 0;
+		$onedaypay = 0;
+		$one_hour_pay = 0;
+		$overtime_amount = 0;
+		$overtime_arr = array();
+		$late_arr = array();
 	
 		if($month_name < 10){
 			$present_date_start = date('Y').'-0'.$month_name.'-01';
@@ -1520,17 +1530,125 @@
 			$present_date_end = date('Y').'-'.$month_name.'-31';
 		}
 
-		$sql = "SELECT * FROM employee_attendance WHERE emp_id = '".$emp_id."' AND present_date >= '".$present_date_start."' AND  present_date <= '" .$present_date_end. "' AND present_status = 1";
+		$sql = "SELECT * FROM employee_attendance WHERE emp_id = '".$emp_id."' AND present_date >= '".$present_date_start."' AND  present_date <= '" .$present_date_end. "'";
 		$result = $mysqli->query($sql);
 
 		if ($result->num_rows > 0) {
-			$total_attendance = $result->num_rows;
+			//$total_attendance = $result->num_rows;
+			while($row = $result->fetch_array()){
+				$present_status = $row['present_status'];
+				$half_day = $row['half_day'];
+				$full_day = $row['full_day'];
+				$late_hours = $row['late_hours'];
+				$overtime_hours = $row['overtime_hours']; 
+
+				if($present_status == 1){
+					$total_attendance++;
+				}else{
+					$absent_count++;
+				}//end if
+
+				if($half_day == 1){
+					$half_day_count++;
+				}
+
+				if($full_day == 1){
+					$full_day_count++;
+				}
+
+				if($overtime_hours > 0){
+					array_push($overtime_arr, $overtime_hours);
+				}
+
+				if($late_hours > 0){
+					array_push($late_arr, $late_hours);
+				}
+			}//end while
+		}//end if
+
+		//OT Calculation Start
+		$total_ot_hr = 0;
+		$total_ot_min = 0;
+		$ot_min_to_hr = 0;
+		$ot_min_to_min = 0;
+		if(sizeof($overtime_arr) > 0){
+			foreach($overtime_arr as $key => $val){
+				$overtime_arr_exp = explode(":", $val);
+				$hour = $overtime_arr_exp[0];
+				$min = $overtime_arr_exp[1];
+				$total_ot_hr = $total_ot_hr + $hour;
+				$total_ot_min = $total_ot_min + $min;
+			}
+		}//end if
+		if($total_ot_min >= 60){
+			$ot_min_to_hr =  (int) ($total_ot_min / 60);
+			$ot_min_to_min = ($total_ot_min % 60);
+			$total_ot_hr = $total_ot_hr + $ot_min_to_hr;
+			$total_ot_min = $ot_min_to_min;
 		}
+		//OT Calculation End
+
+		//LT Calculation Start
+		/*$total_ot_hr = 0;
+		$total_ot_min = 0;
+		$ot_min_to_hr = 0;
+		$ot_min_to_min = 0;
+		if(sizeof($overtime_arr) > 0){
+			foreach($overtime_arr as $key => $val){
+				$overtime_arr_exp = explode(":", $val);
+				$hour = $overtime_arr_exp[0];
+				$min = $overtime_arr_exp[1];
+				$total_ot_hr = $total_ot_hr + $hour;
+				$total_ot_min = $total_ot_min + $min;
+			}
+		}//end if
+		if($total_ot_min > 60){
+			$ot_min_to_hr =  (int) ($total_ot_min / 60);
+			$ot_min_to_min = ($total_ot_min % 60);
+			$total_ot_hr = $total_ot_hr + $ot_min_to_hr;
+			$total_ot_min = $ot_min_to_min;
+		}*/
+		//LT Calculation End
+
+		//Working Days Calculation start
+		//function getBusinessDays1($startDate, $endDate) {
+		$start = new DateTime($present_date_start);
+		$end = new DateTime($present_date_end);
+		$businessDays = 0;
+		while ($start <= $end) {
+			$dayOfWeek = $start->format('N');
+			if ($dayOfWeek < 7) {
+				$businessDays++;
+			}
+			$start->add(new DateInterval('P1D'));
+		}
+		//return $businessDays;
+		//}
+		//$startDate = '2024-05-01';
+		//$endDate = '2024-05-10';
+		//echo "Business days: " . getBusinessDays1($startDate, $endDate);
+		//Working Days Calculation end
+
+		//Effective basic pay 
+		$effectiveBasicPay = ceil(($emp_basic_pay / $businessDays) * $total_attendance);
+
+		//One day pay
+		$onedaypay = $emp_basic_pay / $businessDays;
+		$one_hour_pay = $onedaypay / 8;
+		$overtime_amount = ceil($one_hour_pay * $total_ot_hr);
 		
 		$mysqli->close();
 		$return_result['status'] = $status;
 		$return_result['total_attendance'] = $total_attendance;
-		sleep(1);
+		$return_result['absent_count'] = $absent_count;
+		$return_result['half_day_count'] = $half_day_count;
+		$return_result['full_day_count'] = $full_day_count;
+		$return_result['total_ot_hr'] = $total_ot_hr;
+		$return_result['total_ot_min'] = $total_ot_min;
+		$return_result['businessDays'] = $businessDays;
+		$return_result['effectiveBasicPay'] = $effectiveBasicPay;
+		$return_result['overtime_amount'] = $overtime_amount;
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function 	
 	

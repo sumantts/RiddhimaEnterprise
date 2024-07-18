@@ -2228,45 +2228,83 @@
 
 	//Pay: On Change Employee list
 	$('#emp_name').on('change', function(){
-		$month_name = $('#month_name').val();
-		$emp_id = $('#emp_name').val();
-		var emp_name = $('#emp_name').find('option:selected'); 
-        $emp_basic_pay = emp_name.attr("emp_basic_pay"); 
-		console.log('emp_basic_pay: ' + $emp_basic_pay)
-		$('#emp_basic_pay').val($emp_basic_pay);
-		//ajax call from here
-		
-		if(parseInt($month_name) > 0 && parseInt($emp_id) > 0){
-			$.ajax({
-				method: "POST",
-				url: "assets/php/function.php",
-				data: { fn: "getUserAttendance", month_name: $month_name, emp_id: $emp_id,  }
-			})
-			.done(function( res ) {
-				console.log(res);
-				$res1 = JSON.parse(res);
-				if($res1.status == true){
-					$('#attendance_count').val($res1.total_attendance);
-				}
-			});//end ajax
-		}
+		$emp_sal_id = $('#emp_sal_id').val();
+
+		if($emp_sal_id == 0){
+			$month_name = $('#month_name').val();
+			$emp_id = $('#emp_name').val();
+			var emp_name = $('#emp_name').find('option:selected'); 
+			$emp_basic_pay = emp_name.attr("emp_basic_pay"); 
+			console.log('emp_basic_pay: ' + $emp_basic_pay);
+			$('#emp_basic_pay').val($emp_basic_pay);
+			//ajax call from here
+			
+			if(parseInt($month_name) > 0 && parseInt($emp_id) > 0){
+				$.ajax({
+					method: "POST",
+					url: "assets/php/function.php",
+					data: { fn: "getUserAttendance", month_name: $month_name, emp_id: $emp_id, emp_basic_pay: $emp_basic_pay }
+				})
+				.done(function( res ) {
+					console.log(res);
+					$res1 = JSON.parse(res);
+					if($res1.status == true){					
+						$('#working_days').val($res1.businessDays);
+						$('#effective_working_days').val($res1.businessDays);
+						$('#attendance_count').val($res1.total_attendance);
+						$('#absent_count').val($res1.absent_count);
+						$('#half_day').val($res1.half_day_count);
+						$('#full_day').val($res1.full_day_count);
+						$('#overtime_hours').val($res1.total_ot_hr);
+						$('#effectiveBasicPay').val($res1.effectiveBasicPay);
+						$('#overtime_amount').val($res1.overtime_amount);
+					}
+				});//end ajax
+			}//end if
+		}//end if
+	});
+
+	//Effective day calculation
+	$('#holi_days').on('blur', function(){
+		$effective_working_days = 0;
+		$effectiveBasicPay = 0;
+		$onedaypay = 0;
+		$emp_basic_pay = $('#emp_basic_pay').val();
+		$holi_days = $('#holi_days').val();
+		$working_days = $('#working_days').val();
+		$attendance_count = $('#attendance_count').val();
+		$overtime_hours = $('#overtime_hours').val();
+		$effective_working_days = parseInt($working_days) - parseInt($holi_days);
+		$('#effective_working_days').val($effective_working_days);
+
+		//Effective basic pay 
+		$effectiveBasicPay = ($emp_basic_pay / $effective_working_days) * $attendance_count;
+		$('#effectiveBasicPay').val($effectiveBasicPay.toFixed(2));
+
+		//One day pay
+		$onedaypay = $emp_basic_pay / $effective_working_days;
+		$one_hour_pay = $onedaypay / 8;
+		$overtime_amount = $one_hour_pay * $overtime_hours;
+		$('#overtime_amount').val($overtime_amount.toFixed(2));
+
 	});
 
 	//Calculate PaySlip
 	$("#calculatePaySlip").on("click", function() {
 		$net_pay = 0;
-		$emp_basic_pay = $('#emp_basic_pay').val();
+		$effectiveBasicPay = $('#effectiveBasicPay').val();
 		$attendance_count = $('#attendance_count').val();
+		$overtime_amount = $('#overtime_amount').val();
 
 		$allounce_1_percent = $('#allounce_1_percent').val();
 		$allounce_2_percent = $('#allounce_2_percent').val();
 		$allounce_3_percent = $('#allounce_3_percent').val();
 		$allounce_4_percent = $('#allounce_4_percent').val();
 
-		$allounce_1 = (parseFloat($emp_basic_pay) * parseFloat($allounce_1_percent)) / 100;
-		$allounce_2 = (parseFloat($emp_basic_pay) * parseFloat($allounce_2_percent)) / 100;
-		$allounce_3 = (parseFloat($emp_basic_pay) * parseFloat($allounce_3_percent)) / 100;
-		$allounce_4 = (parseFloat($emp_basic_pay) * parseFloat($allounce_4_percent)) / 100;
+		$allounce_1 = (parseFloat($effectiveBasicPay) * parseFloat($allounce_1_percent)) / 100;
+		$allounce_2 = (parseFloat($effectiveBasicPay) * parseFloat($allounce_2_percent)) / 100;
+		$allounce_3 = (parseFloat($effectiveBasicPay) * parseFloat($allounce_3_percent)) / 100;
+		$allounce_4 = (parseFloat($effectiveBasicPay) * parseFloat($allounce_4_percent)) / 100;
 
 		$('#allounce_1').val($allounce_1);
 		$('#allounce_2').val($allounce_2);
@@ -2286,7 +2324,7 @@
 		$total_allounce = parseFloat($allounce_1) + parseFloat($allounce_2) + parseFloat($allounce_3) + parseFloat($allounce_4);
 		$total_deduction = parseFloat($deduction_1) + parseFloat($deduction_2) + parseFloat($deduction_3) + parseFloat($deduction_4);
 
-		$net_pay = parseFloat($emp_basic_pay) + parseFloat($total_allounce) - parseFloat($total_deduction);
+		$net_pay = parseFloat($effectiveBasicPay) + parseFloat($total_allounce) + parseFloat($overtime_amount) - parseFloat($total_deduction);
 		$('#net_pay').val($net_pay);
 	});//end function
 
@@ -2300,6 +2338,18 @@
 		$emp_name = $('#emp_name option:selected').text();
 		$emp_basic_pay = $('#emp_basic_pay').val();
 		$attendance_count = $('#attendance_count').val();
+
+		$working_days = $('#working_days').val();
+		$holi_days = $('#holi_days').val();
+		$effective_working_days = $('#effective_working_days').val();
+		$effectiveBasicPay = $('#effectiveBasicPay').val();
+		
+		$half_day = $('#half_day').val();
+		$full_day = $('#full_day').val();
+		$overtime_hours = $('#overtime_hours').val();
+		$late_hours = $('#late_hours').val();
+		$overtime_amount = $('#overtime_amount').val(); 
+
 		$net_pay = $('#net_pay').val();
 
 		$allounce_1_percent = $('#allounce_1_percent').val();
@@ -2325,7 +2375,7 @@
 			$salary_detail_data = {
 				emp_name: $emp_name,
 				month_name_txt: $month_name_txt,
-				pay_year: $pay_year,
+				pay_year: $pay_year,				
 				allounce_1_percent: $allounce_1_percent,
 				allounce_2_percent: $allounce_2_percent,
 				allounce_3_percent: $allounce_3_percent,
@@ -2339,6 +2389,15 @@
 				deduction_3: $deduction_3,
 				deduction_4: $deduction_4,
 				attendance_count: $attendance_count,
+				working_days: $working_days,
+				holi_days: $holi_days,
+				effective_working_days: $effective_working_days,
+				effectiveBasicPay: $effectiveBasicPay,
+				half_day: $half_day,
+				full_day: $full_day,
+				overtime_hours: $overtime_hours,
+				late_hours: $late_hours,
+				overtime_amount: $overtime_amount,
 				total_allounce: $total_allounce,
 				total_deduction: $total_deduction
 			};
@@ -2375,7 +2434,7 @@
 				$('#emp_name').val($res1.emp_id).trigger('change');
 				$('#emp_basic_pay').val($res1.basic_pay);
 				$salary_detail_data = JSON.parse($res1.salary_detail_data);
-				$('#pay_year').val($salary_detail_data.pay_year).trigger('change');
+				$('#pay_year').val($salary_detail_data.pay_year).trigger('change');				
 
 				$('#allounce_1_percent').val($salary_detail_data.allounce_1_percent);
 				$('#allounce_2_percent').val($salary_detail_data.allounce_2_percent);
@@ -2391,6 +2450,18 @@
 				$('#deduction_2').val($salary_detail_data.deduction_2);
 				$('#deduction_3').val($salary_detail_data.deduction_3);
 				$('#deduction_4').val($salary_detail_data.deduction_4);
+				
+
+				$('#working_days').val($salary_detail_data.working_days);
+				$('#holi_days').val($salary_detail_data.holi_days);
+				$('#effective_working_days').val($salary_detail_data.effective_working_days);
+				$('#effectiveBasicPay').val($salary_detail_data.effectiveBasicPay);
+				
+				$('#half_day').val($salary_detail_data.half_day);
+				$('#full_day').val($salary_detail_data.full_day);
+				$('#overtime_hours').val($salary_detail_data.overtime_hours);
+				$('#late_hours').val($salary_detail_data.late_hours);
+				$('#overtime_amount').val($salary_detail_data.overtime_amount); 
 
 				$('#net_pay').val($res1.net_pay);
 				
