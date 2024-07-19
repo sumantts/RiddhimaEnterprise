@@ -635,6 +635,101 @@
 	}//end function updateUserZone
 	///////////////////////////// ZONE MANAGEMENT END /////////////////////////////////
 
+	///////////////////////////// HOLIDAY MANAGEMENT //////////////////////////////////////
+	//Save Zone function
+	if($fn == 'saveHoliday'){
+		$return_result = array();
+		$h_id = $_POST["h_id"];
+		$holiday_title = $_POST["holiday_title"];
+		$holiday_date = $_POST["holiday_date"]; 
+		$message = '';
+		
+		if ($h_id > 0) {
+			$status = true;	
+			//update
+			$sql_update = "UPDATE holiday_list SET holiday_title = '".$holiday_title."', holiday_date = '".$holiday_date."' WHERE h_id = '" .$h_id. "' ";
+			$mysqli->query($sql_update);			
+		} else {
+			$sql = "SELECT * FROM holiday_list WHERE holiday_date = '".$holiday_date."'";
+			$result = $mysqli->query($sql);
+
+			if ($result->num_rows > 0) {
+				$status = false;	
+				$message = 'Holiday Already Exist';
+			}else{
+				$status = true;	
+				
+				//Insert
+				$sql_insert = "INSERT INTO holiday_list (holiday_title, holiday_date) VALUES('".$holiday_title."', '".$holiday_date."')";
+				$result_insert = $mysqli->query($sql_insert);
+				$h_id = $mysqli->insert_id;
+			}//end if else
+			
+			$mysqli->close();
+		}
+
+		$return_result['h_id'] = $h_id;
+		$return_result['status'] = $status;
+		$return_result['message'] = $message;
+		sleep(1);
+		echo json_encode($return_result);
+	}//end function saveItem
+
+	//Get Zone
+	if($fn == 'getHoliday'){
+		$return_result = array();
+		$h_id = $_POST["h_id"]; 
+
+		$status = true;	
+	
+		$sql = "SELECT * FROM holiday_list WHERE h_id = '".$h_id."'";
+		$result = $mysqli->query($sql);
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_array();
+			$h_id = $row['h_id'];
+			$holiday_title = $row['holiday_title'];
+			$holiday_date = $row['holiday_date']; 
+		}
+		
+		$mysqli->close();
+
+		$return_result['h_id'] = $h_id;
+		$return_result['holiday_title'] = $holiday_title;
+		$return_result['holiday_date'] = $holiday_date; 
+		$return_result['status'] = $status;
+		//sleep(1);
+		echo json_encode($return_result);
+	}//end function getItem
+
+	//Delete Item function
+	if($fn == 'deleteHoliday'){
+		$return_result = array();
+		$h_id = $_POST["h_id"]; 
+		$status = true;	
+		
+		$sql = "DELETE FROM holiday_list WHERE h_id = '".$h_id."'";
+		$result = $mysqli->query($sql);
+		$return_result['status'] = $status;
+		sleep(1);
+		echo json_encode($return_result);
+	}//end function deleteItem
+
+	//updateUserZone function
+	if($fn == 'updateUserZone'){
+		$return_result = array();
+		$zone_id = $_POST["zone_id"];
+		$login_id = $_POST["login_id"];
+		$status = true;	
+		
+		$sql = "UPDATE login SET zone_id = '" .$zone_id. "' WHERE login_id = '".$login_id."'";
+		$result = $mysqli->query($sql);
+		$return_result['status'] = $status;
+		sleep(1);
+		echo json_encode($return_result);
+	}//end function updateUserZone
+	///////////////////////////// HOLIDAY MANAGEMENT END /////////////////////////////////
+
 	/////////////////////////// User part start //////////////////////////////////////
 	if($fn == 'saveUser'){
 		$return_result = array();	

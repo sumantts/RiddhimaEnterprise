@@ -372,6 +372,10 @@
 		console.log('Open the Zone Modal');
 		modal.style.display = "block";
 	}
+	function openHolidayModal(){
+		console.log('Open Holiday Modal');
+		modal.style.display = "block";
+	}
 	//Close Modal
 	function closeZoneModal(){
 		console.log('Close the Zone Modal');
@@ -379,6 +383,13 @@
 		$('#zone_name').val('');
 		$('#zone_area').val('');
 		$('#zone_pincode').val('');
+		modal.style.display = "none";
+	}
+	function closeHolidayModal(){
+		console.log('Close the Holiday Modal');
+		$('#h_id').val('0');
+		$('#holiday_title').val('');
+		$('#holiday_date').val(''); 
 		modal.style.display = "none";
 	}
 
@@ -457,7 +468,6 @@
 		});//end ajax
 	}
 
-
 	//Delete function	
 	function deleteZone($zone_id){
 		console.log('Delete zone: '+$zone_id);
@@ -473,6 +483,91 @@
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#zone_id_'+$zone_id).remove();
+				}
+			});//end ajax
+		}		
+	}//end delete
+
+	//Holiday List	
+
+	//Save Function
+	$("#saveHoliday").click(function(){	
+		$h_id = $('#h_id').val();
+		$holiday_title = $('#holiday_title').val();
+		$holiday_date = $('#holiday_date').val(); 
+
+		if($holiday_title == ''){
+			$('#holiday_title_error').html('Please Enter Title');
+		}else if($holiday_date == ''){
+			$('#holiday_date_error').html('Please Enter Date');
+		}else{
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "saveHoliday", h_id: $h_id, holiday_title: $holiday_title, holiday_date: $holiday_date }
+			})
+			.done(function( res ) {
+				console.log(res);
+				$res1 = JSON.parse(res);
+				if($res1.status == true){					
+					$('#holiday_title_error').html('');
+					$('#holiday_date_error').html(''); 
+					
+					if($h_id == '0'){	
+						//start
+						const table = $("#dataTable").DataTable();
+						var rowCount = $('#dataTable tr').length;
+						// or using tr
+						const tr = $("<tr id=h_id_"+$res1.h_id+"><td>"+rowCount+"</td> <td>"+$holiday_title+"</td><td>"+$holiday_date+"</td><td><a style='cursor: pointer;' onclick=updateHolidayModal("+$res1.h_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteHoliday("+$res1.h_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td></tr>");
+						table.row.add(tr[0]).draw();
+					} else{
+						console.log('Updatre the table row');
+						$('#h_id_'+$h_id).html('');
+
+						$('#h_id_'+$h_id).html("<td>0</td><td>"+$holiday_title+"</td><td>"+$holiday_date+"</td><td><a style='cursor: pointer;' onclick=updateHolidayModal("+$h_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteHoliday("+$h_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td>");
+					}	
+					modal.style.display = "none";
+				}else{
+					$('#zone_name_error').html('Zone Name already exists');
+				}
+			});//end ajax
+		}//end if
+	});//end function
+
+	//get edit holiday data		
+	function updateHolidayModal($h_id){			
+		//Fetch data
+		$.ajax({
+			method: "POST",
+			url: "assets/php/function.php",
+			data: { fn: "getHoliday", h_id: $h_id }
+		})
+		.done(function( res ) {
+			console.log(res);
+			$res1 = JSON.parse(res);
+			if($res1.status == true){
+				$('#h_id').val($res1.h_id);
+				$('#holiday_title').val($res1.holiday_title);
+				$('#holiday_date').val($res1.holiday_date); 
+
+				modal.style.display = "block";
+			} 
+		});//end ajax
+	}//end if
+
+	//Delete holiday list
+	function deleteHoliday($h_id){ 
+		if (confirm('Are you sure to delete the Holiday?')) { 
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "deleteHoliday", h_id: $h_id }
+			})
+			.done(function( res ) {
+				//console.log(res);
+				$res1 = JSON.parse(res);
+				if($res1.status == true){
+					$('#h_id_'+$h_id).remove();
 				}
 			});//end ajax
 		}		

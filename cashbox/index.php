@@ -97,6 +97,11 @@
 		include('pages/zone.php');		
 		break;
 		
+		case 'holiday':
+		$title = "Holiday List";
+		include('pages/holiday.php');		
+		break;
+		
 		case 'zone_report':
 		$title = "Zone Report";
 		include('pages/zone_report.php');		
