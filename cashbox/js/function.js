@@ -24,7 +24,7 @@
 			  data: { fn: "doLogin", username: $username, password: $password }
 			})
 			  .done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					window.location.href = '?p=dashboard';
@@ -140,7 +140,7 @@
 				data: { fn: "saveEmployee", emp_id: $emp_id, emp_name: $emp_name, emp_ph_primary: $emp_ph_primary, emp_ph_secondary: $emp_ph_secondary, emp_email: $emp_email, emp_aadhar_no: $emp_aadhar_no, emp_pan_no: $emp_pan_no, emp_pf_no: $emp_pf_no, emp_basic_pay: $emp_basic_pay, payment_type: $payment_type, emp_address: $emp_address, created_by: $created_by }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){					
 					$('#emp_name_error').html('');
@@ -214,7 +214,7 @@
 				data: { fn: "saveItem", item_id: $item_id, item_name: $item_name, hs_code: $hs_code, cgst_rate: $cgst_rate, sgst_rate: $sgst_rate, item_quantity: $item_quantity, stokist_price: $stokist_price, dealer_price: $dealer_price, wholesaler_price: $wholesaler_price, retailer_price: $retailer_price, net_weight: $net_weight, login_id: $login_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){					
 					$('#item_name_error').html('');
@@ -270,7 +270,7 @@
 			data: { fn: "getItem", item_id: $item_id, login_id: $login_id, user_type: $user_type, created_by: $created_by }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 			if($res1.status == true){
 				$('#item_id').val($res1.item_id);
@@ -303,7 +303,7 @@
 			data: { fn: "getEmployee", emp_id: $emp_id }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 			if($res1.status == true){
 				$('#emp_name').val($res1.emp_name);
@@ -335,7 +335,7 @@
 				data: { fn: "deleteEmployee", emp_id: $emp_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#emp_id_'+$emp_id).remove();
@@ -355,7 +355,7 @@
 				data: { fn: "deleteItem", item_id: $item_id, login_id: $login_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#item_id_'+$item_id).remove();
@@ -414,7 +414,7 @@
 				data: { fn: "saveZone", zone_id: $zone_id, zone_name: $zone_name, zone_area: $zone_area, zone_pincode: $zone_pincode, login_id: $login_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){					
 					$('#zone_name_error').html('');
@@ -453,7 +453,7 @@
 			data: { fn: "getZone", zone_id: $zone_id, login_id: $login_id, user_type: $user_type, created_by: $created_by }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 			if($res1.status == true){
 				$('#zone_id').val($res1.zone_id);
@@ -479,7 +479,7 @@
 				data: { fn: "deleteZone", zone_id: $zone_id, login_id: $login_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#zone_id_'+$zone_id).remove();
@@ -507,7 +507,7 @@
 				data: { fn: "saveHoliday", h_id: $h_id, holiday_title: $holiday_title, holiday_date: $holiday_date }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){					
 					$('#holiday_title_error').html('');
@@ -526,9 +526,11 @@
 
 						$('#h_id_'+$h_id).html("<td>0</td><td>"+$holiday_title+"</td><td>"+$holiday_date+"</td><td><a style='cursor: pointer;' onclick=updateHolidayModal("+$h_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteHoliday("+$h_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td>");
 					}	
+					$('#holiday_title').val('');
+					$('#holiday_date').val(''); 
 					modal.style.display = "none";
 				}else{
-					$('#zone_name_error').html('Zone Name already exists');
+					$('#holiday_date_error').html($res1.message);
 				}
 			});//end ajax
 		}//end if
@@ -543,7 +545,7 @@
 			data: { fn: "getHoliday", h_id: $h_id }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 			if($res1.status == true){
 				$('#h_id').val($res1.h_id);
@@ -582,7 +584,7 @@
 			data: { fn: "updateUserZone", zone_id: $zone_id, login_id: $login_id }
 		})
 		.done(function( res ) {
-			console.log(res);			
+			//console.log(res);			
 		});//end ajax
 	}//end fun
 
@@ -759,7 +761,7 @@
 				data: { fn: "saveUser", login_id: $login_id, user_data: $user_data, whatsapp_number: $whatsapp_number, update_login_id: $update_login_id, user_type: $user_type, logged_in_user_type: $logged_in_user_type, created_by: $created_by }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){	
 					$('#update_login_id').val('0');	
@@ -888,7 +890,7 @@
 				data: { fn: "saveCustomer", customer_id: $customer_id, customer_name: $customer_name, phone_number: $phone_number, customer_gstin_no: $customer_gstin_no, customer_address: $customer_address, customer_email: $customer_email }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){					
 					$('#customer_name_error').html('');
@@ -925,7 +927,7 @@
 			data: { fn: "getCustomer", customer_id: $customer_id }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 			if($res1.status == true){
 				$('#customer_id').val($res1.customer_id);
@@ -991,7 +993,7 @@
 				data: { fn: "deleteUser", login_id: $login_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#user_id_'+$login_id).remove();
@@ -1015,7 +1017,7 @@
 				data: { fn: "deleteCustomer", customer_id: $customer_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#customer_id_'+$customer_id).remove();
@@ -1032,7 +1034,7 @@
 			data: { fn: "miniStatement", customer_id: $customer_id }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 			if($res1.status == true){
 				$('#tbody_ministatement').html('');
@@ -1937,7 +1939,7 @@
 				data: { fn: "deleteBill", bill_id: $bill_id, user_type: $user_type, login_id: $login_id, created_by: $created_by }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#bill_row_'+$bill_id).remove();
@@ -2023,7 +2025,7 @@
 				data: { fn: "updateSettings", login_id: $login_id, bank_name: $bank_name, branch_name: $branch_name, acc_no: $acc_no, ac_name: $ac_name, ifsc_code: $ifsc_code, branch_code: $branch_code, username: $username, password: $password }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){	
 					$('#settings_update_msg').html('Settings Updated successfully');
@@ -2081,7 +2083,7 @@
 				data: { fn: "saveCashbook", login_id: $login_id, user_type: $user_type, created_by: $created_by, cb_date: $cb_date, receive_payment: $receive_payment, cb_narration: $cb_narration, cb_amount: $cb_amount, cb_id: $cb_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				$receive = '';
 				$payment = '';
@@ -2121,7 +2123,7 @@
 			data: { fn: "getCashBook", cb_id: $cb_id }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 			if($res1.status == true){
 				$('#cb_id').val($cb_id);
@@ -2143,7 +2145,7 @@
 				data: { fn: "deleteCashbook", cb_id: $cb_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#cb_id_'+$cb_id).remove();
@@ -2341,11 +2343,12 @@
 					data: { fn: "getUserAttendance", month_name: $month_name, emp_id: $emp_id, emp_basic_pay: $emp_basic_pay }
 				})
 				.done(function( res ) {
-					console.log(res);
+					//console.log(res);
 					$res1 = JSON.parse(res);
 					if($res1.status == true){					
 						$('#working_days').val($res1.businessDays);
-						$('#effective_working_days').val($res1.businessDays);
+						$('#effective_working_days').val($res1.effective_working_days);
+						$('#holi_days').val($res1.holi_days);
 						$('#attendance_count').val($res1.total_attendance);
 						$('#absent_count').val($res1.absent_count);
 						$('#half_day').val($res1.half_day_count);
@@ -2503,7 +2506,7 @@
 				data: { fn: "generatePaySlip", emp_sal_id: $emp_sal_id, month_name: $month_name, pay_year: $pay_year, emp_id: $emp_id, total_allounce: $total_allounce, total_deduction: $total_deduction, net_pay: $net_pay, emp_basic_pay: $emp_basic_pay, salary_detail_data: JSON.stringify($salary_detail_data)}
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					window.location.href = '?p=emp-pay-slip';
@@ -2521,7 +2524,7 @@
 			data: { fn: "getPaySlip", emp_sal_id: $emp_sal_id }
 		})
 		.done(function( res ) {
-			console.log(res);
+			//console.log(res);
 			$res1 = JSON.parse(res);
 
 			if($res1.status == true){
@@ -2575,7 +2578,7 @@
 				data: { fn: "deletePaySlip", emp_sal_id: $emp_sal_id }
 			})
 			.done(function( res ) {
-				console.log(res);
+				//console.log(res);
 				$res1 = JSON.parse(res);
 				if($res1.status == true){
 					$('#emp_sal_id_'+$emp_sal_id).remove();

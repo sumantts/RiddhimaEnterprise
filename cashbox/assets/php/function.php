@@ -1614,6 +1614,8 @@
 		$onedaypay = 0;
 		$one_hour_pay = 0;
 		$overtime_amount = 0;
+		$effective_working_days = 0;
+		$holi_days = 0;
 		$overtime_arr = array();
 		$late_arr = array();
 	
@@ -1723,12 +1725,25 @@
 		//$endDate = '2024-05-10';
 		//echo "Business days: " . getBusinessDays1($startDate, $endDate);
 		//Working Days Calculation end
+		
+		//Holiday and effective day
+		$sql2 = "SELECT * FROM holiday_list WHERE holiday_date >= '".$present_date_start."' AND  holiday_date <= '" .$present_date_end. "'";
+		$result2 = $mysqli->query($sql2);
+
+		if ($result2->num_rows > 0) {
+			//$total_attendance = $result->num_rows;
+			while($row2 = $result2->fetch_array()){
+				$h_id = $row2['h_id'];
+				$holi_days++;
+			}
+		}//end if
+		$effective_working_days = $businessDays - $holi_days;
 
 		//Effective basic pay 
-		$effectiveBasicPay = ceil(($emp_basic_pay / $businessDays) * $total_attendance);
+		$effectiveBasicPay = ceil(($emp_basic_pay / $effective_working_days) * $total_attendance);
 
 		//One day pay
-		$onedaypay = $emp_basic_pay / $businessDays;
+		$onedaypay = $emp_basic_pay / $effective_working_days;
 		$one_hour_pay = $onedaypay / 8;
 		$overtime_amount = ceil($one_hour_pay * $total_ot_hr);
 		
@@ -1743,6 +1758,8 @@
 		$return_result['businessDays'] = $businessDays;
 		$return_result['effectiveBasicPay'] = $effectiveBasicPay;
 		$return_result['overtime_amount'] = $overtime_amount;
+		$return_result['effective_working_days'] = $effective_working_days;
+		$return_result['holi_days'] = $holi_days;
 		//sleep(1);
 		echo json_encode($return_result);
 	}//end function 	
