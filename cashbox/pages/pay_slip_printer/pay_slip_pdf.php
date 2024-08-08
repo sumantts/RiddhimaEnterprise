@@ -76,6 +76,19 @@
 		return $result . "Rupees  Only.";
 		
 	}//end fun
+
+	$total_allounce = $salary_detail_data->effectiveBasicPay + $salary_detail_data->total_allounce + $salary_detail_data->overtime_amount;
+
+	if(isset($salary_detail_data->overtime_hours)){
+		if($salary_detail_data->overtime_hours > 0){
+			$overtime_hours = $salary_detail_data->overtime_hours;
+		}
+	}else{
+		$overtime_hours = 0;
+	}
+	//echo json_encode($salary_detail_data);
+	//exit();
+
 ?>
 
 
