@@ -65,6 +65,19 @@
 						
 					</nav>
 				</div>	
+
+				
+
+				<a class="nav-link collapsed <?php if($p == 'receive-payment'){?>active<?php } ?>" href="#" data-toggle="collapse" data-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts4">
+					<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+					Payment
+					<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+				</a>
+				<div class="collapse  <?php if($p == 'receive-payment'){?>show<?php } ?>" id="collapseLayouts4" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+					<nav class="sb-sidenav-menu-nested nav">
+					<a class="nav-link <?php if($p == 'receive-payment'){?>active<?php } ?>" href="?p=receive-payment">Receive Payment</a>			
+					</nav>
+				</div>
 				
 				
 			</div>

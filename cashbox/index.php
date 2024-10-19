@@ -121,7 +121,13 @@
 		$title = "Attendance Report";
 		include('pages/attendance_report.php');		
 		break;
-				
+		
+		//Receice Payment		
+		case 'receive-payment':
+		$title = "Receive Payment";
+		include('pages/receive_payment.php');		
+		break;
+
 		default:
 		include('pages/login.php');
 	}

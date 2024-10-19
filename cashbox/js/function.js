@@ -2587,6 +2587,95 @@
 		}		
 	}//end PaySlip delete
 
+	//Receive payment function start
+	$('#myForm').on('submit', function(){
+		$billNumber = $('#billNumber').val();
+		if($billNumber != ''){
+			getBillDetails($billNumber);
+		}
+		return false;
+	})
+
+	$('#myForm1').on('submit', function(){
+		$billNumber = $('#billNumber').val();
+		$collectionAmount = $('#collectionAmount').val();
+		$collectionDate = $('#collectionDate').val();
+		$collectionNote = $('#collectionNote').val();
+		$customer_id = $('#customer_id').val();
+
+		if($billNumber == ''){
+			alert('Please enter bill number');
+		}else{
+			//Fetch data
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "updatepaymentInfo", billNumber: $billNumber, collectionAmount: $collectionAmount, collectionDate: $collectionDate, collectionNote: $collectionNote, customer_id: $customer_id }
+			})
+			.done(function (res) {
+			//console.log(res);
+				$res1 = JSON.parse(res);
+				if ($res1.status == true) {
+					$('#myForm1').trigger('reset');
+					$('#paymentRcvDiv').removeClass('d-block');
+					$('#paymentRcvDiv').addClass('d-none');
+					$('#customerInfo').html("");
+					alert('Payment Received Successfully');
+				}else{
+					alert('Bill Update error');
+				}//end if
+			}); //end ajax
+		}//end if
+		return false;
+	})
+
+	function getBillDetails(billNumber){
+		$('#myForm1').trigger('reset');
+		$('#paymentRcvDiv').removeClass('d-block');
+		$('#paymentRcvDiv').addClass('d-none');
+
+		$.ajax({
+			method: "POST",
+			url: "assets/php/function.php",
+			data: { fn: "getBillDetails", bill_id: billNumber }
+		})
+		.done(function( res ) {
+			//console.log(res);
+			$res1 = JSON.parse(res);
+			if($res1.status == true){  
+				$billDetail = $res1.bill_description;	
+				$payHistory = $res1.payHistory;					
+				$customer_id = $res1.customer_id;
+				$('#customer_id').val($customer_id);
+				$('#customerInfo').html("");
+
+				$html = "";
+				$html += "<h5>Customer Info</h5>";
+				$html += '<div class="col-md-12">';
+					$html += 'Customer name: '+$billDetail.customer_name+'</br>'; 
+					$html += 'Contact Number: '+$billDetail.phone_number+'</br>';
+				$html += '</div>';
+
+				//Payment History
+				if($payHistory.length > 0){
+					$html += "<h5>Payment History</h5>";
+					for(var j = 0; j < $payHistory.length; j++){
+						$html += "<div class='col-md-12'>Amount Rs. "+$payHistory[j].cb_amount+"/- Paid on "+$payHistory[j].cb_formated_date+" Note: "+$payHistory[j].cb_note+"</div>";
+					}//end for
+				}//end if
+				$html += "<h6>Total Amount Paid: Rs. "+$billDetail.totalCash+" Total Amount Due: Rs. "+$res1.net_due_amount+"/-</h6>";
+
+				$('#customerInfo').html($html);
+				$('#paymentRcvDiv').removeClass('d-none');
+				$('#paymentRcvDiv').addClass('d-block');
+			}else{
+				$('#customerInfo').html("");
+				alert('Bill Number Not Found');
+			}
+		});//end ajax
+	}//end fun
+	//Receive payment function end
+
 	//Loading screen
 	$body = $("body");
 	$(document).on({

@@ -35,7 +35,7 @@
 					
 		
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function doLogin
 	
@@ -228,7 +228,7 @@
 		
 		$return_result['status'] = $status;
 		
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function updateSettings
 
@@ -293,7 +293,7 @@
 		$return_result['net_weight'] = $net_weight;
 
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function getItem
 
@@ -332,7 +332,7 @@
 		$return_result['emp_address'] = $emp_address;
 
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function getEmployee
 
@@ -345,7 +345,7 @@
 		$sql = "DELETE FROM employee_list WHERE emp_id = '".$emp_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function delete Employee
 
@@ -380,7 +380,7 @@
 		$sql = "DELETE FROM item_master WHERE item_id = '".$item_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function deleteItem
 
@@ -453,7 +453,7 @@
 		//Deduct stock quantity for Buyer end
 
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function updateStockQtyAdd
 
@@ -526,7 +526,7 @@
 		//Add stock quantity for Buyer end
 
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function updateStockQtyMinus
 
@@ -570,7 +570,7 @@
 		$return_result['zone_id'] = $zone_id;
 		$return_result['status'] = $status;
 		$return_result['message'] = $message;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function saveItem
 
@@ -602,7 +602,7 @@
 		$return_result['zone_area'] = $zone_area;
 		$return_result['zone_pincode'] = $zone_pincode;
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function getItem
 
@@ -616,7 +616,7 @@
 		$sql = "DELETE FROM zone_master WHERE zone_id = '".$zone_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function deleteItem
 
@@ -630,7 +630,7 @@
 		$sql = "UPDATE login SET zone_id = '" .$zone_id. "' WHERE login_id = '".$login_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function updateUserZone
 	///////////////////////////// ZONE MANAGEMENT END /////////////////////////////////
@@ -671,7 +671,7 @@
 		$return_result['h_id'] = $h_id;
 		$return_result['status'] = $status;
 		$return_result['message'] = $message;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function saveItem
 
@@ -711,7 +711,7 @@
 		$sql = "DELETE FROM holiday_list WHERE h_id = '".$h_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function deleteItem
 
@@ -725,7 +725,7 @@
 		$sql = "UPDATE login SET zone_id = '" .$zone_id. "' WHERE login_id = '".$login_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function updateUserZone
 	///////////////////////////// HOLIDAY MANAGEMENT END /////////////////////////////////
@@ -790,7 +790,7 @@
 
 		$return_result['update_login_id'] = $update_login_id;
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function saveCustomer
 	////////////////////// user part end ////////////////////////////
@@ -848,7 +848,7 @@
 		
 		$mysqli->close();
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function get User
 	
@@ -937,7 +937,7 @@
 		$return_result['status'] = $status;
 		$return_result['users'] = $users;
 		$return_result['zones'] = $zones;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end 
 	//function get User all end
@@ -959,7 +959,7 @@
 			$result = $mysqli->query($sql);
 		}*/
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function delete User
 	
@@ -984,7 +984,7 @@
 		
 		$mysqli->close();
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function getCustomer
 
@@ -997,7 +997,7 @@
 		$sql = "DELETE FROM customer_master WHERE customer_id = '".$customer_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function deleteCustomer
 
@@ -1054,7 +1054,7 @@
 		$mysqli->close();
 		$return_result['i'] = $i;
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function getCustomer
 
@@ -1478,7 +1478,7 @@
 		}//end if
 
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function deleteBill
 	
@@ -1519,10 +1519,15 @@
 				$payHistoryObj = new stdClass();
 				$payHistoryObj->cb_amount = $rowPay['cb_amount'];
 				$payHistoryObj->cb_date = $rowPay['cb_date'];
+				$payHistoryObj->cb_note = $rowPay['cb_note'];
+				$payHistoryObj->cb_formated_date = date('d-F-Y h:i A', strtotime($rowPay['cb_date']));
 				array_push($payHistory, $payHistoryObj);
 			}
 		}
 
+		if($bill_description == null){
+			$status = false;
+		}
 		
 		$mysqli->close();
 		$return_result['status'] = $status;
@@ -1530,7 +1535,7 @@
 		$return_result['bill_description'] = $bill_description;
 		$return_result['net_due_amount'] = $net_due_amount;
 		$return_result['payHistory'] = $payHistory;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function getBillDetails
 
@@ -1595,7 +1600,7 @@
 		
 		$mysqli->close();
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function 	
 	
@@ -1799,7 +1804,7 @@
 		$mysqli->close();
 		$return_result['status'] = $status;
 		$return_result['emp_sal_id'] = $emp_sal_id;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function 
 
@@ -1833,7 +1838,7 @@
 		$return_result['salary_detail_data'] = $salary_detail_data;	
 
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end function 
 
@@ -1846,7 +1851,7 @@
 		$sql = "DELETE FROM employee_salary WHERE emp_sal_id = '".$emp_sal_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
 	}//end 
 
@@ -1859,11 +1864,71 @@
 		$sql = "DELETE FROM cashbook_entry WHERE cb_id = '".$cb_id."'";
 		$result = $mysqli->query($sql);
 		$return_result['status'] = $status;
-		sleep(1);
+		//sleep(1);
 		echo json_encode($return_result);
-	}//end function 
+	}//end function  
+	/////////////////////////// END CASHBOOK PART //////////////////////////////////
 
+	//Receive payment Function start
+	if($fn == 'updatepaymentInfo'){
+		$return_result = array();
+		$billNumber = $_POST["billNumber"];
+		$collectionAmount = $_POST["collectionAmount"];
+		$collectionDate = $_POST["collectionDate"];
+		$collectionNote = $_POST["collectionNote"];
+		$customer_id = $_POST["customer_id"];
+		$status = true;
+		$latest_due = 0;
+		$net_due_amount = 0;
+		$bill_description_en = '';
 
-	/////////////////////////// END CASHBOOK PART //////////////////////////////////	
+		//Update Login table
+		$sql = "SELECT * FROM login WHERE login_id = '".$customer_id."'";
+		$result = $mysqli->query($sql);
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_array();
+			$net_due_amount = $row['net_due_amount'];
+		}
+		$latest_due = $net_due_amount - $collectionAmount;
+		$update_sql1 = "UPDATE login SET net_due_amount = '" .$latest_due. "' WHERE login_id = '".$customer_id."'";
+		$mysqli->query($update_sql1);
+
+		//Update Bill Details
+		$sql1 = "SELECT * FROM bill_details WHERE bill_id = '".$billNumber."'";
+		$result1 = $mysqli->query($sql1);
+
+		if ($result1->num_rows > 0) {
+			$row1 = $result1->fetch_array();
+			$bill_description = json_decode(base64_decode($row1['bill_description']));
+
+			//Update Due Amount of this customer
+			$roundedUpFineItemsSubTotal = $bill_description->roundedUpFineItemsSubTotal;
+			$totalCash = $bill_description->totalCash;
+			$dueCash = $bill_description->dueCash;
+
+			//calculate new
+			$totalCash = $totalCash + $collectionAmount;
+			$dueCash = $roundedUpFineItemsSubTotal - $totalCash;
+
+			//update new 
+			$bill_description->totalCash = $totalCash;
+			$bill_description->dueCash = $dueCash;
+		}
+
+		$bill_description_en = json_encode($bill_description);
+		$sql_update = "UPDATE bill_details SET bill_description = '".base64_encode($bill_description_en)."' WHERE bill_id = '" .$billNumber. "' ";
+		$mysqli->query($sql_update);
+
+		//Insert into Cashbook
+		$receive_payment = 0;
+		$cb_narration = 'Cash Received by Bill: '.$billNumber;
+		$cb_date = $collectionDate.' '.date('H:i:s');
+		$cb_created_by = $_SESSION["created_by"]; 
+		$sql_insert = "INSERT INTO cashbook_entry (receive_payment, bill_id, cb_narration, cb_note, cb_amount, cb_date, cb_created_by) VALUES('".$receive_payment."', '".$billNumber."', '".$cb_narration."', '".$collectionNote."', '".$collectionAmount."', '".$cb_date."', '".$cb_created_by."')";
+		$result_insert = $mysqli->query($sql_insert);
+
+		$return_result['status'] = $status;
+		echo json_encode($return_result);
+	}//Receive payment Function end	
 	
 	?>
