@@ -1923,8 +1923,8 @@
 		$receive_payment = 0;
 		$cb_narration = 'Cash Received by Bill: '.$billNumber;
 		$cb_date = $collectionDate.' '.date('H:i:s');
-		$cb_created_by = $_SESSION["created_by"]; 
-		$sql_insert = "INSERT INTO cashbook_entry (receive_payment, bill_id, cb_narration, cb_note, cb_amount, cb_date, cb_created_by) VALUES('".$receive_payment."', '".$billNumber."', '".$cb_narration."', '".$collectionNote."', '".$collectionAmount."', '".$cb_date."', '".$cb_created_by."')";
+		$login_id = $_SESSION["login_id"]; 
+		$sql_insert = "INSERT INTO cashbook_entry (receive_payment, bill_id, cb_narration, cb_note, cb_amount, cb_date, cb_created_by) VALUES('".$receive_payment."', '".$billNumber."', '".$cb_narration."', '".$collectionNote."', '".$collectionAmount."', '".$cb_date."', '".$login_id."')";
 		$result_insert = $mysqli->query($sql_insert);
 
 		$return_result['status'] = $status;
