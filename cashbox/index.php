@@ -126,6 +126,11 @@
 		case 'receive-payment':
 		$title = "Receive Payment";
 		include('pages/receive_payment.php');		
+		break;	
+
+		case 'return-product':
+		$title = "Return Product";
+		include('pages/return_product.php');		
 		break;
 
 		default:

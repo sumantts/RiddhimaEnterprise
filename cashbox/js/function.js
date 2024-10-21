@@ -2663,7 +2663,7 @@
 						$html += "<div class='col-md-12'>Amount Rs. "+$payHistory[j].cb_amount+"/- Paid on "+$payHistory[j].cb_formated_date+" Note: "+$payHistory[j].cb_note+"</div>";
 					}//end for
 				}//end if
-				$html += "<h6>Total Amount Paid: Rs. "+$billDetail.totalCash+" Total Amount Due: Rs. "+$res1.net_due_amount+"/-</h6>";
+				$html += "<h6>Total Amount Paid: Rs. "+$billDetail.totalCash+"/- Total Amount Due: Rs. "+$billDetail.dueCash+"/-</h6>";
 
 				$('#customerInfo').html($html);
 				$('#paymentRcvDiv').removeClass('d-none');
@@ -2674,7 +2674,105 @@
 			}
 		});//end ajax
 	}//end fun
-	//Receive payment function end
+
+	//Return Product	
+	$('#myFormRet').on('submit', function(){
+		$billNumber = $('#billNumber').val();
+		if($billNumber != ''){
+			getBillDetailsWProd($billNumber);
+		}
+		return false;
+	})
+
+	function getBillDetailsWProd(billNumber){
+		$('#myForm1').trigger('reset');
+		$('#paymentRcvDiv').removeClass('d-block');
+		$('#paymentRcvDiv').addClass('d-none');
+
+		$.ajax({
+			method: "POST",
+			url: "assets/php/function.php",
+			data: { fn: "getBillDetails", bill_id: billNumber }
+		})
+		.done(function( res ) {
+			//console.log(res);
+			$res1 = JSON.parse(res);
+			if($res1.status == true){  
+				$billDetail = $res1.bill_description;	
+				$payHistory = $res1.payHistory;					
+				$customer_id = $res1.customer_id;
+				$fineItems = $res1.bill_description.fineItems;
+
+				$('#customer_id').val($customer_id);
+				$('#customerInfo').html("");
+
+				$html = "";
+				$html += "<h5>Customer Info</h5>";
+				$html += '<div class="col-md-12">';
+					$html += 'Customer name: '+$billDetail.customer_name+'</br>'; 
+					$html += 'Contact Number: '+$billDetail.phone_number+'</br>';
+				$html += '</div>';
+
+				//Product History
+				if($fineItems.length > 0){
+					$html += "<h5>Product Details</h5>";
+					for(var p = 0; p < $fineItems.length; p++){
+						$html += "<div class='col-md-12'>"+$fineItems[p].qty+" X "+$fineItems[p].products+" Rs."+$fineItems[p].net_value+"</div>";
+					}//end for
+				}//end if 
+
+				//Payment History
+				if($payHistory.length > 0){
+					$html += "<h5>Payment History</h5>";
+					for(var j = 0; j < $payHistory.length; j++){
+						$html += "<div class='col-md-12'>Amount Rs. "+$payHistory[j].cb_amount+"/- Paid on "+$payHistory[j].cb_formated_date+" Note: "+$payHistory[j].cb_note+"</div>";
+					}//end for
+				}//end if
+				$html += "<h6>Total Amount Paid: Rs. "+$billDetail.totalCash+"/- Total Amount Due: Rs. "+$billDetail.dueCash+"/-</h6>";
+
+				$('#customerInfo').html($html);
+				$('#paymentRcvDiv').removeClass('d-none');
+				$('#paymentRcvDiv').addClass('d-block');
+			}else{
+				$('#customerInfo').html("");
+				alert('Bill Number Not Found');
+			}
+		});//end ajax
+	}//end fun
+
+	$('#myFormRetu1').on('submit', function(){
+		$billNumber = $('#billNumber').val();
+		$returnAmount = $('#returnAmount').val();
+		$returnDate = $('#returnDate').val();
+		$returnNote = $('#returnNote').val();
+		$customer_id = $('#customer_id').val();
+
+		if($billNumber == ''){
+			alert('Please enter bill number');
+		}else{
+			//Fetch data
+			$.ajax({
+				method: "POST",
+				url: "assets/php/function.php",
+				data: { fn: "returnProductAmount", billNumber: $billNumber, returnAmount: $returnAmount, returnDate: $returnDate, returnNote: $returnNote, customer_id: $customer_id }
+			})
+			.done(function (res) {
+			//console.log(res);
+				$res1 = JSON.parse(res);
+				if ($res1.status == true) {
+					$('#myFormRetu1').trigger('reset');
+					$('#paymentRcvDiv').removeClass('d-block');
+					$('#paymentRcvDiv').addClass('d-none');
+					$('#customerInfo').html("");
+					alert('Product Amount Return Successfully');
+				}else{
+					alert('Bill Update error');
+				}//end if
+			}); //end ajax
+		}//end if
+		return false;
+	})
+	//Return payment function end
 
 	//Loading screen
 	$body = $("body");

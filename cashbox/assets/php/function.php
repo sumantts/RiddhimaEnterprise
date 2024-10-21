@@ -1930,5 +1930,67 @@
 		$return_result['status'] = $status;
 		echo json_encode($return_result);
 	}//Receive payment Function end	
+
+	//Return Product Amount start
+	if($fn == 'returnProductAmount'){
+		$return_result = array();
+		$billNumber = $_POST["billNumber"];
+		$returnAmount = $_POST["returnAmount"];
+		$returnDate = $_POST["returnDate"];
+		$returnNote = $_POST["returnNote"];
+		$customer_id = $_POST["customer_id"];
+		$status = true;
+		$latest_due = 0;
+		$net_due_amount = 0;
+		$bill_description_en = '';
+
+		//Update Login table
+		$sql = "SELECT * FROM login WHERE login_id = '".$customer_id."'";
+		$result = $mysqli->query($sql);
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_array();
+			$net_due_amount = $row['net_due_amount'];
+		}
+		$latest_due = $net_due_amount - $returnAmount;
+		$update_sql1 = "UPDATE login SET net_due_amount = '" .$latest_due. "' WHERE login_id = '".$customer_id."'";
+		$mysqli->query($update_sql1);
+
+		//Update Bill Details
+		$sql1 = "SELECT * FROM bill_details WHERE bill_id = '".$billNumber."'";
+		$result1 = $mysqli->query($sql1);
+
+		if ($result1->num_rows > 0) {
+			$row1 = $result1->fetch_array();
+			$bill_description = json_decode(base64_decode($row1['bill_description']));
+
+			//Update Due Amount of this customer
+			$roundedUpFineItemsSubTotal = $bill_description->roundedUpFineItemsSubTotal;
+			$totalCash = $bill_description->totalCash;
+			$dueCash = $bill_description->dueCash;
+
+			//calculate new
+			$totalCash = $totalCash + $returnAmount;
+			$dueCash = $roundedUpFineItemsSubTotal - $totalCash;
+
+			//update new 
+			$bill_description->totalCash = $totalCash;
+			$bill_description->dueCash = $dueCash;
+		}
+
+		$bill_description_en = json_encode($bill_description);
+		$sql_update = "UPDATE bill_details SET bill_description = '".base64_encode($bill_description_en)."' WHERE bill_id = '" .$billNumber. "' ";
+		$mysqli->query($sql_update);
+
+		//Insert into Cashbook
+		$receive_payment = 1;
+		$cb_narration = 'Cash Return by Bill: '.$billNumber;
+		$cb_date = $returnDate.' '.date('H:i:s');
+		$login_id = $_SESSION["login_id"]; 
+		$sql_insert = "INSERT INTO cashbook_entry (receive_payment, bill_id, cb_narration, cb_note, cb_amount, cb_date, cb_created_by) VALUES('".$receive_payment."', '".$billNumber."', '".$cb_narration."', '".$returnNote."', '".$returnAmount."', '".$cb_date."', '".$login_id."')";
+		$result_insert = $mysqli->query($sql_insert);
+
+		$return_result['status'] = $status;
+		echo json_encode($return_result);
+	}//Receive payment Function end	
 	
 	?>
