@@ -728,7 +728,8 @@
 		$email_id = $('#email_id').val();		
 		$address = $('#address').val();		
 		$pin_code = $('#pin_code').val();		
-		$gstin_no = $('#gstin_no').val();	
+		$gstin_no = $('#gstin_no').val();			
+		$net_due_amount = $('#net_due_amount').val();
 		
 
 		if($org_name == ''){
@@ -758,7 +759,7 @@
 			$.ajax({
 				method: "POST",
 				url: "assets/php/function.php",
-				data: { fn: "saveUser", login_id: $login_id, user_data: $user_data, whatsapp_number: $whatsapp_number, update_login_id: $update_login_id, user_type: $user_type, logged_in_user_type: $logged_in_user_type, created_by: $created_by }
+				data: { fn: "saveUser", login_id: $login_id, user_data: $user_data, whatsapp_number: $whatsapp_number, update_login_id: $update_login_id, user_type: $user_type, logged_in_user_type: $logged_in_user_type, created_by: $created_by, net_due_amount: $net_due_amount }
 			})
 			.done(function( res ) {
 				//console.log(res);
@@ -964,6 +965,7 @@
 				$('#address').val($res1.user_data.address);
 				$('#pin_code').val($res1.user_data.pin_code);
 				$('#gstin_no').val($res1.user_data.gstin_no);
+				$('#net_due_amount').val($res1.net_due_amount);
 
 				if($res1.user_type == '0'){
 					$('#modal_heading').html('Add/Update Super Admin');

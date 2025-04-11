@@ -302,6 +302,14 @@
 								<small id="gstin_no_error" class="form-text text-muted"></small>
 							</div>
 						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="net_due_amount">Net Due</label>
+								<input type="number" class="form-control" id="net_due_amount" placeholder="Net Due">
+								<small id="net_due_amount_error" class="form-text text-muted"></small>
+							</div>
+						</div>
 					</div>	
 					
 					<button type="button" class="btn btn-primary" id="saveUser">OK</button>	

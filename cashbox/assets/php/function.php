@@ -743,13 +743,14 @@
 		$user_data = $_POST["user_data"];
 		$user_data1 = json_encode($user_data);
 		$whatsapp_number = $_POST["whatsapp_number"];
+		$net_due_amount = $_POST["net_due_amount"];
 
 		$status = true;	
 
 		if ($update_login_id > 0) {
 			//update
 			$status = true;	
-			$sql_update = "UPDATE login SET user_data = '".$user_data1."' WHERE login_id = '" .$update_login_id. "' ";
+			$sql_update = "UPDATE login SET user_data = '".$user_data1."', net_due_amount = '".$net_due_amount."' WHERE login_id = '" .$update_login_id. "' ";
 			$mysqli->query($sql_update);
 		} else {
 			/*$check_sql = "SELECT * FROM login WHERE username = '" .$whatsapp_number. "' ";
@@ -844,6 +845,9 @@
 			
 			$user_type = $row['user_type'];
 			$return_result['user_type'] = $user_type;
+			
+			$net_due_amount = $row['net_due_amount'];
+			$return_result['net_due_amount'] = $net_due_amount;
 		}
 		
 		$mysqli->close();
