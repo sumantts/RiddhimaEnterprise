@@ -6,7 +6,7 @@
 		//Localhost connection
 		$username = 'root';
 		$password = '';
-		$dbname = 'riddhi';
+		$dbname = 'theriddh_db';
 	}else{
 		//Server connection
 		$username = 'theriddhi_riddhi';
