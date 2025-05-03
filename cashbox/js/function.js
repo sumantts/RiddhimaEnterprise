@@ -2406,10 +2406,10 @@
 		$allounce_3 = (parseFloat($effectiveBasicPay) * parseFloat($allounce_3_percent)) / 100;
 		$allounce_4 = (parseFloat($effectiveBasicPay) * parseFloat($allounce_4_percent)) / 100;
 
-		$('#allounce_1').val($allounce_1);
-		$('#allounce_2').val($allounce_2);
-		$('#allounce_3').val($allounce_3);
-		$('#allounce_4').val($allounce_4);
+		$('#allounce_1').val($allounce_1.toFixed(2));
+		$('#allounce_2').val($allounce_2.toFixed(2));
+		$('#allounce_3').val($allounce_3.toFixed(2));
+		$('#allounce_4').val($allounce_4.toFixed(2));
 
 		$allounce_1 = $('#allounce_1').val();
 		$allounce_2 = $('#allounce_2').val();
@@ -2425,6 +2425,7 @@
 		$total_deduction = parseFloat($deduction_1) + parseFloat($deduction_2) + parseFloat($deduction_3) + parseFloat($deduction_4);
 
 		$net_pay = parseFloat($effectiveBasicPay) + parseFloat($total_allounce) + parseFloat($overtime_amount) - parseFloat($total_deduction);
+		$net_pay = $net_pay.toFixed(2);
 		$('#net_pay').val($net_pay);
 	});//end function
 

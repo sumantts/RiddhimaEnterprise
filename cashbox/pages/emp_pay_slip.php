@@ -47,7 +47,8 @@
 														<th>Allowance</th>
 														<th>Deduction</th>	
 														<th>Net Pay</th>	
-														<th>Action</th>
+														<th>Action</th>	
+														<th>Attendance</th>
 													</tr>
 												</thead>
 												<tbody>													
@@ -68,6 +69,9 @@
 																<a style="cursor: pointer;" target="_blank" href="pages/pay_slip_printer/pay_slip_pdf.php?emp_sal_id=<?=$ps_row['emp_sal_id']?>"><i class="fa fa-print" aria-hidden="true"></i></a>
 																<a onclick="editPaySlip('<?=$ps_row['emp_sal_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
 																<a onclick="deletePaySlip('<?=$ps_row['emp_sal_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+															</td>
+															<td>
+																<a style="cursor: pointer;" target="_blank" href="pages/pay_slip_printer/attendance_print.php?emp_sal_id=<?=$ps_row['emp_sal_id']?>"><i class="fa fa-print" aria-hidden="true"></i></a>																
 															</td>
 														</tr>
 													<?php 
@@ -153,7 +157,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="exampleInputEmail1">Basic Pay</label>
-									<input type="text" class="form-control" id="emp_basic_pay" readonly  value="0">
+									<input type="text" class="form-control" id="emp_basic_pay" value="0">
 									<small id="emp_basic_pay_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -161,7 +165,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="working_days">Working Days</label>
-									<input type="number" class="form-control" id="working_days" readonly  value="0">
+									<input type="number" class="form-control" id="working_days" value="0">
 									<small id="working_days_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -177,7 +181,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="effective_working_days">Effective Days</label>
-									<input type="number" class="form-control" id="effective_working_days" readonly  value="0">
+									<input type="number" class="form-control" id="effective_working_days" value="0">
 									<small id="effective_working_days_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -185,7 +189,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="attendance_count">Present</label>
-									<input type="number" class="form-control" id="attendance_count" readonly  value="0">
+									<input type="number" class="form-control" id="attendance_count" value="0">
 									<small id="attendance_count_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -193,7 +197,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="effectiveEmpBasicPay">Effective Basic</label>
-									<input type="text" class="form-control" id="effectiveBasicPay" readonly  value="0">
+									<input type="text" class="form-control" id="effectiveBasicPay" value="0">
 									<small id="effectiveEmpBasicPay_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -201,7 +205,7 @@
 							<!-- <div class="col-md-2">
 								<div class="form-group">
 									<label for="absent_count">Absent</label>
-									<input type="number" class="form-control" id="absent_count" readonly  value="0">
+									<input type="number" class="form-control" id="absent_count" value="0">
 									<small id="absent_count_error" class="form-text text-muted"></small>
 								</div>
 							</div> -->
@@ -209,7 +213,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="half_day">Half Day</label>
-									<input type="text" class="form-control" id="half_day" readonly  value="0">
+									<input type="text" class="form-control" id="half_day" value="0">
 									<small id="half_day_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -217,7 +221,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="full_day">Full Day</label>
-									<input type="text" class="form-control" id="full_day" readonly  value="0">
+									<input type="text" class="form-control" id="full_day" value="0">
 									<small id="full_day_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -225,7 +229,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="overtime_hours">Overtime Hour</label>
-									<input type="text" class="form-control" id="overtime_hours" readonly  value="0">
+									<input type="text" class="form-control" id="overtime_hours" value="0">
 									<small id="overtime_hours_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -233,7 +237,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="late_hours">Late Hour</label>
-									<input type="text" class="form-control" id="late_hours" readonly  value="0">
+									<input type="text" class="form-control" id="late_hours" value="0">
 									<small id="late_hours_error" class="form-text text-muted"></small>
 								</div>
 							</div>
@@ -241,7 +245,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="overtime_amount">OT Amount</label>
-									<input type="text" class="form-control" id="overtime_amount" readonly  value="0">
+									<input type="text" class="form-control" id="overtime_amount" value="0">
 									<small id="overtime_amount_error" class="form-text text-muted"></small>
 								</div>
 							</div>
