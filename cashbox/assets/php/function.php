@@ -1747,9 +1747,9 @@
 			}
 		}//end if
 		$effective_working_days = $businessDays - $holi_days;
-
-		//Effective basic pay 
-		$effectiveBasicPay = ceil(($emp_basic_pay / $effective_working_days) * $total_attendance);
+		//Present = Total Attensance
+		//Effective basic pay = (Employee Basic Pay / Effective working days) * (Total Attensance + (Half Day Count * 0.5)))
+		$effectiveBasicPay = ceil(($emp_basic_pay / $effective_working_days) * ($total_attendance + ($half_day_count * 0.5)));
 
 		//One day pay
 		$onedaypay = $emp_basic_pay / $effective_working_days;

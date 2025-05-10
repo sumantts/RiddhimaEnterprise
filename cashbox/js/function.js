@@ -2395,6 +2395,11 @@
 		$effectiveBasicPay = $('#effectiveBasicPay').val();
 		$attendance_count = $('#attendance_count').val();
 		$overtime_amount = $('#overtime_amount').val();
+		
+		$emp_basic_pay = $('#emp_basic_pay').val();
+		$effective_working_days = $('#effective_working_days').val();
+		$attendance_count = $('#attendance_count').val();
+		$half_day = $('#half_day').val();
 
 		$allounce_1_percent = $('#allounce_1_percent').val();
 		$allounce_2_percent = $('#allounce_2_percent').val();
@@ -2422,7 +2427,10 @@
 		$deduction_4 = $('#deduction_4').val();
 		
 		$total_allounce = parseFloat($allounce_1) + parseFloat($allounce_2) + parseFloat($allounce_3) + parseFloat($allounce_4);
-		$total_deduction = parseFloat($deduction_1) + parseFloat($deduction_2) + parseFloat($deduction_3) + parseFloat($deduction_4);
+		$total_deduction = parseFloat($deduction_1) + parseFloat($deduction_2) + parseFloat($deduction_3) + parseFloat($deduction_4);		
+
+		//Effective basic pay = (Employee Basic Pay / Effective working days) * (Total Attensance + (Half Day Count * 0.5)))
+		$effectiveBasicPay = ($emp_basic_pay / $effective_working_days) * (parseFloat($attendance_count) + (parseFloat($half_day) * 0.5));
 
 		$net_pay = parseFloat($effectiveBasicPay) + parseFloat($total_allounce) + parseFloat($overtime_amount) - parseFloat($total_deduction);
 		$net_pay = $net_pay.toFixed(2);
@@ -2557,6 +2565,7 @@
 				$('#holi_days').val($salary_detail_data.holi_days);
 				$('#effective_working_days').val($salary_detail_data.effective_working_days);
 				$('#effectiveBasicPay').val($salary_detail_data.effectiveBasicPay);
+				$('#attendance_count').val($salary_detail_data.attendance_count);
 				
 				$('#half_day').val($salary_detail_data.half_day);
 				$('#full_day').val($salary_detail_data.full_day);
