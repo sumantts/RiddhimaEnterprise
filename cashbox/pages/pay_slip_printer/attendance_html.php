@@ -60,13 +60,17 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			$sl = 1;
 			while($row = $result->fetch_array()){
 				$present_date = date('d-F-Y', strtotime($row['present_date']));		
-				$present_status	 = ($row['present_status'] == 1)? 'Yes' : '';		
+				$present_status	 = ($row['present_status'] == 1)? 'Present' : '';		
 				$half_day_status = ($row['half_day'] == 1)? 'Yes' : '';			
 				$full_day_status = ($row['full_day'] == 1)? 'Yes' : ''; 		
 				$late_hours = ($row['late_hours'] > 0)? $row['late_hours'].' hr' : '';	
 				$overtime_hours = ($row['overtime_hours'] > 0)? $row['overtime_hours'].' hr' : '';		
 				$attendance_note = $row['attendance_note'];
 				$present_date_raw = $row['present_date'];
+
+				if($row['present_status'] == 1 && $row['half_day'] != 1 && $row['full_day'] != 1){
+					$present_status = 'Absent';
+				}
 
 				$sql1 = "SELECT * FROM holiday_list WHERE holiday_date = '".$present_date_raw."'";
 				$result1 = $mysqli->query($sql1);

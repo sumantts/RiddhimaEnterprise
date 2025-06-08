@@ -22,7 +22,7 @@
 								<form action="#" method="POST" name="myForm" id="myForm">
 									<div class="form-row">
 										<div class="form-group col-md-3">
-											<label for="billNumber" class="text-danger">Bill Number*</label>
+											<label for="billNumber" class="text-danger">Bill ID(Serial No.)*</label>
 											<input type="text" class="form-control" id="billNumber" name="billNumber" value="" required>
 										</div>
 

@@ -47,8 +47,12 @@
 			$payHistoryObj = new stdClass();
 			$payHistoryObj->cb_amount = $rowPay['cb_amount'];
 			$payHistoryObj->cb_date = $rowPay['cb_date'];
+			$payHistoryObj->cb_note = $rowPay['cb_note'];
 			array_push($payHistory, $payHistoryObj);
-			$payHistoryText .= "<div class='col-md-12'>Rs. ".$rowPay['cb_amount']."/- Paid on ".date('d-F-Y h:i A', strtotime($rowPay['cb_date']))."</div>";
+			$payHistoryText .= "<div class='col-md-12'>Rs. ".$rowPay['cb_amount']."/- Paid on ".date('d-F-Y h:i A', strtotime($rowPay['cb_date']))."";
+			if($rowPay['cb_note'] != ''){
+				$payHistoryText .= "<br>Note: ".$rowPay['cb_note']."</div>";
+			}
 		}
 	}//end if
 
