@@ -77,6 +77,32 @@
 
 ?>
 
+<style>
+	/* Make the Select2 container full width */
+	.select2-container {
+	width: 100% !important;
+	}
+
+	/* Match height with standard form controls */
+	.select2-selection--single {
+	height: 38px !important; /* or whatever height suits your UI */
+	padding: 4px 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	}
+
+	/* Align the text vertically */
+	.select2-selection__rendered {
+	line-height: 30px !important;
+	}
+
+	/* Remove weird padding/margin in selection arrow */
+	.select2-selection__arrow {
+	height: 38px !important;
+	}
+
+</style>
+
         <div id="layoutSidenav">
             <?php include('common/leftmenu.php');?>
             <div id="layoutSidenav_content">
@@ -281,11 +307,19 @@
 
 					<div class="form-row">
                         <div class="col-md-4">
+							<div class="form-group" >
+								<label for="zone_id">Zone Name*</label>
+								<select class="form-control" id="zone_id">
+									<option value="">Select Zone</option>
+								</select>
+								<small id="zone_id_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+
+                        <div class="col-md-4">
 							<div class="form-group" id="bill_customer_id_block1">
 								<label for="exampleInputEmail1">Customer Name*</label>
-								<select class="form-control" id="bill_customer_id">
-									
-								</select>
+								<select class="form-control" id="bill_customer_id"></select>
 								<small id="customer_id_error" class="form-text text-muted"></small>
 							</div>
 							<div class="form-group" id="bill_customer_id_block2" style="display: none;">
@@ -541,6 +575,9 @@
         dropdownParent: $('#myModalCustomer')
     });
     $('#bill_item_id').select2({
+        dropdownParent: $('#myModalCustomer')
+    });
+    $('#zone_id').select2({
         dropdownParent: $('#myModalCustomer')
     });
     $('#search_cu_id').select2();

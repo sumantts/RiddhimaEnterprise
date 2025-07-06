@@ -1106,7 +1106,8 @@
 			$b_stock_quantity1 = $row_customer['stock_quantity'];
 			$b_user_data = json_decode($b_user_data1);
 			$b_stock_quantity = json_decode($b_stock_quantity1);		
-			$net_due_amount = $row_customer['net_due_amount'];
+			$net_due_amount = $row_customer['net_due_amount'];		
+			$zone_id = $row_customer['zone_id'];
 			
 			$customer_obj = new stdClass();
 
@@ -1117,6 +1118,7 @@
 			$customer_obj->b_user_data = $b_user_data;
 			$customer_obj->b_stock_quantity = $b_stock_quantity;
 			$customer_obj->net_due_amount = $net_due_amount;
+			$customer_obj->zone_id = $zone_id;
 
 			if($b_user_type > 0 && $b_user_type  < 5){
 				array_push($customers, $customer_obj);
@@ -1128,6 +1130,36 @@
 
 		echo json_encode($return_result);
 	}//end function getCustomerList
+
+	if($fn == 'populateZoneDD'){
+		$user_type = $_POST["user_type"];
+		$login_id = $_POST["login_id"];
+		$created_by = $_POST["created_by"];
+
+		$return_result = array();
+		$status = true;	
+		$zones = array();
+		
+		
+		$sql = "SELECT * FROM zone_master WHERE created_by = '".$login_id."' ORDER BY zone_name ASC";	
+		$result = $mysqli->query($sql);
+		while($row_customer = $result->fetch_array()){
+			$zone_id = $row_customer['zone_id'];
+			$zone_name = $row_customer['zone_name']; 
+			
+			$zone = new stdClass();
+
+			$zone->zone_id = $zone_id;
+			$zone->zone_name = $zone_name; 
+			
+			array_push($zones, $zone);
+		}//end while
+
+		$return_result['zones'] = $zones;
+		$return_result['status'] = $status;
+
+		echo json_encode($return_result);
+	}//end function 
 
 	//Populate Item List
 	if($fn == 'populateItemList'){

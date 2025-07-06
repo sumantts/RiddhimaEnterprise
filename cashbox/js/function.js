@@ -1076,6 +1076,7 @@
 		$user_type = $('#user_type').val();
 		$login_id = $('#login_id').val();
 		$created_by = $('#created_by').val();
+		$customers = [];
 
 		if($current_bill_id == '0'){
 			$final_bill = 0;
@@ -1086,6 +1087,8 @@
 
 			$billDetail = {
 				billId: $billId,
+				zone_id: '0',
+				zone_name: '',
 				customer_id: '0',
 				customer_name: '',
 				customer_address: '',
@@ -1189,7 +1192,10 @@
 			$('#hidden_totalCash').val('0.00');
 			//$('#discountType').val('0');
 			$('#discountRate').val('0.00');
-			$('#discountAmount').val('0.00');
+			$('#discountAmount').val('0.00');					
+			
+			$('#zone_id').val('0').trigger('change');
+			$('#bill_customer_id').prop('disabled', false);
 
 			modalCustomer.style.display = "block";
 		}else{
@@ -1239,6 +1245,10 @@
 					$('#discountType').val('0');
 					$('#discountRate').val('0');
 					$('#discountAmount').val('0');
+					if($billDetail.zone_id){
+						$('#zone_id').val($billDetail.zone_id).trigger('change');
+						$('#bill_customer_id').prop('disabled', true);
+					}
 					
 
 					//Payment Type Part
@@ -2785,6 +2795,75 @@
 		return false;
 	})
 	//Return payment function end
+
+	function populateZoneDD(){		
+		$login_id = $('#login_id').val();
+		$user_type = $('#user_type').val();
+		$created_by = $('#created_by').val();
+
+		$.ajax({
+			method: "POST",
+			url: "assets/php/function.php",
+			data: { fn: "populateZoneDD", user_type: $user_type, login_id: $login_id, created_by: $created_by}
+		})
+		.done(function( res ) {
+			//console.log(res);
+			$res1 = JSON.parse(res);
+			if($res1.status == true){
+				$zones = $res1.zones;
+				
+				$('#zone_id').html('');
+				$options = "<option selected value='0'>Select Zone</option>";
+				for(var i = 0; i < $zones.length; i++){						
+					$zone_id = $zones[i].zone_id;
+					$zone_name = $zones[i].zone_name; 
+
+					$options += "<option value="+$zone_id+">"+$zone_name+"</option>";
+				}
+				$('#zone_id').html($options); 
+			}
+		});//end ajax
+	}//end fun
+
+	$('#zone_id').on('change', function(){
+		$zone_id = $('#zone_id').val();
+		$zone_name = $("#zone_id option:selected").text();	
+		$billDetail.zone_id = $zone_id;
+		$billDetail.zone_name = $zone_name;
+
+		if($zone_id != '' && $customers.length > 0){
+			$('#bill_customer_id').html('');
+			$options = "<option selected value='0'>Select Customer</option>";
+			for(var i = 0; i < $customers.length; i++){	
+				$zone_id_temp = 0;
+				$zone_id_temp = $customers[i].zone_id;
+				if(parseInt($zone_id_temp) == parseInt($zone_id)){
+					$b_user_data = $customers[i].b_user_data;
+					$b_stock_quantity = $customers[i].b_stock_quantity;
+					$org_name = $b_user_data.org_name;
+					$contact_person1 = $b_user_data.contact_person;
+					$contact_person = $contact_person1.replace(/ /g, "_");
+					$phone_number = $b_user_data.phone_number? $b_user_data.phone_number: '9999999999';
+					$whatsapp_number = $b_user_data.whatsapp_number? $b_user_data.whatsapp_number: '9999999999';
+					$email_id = $b_user_data.email_id? $b_user_data.email_id: 'xxx@xxxx.com';
+					$address1 = $b_user_data.address;
+					$address = $address1.replace(/ /g, "_");
+					$pin_code = $b_user_data.pin_code;
+					$gstin_no = $b_user_data.gstin_no? $b_user_data.gstin_no: '0000000000';
+					$b_user_type = $customers[i].b_user_type;
+
+					$options += "<option value="+$customers[i].b_login_id+" customer_name="+$contact_person+" phone_number="+$phone_number+" whatsapp_number="+$whatsapp_number+" email_id="+$email_id+" pin_code="+$pin_code+" customer_gstin_no="+$gstin_no+" customer_address="+$address+" b_user_type="+$b_user_type+" net_due_amount="+$customers[i].net_due_amount+">"+$org_name+"</option>";
+				}//end if
+			}//end for
+			$('#bill_customer_id').html($options);					
+			$('#bill_customer_id').prop('disabled', false);
+			$populate_customer = true;
+		}//end if
+	});//end if
+
+	$(document).ready(function() {
+		populateZoneDD();
+	});
 
 	//Loading screen
 	$body = $("body");
