@@ -38,7 +38,6 @@
 				//echo "<br>";
 
 				for($j = 0; $j < sizeof($fineItems); $j++){
-					
 					array_push($fineItemsArr, $fineItems[$j]);
 				}//end for
 			}//end if
@@ -66,6 +65,7 @@
 		$subObj->productsGST = 0;
 		$subObj->productGST = 0;
 		$subObj->productNetAmount = 0;
+		$subObj->productNetWeight = 0;
 
 		array_push($mainArray, $subObj);
 	}
@@ -85,6 +85,8 @@
 		$productsGST = $masterItems[$m]->productsGST;
 		$productGST = $masterItems[$m]->productGST;
 		$productNetAmount = $masterItems[$m]->productNetAmount;
+		$productNetWeight = $masterItems[$m]->productNetWeight;
+		
 		//echo 'item_id: '.$masterItems[$m]->item_id;
 		//echo "<br>";
 		$productRate = 0;
@@ -98,6 +100,7 @@
 					$net_value = $orderItems[$n]->net_value;
 					$cgst_amount = $orderItems[$n]->cgst_amount;
 					$sgst_amount = $orderItems[$n]->sgst_amount;
+					$net_weight_total = $orderItems[$n]->net_weight_total;
 					//echo 'qty: '.$qty;
 					//echo "<br>";
 					$productNewQty = $productNewQty + $qty;
@@ -106,6 +109,7 @@
 					$productsGST = $productsGST + $sgst_amount;
 					$productGST = $productGST + $tax_value;
 					$productNetAmount = $productNetAmount + $net_value;
+					$productNetWeight = $productNetWeight + $net_weight_total;
 				}//end if
 			//}
 		}//end for n
@@ -116,6 +120,7 @@
 		$masterItems[$m]->productsGST = $productsGST;
 		$masterItems[$m]->productGST = $productGST;
 		$masterItems[$m]->productNetAmount = $productNetAmount;
+		$masterItems[$m]->productNetWeight = $productNetWeight;
 	}//end for m
 
 	for($j = 0; $j < sizeof($mainArray); $j++){

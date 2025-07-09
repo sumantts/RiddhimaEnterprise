@@ -27,7 +27,8 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 		$message .="<tr>";
 			$message .="<th colspan='2'> Product Name</th>";
 			$message .="<th> HS Code</th>";
-			$message .="<th>Quantity</th>";	
+			$message .="<th>Quantity</th>";
+			$message .="<th>Weight(Kg)</th>";	
 			$message .="<th>Price</th>";	
 			$message .="<th>Basic Amount</th>";	
 			$message .="<th>CGST</th>";	
@@ -39,12 +40,14 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 
 		$message .="<tbody>";
 
-		$a = 0; $b = ''; $c = 0; $d = 0; $e = 0; $f = 0; $g = 0;
+		$a = 0; $b = ''; $c = 0; $d = 0; $e = 0; $f = 0; $g = 0; $w = 0; $w_kg = 0; $w_kg1 = 0;
 		for($x = 0; $x < sizeof($masterItems); $x++){
 			$item_id = $masterItems[$x]->item_id;
 			$item_name = $masterItems[$x]->item_name;
 			$hs_code = $masterItems[$x]->hs_code;
 			$productNewQty = $masterItems[$x]->productNewQty;
+			$productNetWeight = $masterItems[$x]->productNetWeight;
+			$productNetWeightKg = ($productNetWeight / 1000);
 			$productRate = number_format((float)$masterItems[$x]->productRate, 2, '.', '');
 			$productBasicAmount = number_format((float)$masterItems[$x]->productBasicAmount, 2, '.', '');
 			$productcGST = number_format((float)$masterItems[$x]->productcGST, 2, '.', '');
@@ -53,6 +56,7 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 			$productNetAmount = number_format((float)$masterItems[$x]->productNetAmount, 2, '.', '');
 
 			$a = $a + $productNewQty;
+			$w = $w + $productNetWeight;
 			//$b = $b + $productRate;
 			$c = $c + $productBasicAmount;
 			$c = number_format((float)$c, 2, '.', '');
@@ -78,7 +82,8 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 				$message .="<tr>";
 				$message .="<td colspan='2' style='padding-left: 5px;'>".$item_name."</td>";
 				$message .="<td>".$hs_code."</td>";						
-				$message .="<td style='text-align: right; padding-right: 5px;'>".$productNewQty."</td>";
+				$message .="<td style='text-align: right; padding-right: 5px;'>".$productNewQty."</td>";					
+				$message .="<td style='text-align: right; padding-right: 5px;'>".$productNetWeightKg."</td>";
 				$message .="<td style='text-align: right; padding-right: 5px;'>".$productRate."</td>";
 				$message .="<td style='text-align: right; padding-right: 5px;'>".$productBasicAmount."</td>";
 				$message .="<td style='text-align: right; padding-right: 5px;'>".$productcGST."</td>";
@@ -89,10 +94,13 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 			}
 
 		}//end for x
-			
+		
+		$w_kg = $w / 1000;
+        $w_kg1 = number_format((float) $w_kg, 2, '.', '');			
 			$message .="<tr>";
 				$message .="<td colspan='3' style='text-align: center; padding-left: 5px; font-weight: bold;'>TOTAL</td>";
 				$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$a."</td>";
+				$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$w_kg1."</td>";
 				$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$b."</td>";
 				$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$c."</td>";
 				$message .="<td style='text-align: right; padding-right: 5px; font-weight: bold;'>".$f."</td>";
