@@ -66,9 +66,11 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			$message .="<th colspan='4' style='text-align: center;'> Email Id: </th><th colspan='4' style='text-align: center;'> ".$customer_email." </th><th colspan='4' style='text-align: center;'> Email Id: </th><th colspan='4' style='text-align: center;'> ".$bill_description->createdBy->email." </th>";
 		$message .="</tr>";
 		
-		$message .="<tr>";
-			$message .="<th colspan='4' style='text-align: center;'>Salesman Name: </th><th colspan='4' style='text-align: center;'> ".$zone_user_name." </th><th colspan='4' style='text-align: center;'> Salesman Contact Number: </th><th colspan='4' style='text-align: center;'>$zone_user_ph / $zone_user_whap</th>";
-		$message .="</tr>";
+		if($zone_user_name != ''){
+			$message .="<tr>";
+				$message .="<th colspan='4' style='text-align: center;'>Salesman Name: </th><th colspan='4' style='text-align: center;'> ".$zone_user_name." </th><th colspan='4' style='text-align: center;'> Salesman Contact Number: </th><th colspan='4' style='text-align: center;'>$zone_user_ph / $zone_user_whap</th>";
+			$message .="</tr>";
+		}
 		
 		$message .="<tr>";
 			$message .="<th> Sl.No.</th>";
