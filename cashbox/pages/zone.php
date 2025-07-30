@@ -123,11 +123,23 @@
 								<small id="zone_pincode_error" class="form-text text-muted"></small>
 							</div>
 						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="salesman">Salesman</label>
+								<select class="form-control" id="salesman_id" name="salesman_id">
+									<option value="">Select</opyion>				
+								</select>
+								<small id="login_id_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+
 					</div>
 					
 					<button type="button" class="btn btn-primary" id="saveZone">OK</button>	
-					<input type="hidden" id="user_type" value="<?=$_SESSION["user_type"]?>">
+					<input type="hidden" id="user_type" value="<?=$user_type?>">
 					<input type="hidden" id="created_by" value="<?=$created_by?>">
+					<input type="hidden" id="login_id" value="<?=$login_id?>">
 					</form>	
 					</div>
 					<div class="modal-footer">

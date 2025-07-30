@@ -383,6 +383,7 @@
 		$('#zone_name').val('');
 		$('#zone_area').val('');
 		$('#zone_pincode').val('');
+		$('#salesman_id').val('0');
 		modal.style.display = "none";
 	}
 	function closeHolidayModal(){
@@ -400,6 +401,7 @@
 		$zone_name = $('#zone_name').val();
 		$zone_area = $('#zone_area').val();
 		$zone_pincode = $('#zone_pincode').val();
+		$salesman_id = $('#salesman_id').val();
 
 		if($zone_name == ''){
 			$('#zone_name_error').html('Please Enter Zone Name');
@@ -411,7 +413,7 @@
 			$.ajax({
 				method: "POST",
 				url: "assets/php/function.php",
-				data: { fn: "saveZone", zone_id: $zone_id, zone_name: $zone_name, zone_area: $zone_area, zone_pincode: $zone_pincode, login_id: $login_id }
+				data: { fn: "saveZone", zone_id: $zone_id, zone_name: $zone_name, zone_area: $zone_area, zone_pincode: $zone_pincode, login_id: $login_id, salesman_id: $salesman_id }
 			})
 			.done(function( res ) {
 				//console.log(res);
@@ -460,6 +462,7 @@
 				$('#zone_name').val($res1.zone_name);
 				$('#zone_area').val($res1.zone_area);
 				$('#zone_pincode').val($res1.zone_pincode);
+				$('#salesman_id').val($res1.salesman_id);
 
 				modal.style.display = "block";
 			}else{
@@ -1089,6 +1092,9 @@
 				billId: $billId,
 				zone_id: '0',
 				zone_name: '',
+				zone_user_name: '',
+				zone_user_ph: '',
+				zone_user_whap: '',
 				customer_id: '0',
 				customer_name: '',
 				customer_address: '',
@@ -2817,8 +2823,11 @@
 				for(var i = 0; i < $zones.length; i++){						
 					$zone_id = $zones[i].zone_id;
 					$zone_name = $zones[i].zone_name; 
+					$zone_user_name = $zones[i].org_name; 
+					$zone_user_ph = $zones[i].phone_number; 
+					$zone_user_whap = $zones[i].whatsapp_number; 
 
-					$options += "<option value="+$zone_id+">"+$zone_name+"</option>";
+					$options += "<option value="+$zone_id+" zone_user_name="+$zone_user_name+" zone_user_ph="+$zone_user_ph+" zone_user_whap="+$zone_user_whap+">"+$zone_name+"</option>";
 				}
 				$('#zone_id').html($options); 
 			}
@@ -2830,6 +2839,14 @@
 		$zone_name = $("#zone_id option:selected").text();	
 		$billDetail.zone_id = $zone_id;
 		$billDetail.zone_name = $zone_name;
+		
+		var zone_id = $('#zone_id').find('option:selected'); 
+		$zone_user_name = zone_id.attr("zone_user_name"); 	
+		$zone_user_ph = zone_id.attr("zone_user_ph"); 	
+		$zone_user_whap = zone_id.attr("zone_user_whap");  
+		$billDetail.zone_user_name = $zone_user_name;
+		$billDetail.zone_user_ph = $zone_user_ph;
+		$billDetail.zone_user_whap = $zone_user_whap;
 
 		if($zone_id != '' && $customers.length > 0){
 			$('#bill_customer_id').html('');
@@ -2861,8 +2878,51 @@
 		}//end if
 	});//end if
 
+	function populateSalesManDD(){	
+		$login_id = $('#login_id').val();
+		$user_type = $('#user_type').val();
+		$created_by = $('#created_by').val();
+
+		$.ajax({
+			method: "POST",
+			url: "assets/php/function.php",
+			data: { fn: "populateSalesManDD", user_type: $user_type, login_id: $login_id, created_by: $created_by}
+		})
+		.done(function( res ) {
+			//console.log(res);
+			$res1 = JSON.parse(res);
+			if($res1.status == true){
+				$customers = $res1.customers;
+				
+				$('#salesman_id').html('');
+				$options = "<option selected value='0'>Select</option>";
+				for(var i = 0; i < $customers.length; i++){						
+					$b_user_data = $customers[i].b_user_data;
+					$b_stock_quantity = $customers[i].b_stock_quantity;
+					$org_name = $b_user_data.org_name;
+					$contact_person1 = $b_user_data.contact_person;
+					$contact_person = $contact_person1.replace(/ /g, "_");
+					$phone_number = $b_user_data.phone_number? $b_user_data.phone_number: '9999999999';
+					$whatsapp_number = $b_user_data.whatsapp_number? $b_user_data.whatsapp_number: '9999999999';
+					$email_id = $b_user_data.email_id? $b_user_data.email_id: 'xxx@xxxx.com';
+					$address1 = $b_user_data.address;
+					$address = $address1.replace(/ /g, "_");
+					$pin_code = $b_user_data.pin_code;
+					$gstin_no = $b_user_data.gstin_no? $b_user_data.gstin_no: '0000000000';
+					$b_user_type = $customers[i].b_user_type;
+
+					$options += "<option value="+$customers[i].b_login_id+" >"+$org_name+"</option>";
+				}
+				$('#salesman_id').html($options);					
+				$('#salesman_id').prop('disabled', false);
+				$populate_customer = true;
+			}
+		});//end ajax
+	}//end fun
+
 	$(document).ready(function() {
 		populateZoneDD();
+		populateSalesManDD();
 	});
 
 	//Loading screen

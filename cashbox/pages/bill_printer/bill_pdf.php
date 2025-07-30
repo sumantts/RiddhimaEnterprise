@@ -23,6 +23,12 @@
 	$customer_gstin_no = $bill_description->customer_gstin_no; 
 	$customer_email = $bill_description->email_id; 
 
+	//sales man
+	$zone_name = $bill_description->zone_name; 
+	$zone_user_name = str_replace("_", " ", $bill_description->zone_user_name); 
+	$zone_user_ph = $bill_description->zone_user_ph; 
+	$zone_user_whap = $bill_description->zone_user_whap;  
+
 	$created_by = $row_bill['created_by'];
 	$get_sql = "SELECT * FROM login WHERE login_id = '" .$created_by. "'";
 	$get_sql_result = $mysqli->query($get_sql);

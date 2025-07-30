@@ -541,12 +541,14 @@
 		$zone_area = $_POST["zone_area"];
 		$zone_pincode = $_POST["zone_pincode"];
 		$login_id = $_POST["login_id"];
+		$salesman_id = $_POST["salesman_id"];
+		
 		$message = '';
 		
 		if ($zone_id > 0) {
 			$status = true;	
 			//update
-			$sql_update = "UPDATE zone_master SET zone_name = '".$zone_name."', zone_area = '".$zone_area."', zone_pincode = '".$zone_pincode."', created_by = '".$login_id."' WHERE zone_id = '" .$zone_id. "' ";
+			$sql_update = "UPDATE zone_master SET salesman_id = '".$salesman_id."', zone_name = '".$zone_name."', zone_area = '".$zone_area."', zone_pincode = '".$zone_pincode."', created_by = '".$login_id."' WHERE zone_id = '" .$zone_id. "' ";
 			$mysqli->query($sql_update);			
 		} else {
 			$sql = "SELECT * FROM zone_master WHERE zone_name = '".$zone_name."' OR zone_pincode = '".$zone_pincode."' ";
@@ -559,7 +561,7 @@
 				$status = true;	
 				
 				//Insert
-				$sql_insert = "INSERT INTO zone_master (zone_name, zone_area, zone_pincode, created_by) VALUES('".$zone_name."', '".$zone_area."', '".$zone_pincode."', '".$login_id."')";
+				$sql_insert = "INSERT INTO zone_master (salesman_id, zone_name, zone_area, zone_pincode, created_by) VALUES('".$salesman_id."', '".$zone_name."', '".$zone_area."', '".$zone_pincode."', '".$login_id."')";
 				$result_insert = $mysqli->query($sql_insert);
 				$zone_id = $mysqli->insert_id;
 			}//end if else
@@ -593,6 +595,7 @@
 			$zone_name = $row['zone_name'];
 			$zone_area = $row['zone_area'];
 			$zone_pincode = $row['zone_pincode'];
+			$salesman_id = $row['salesman_id'];
 		}
 		
 		$mysqli->close();
@@ -601,6 +604,7 @@
 		$return_result['zone_name'] = $zone_name;
 		$return_result['zone_area'] = $zone_area;
 		$return_result['zone_pincode'] = $zone_pincode;
+		$return_result['salesman_id'] = $salesman_id;
 		$return_result['status'] = $status;
 		//sleep(1);
 		echo json_encode($return_result);
@@ -1129,7 +1133,74 @@
 		$return_result['status'] = $status;
 
 		echo json_encode($return_result);
-	}//end function getCustomerList
+	}//end function getCustomerList 
+
+
+	if($fn == 'populateSalesManDD'){
+		$user_type = $_POST["user_type"];
+		$login_id = $_POST["login_id"];
+		$created_by = $_POST["created_by"];
+
+		$return_result = array();
+		$status = true;	
+		$customers = array();
+		
+		$salesman_type = 5;	
+		if($user_type == '5'){
+			$get_sql = "SELECT * FROM login WHERE login_id = '" .$created_by. "'";
+			$get_sql_result = $mysqli->query($get_sql);
+			$get_sql_row = $get_sql_result->fetch_array();
+			$user_type_temp = $get_sql_row['user_type'];
+			$login_id_temp = $get_sql_row['login_id'];
+
+			if($user_type_temp == '0'){
+				$next_user_type1 = $user_type_temp;
+				$salesman_type = 0;
+			}else{
+				$next_user_type1 = $user_type_temp + 1;
+				$salesman_type = $user_type_temp;
+			}
+
+			$sql = "SELECT * FROM login WHERE created_by = '".$login_id_temp."' ORDER BY login_id DESC";	
+			$result = $mysqli->query($sql);
+		}else{
+			$sql = "SELECT * FROM login WHERE created_by = '".$login_id."' ORDER BY login_id DESC";	
+			$result = $mysqli->query($sql);
+		}
+
+		while($row_customer = $result->fetch_array()){
+			$b_login_id = $row_customer['login_id'];
+			$b_username = $row_customer['username'];
+			$b_password = $row_customer['password'];
+			$b_user_type = $row_customer['user_type'];
+			$b_user_data1 = $row_customer['user_data'];			
+			$b_stock_quantity1 = $row_customer['stock_quantity'];
+			$b_user_data = json_decode($b_user_data1);
+			$b_stock_quantity = json_decode($b_stock_quantity1);		
+			$net_due_amount = $row_customer['net_due_amount'];		
+			$zone_id = $row_customer['zone_id'];
+			
+			$customer_obj = new stdClass();
+
+			$customer_obj->b_login_id = $b_login_id;
+			$customer_obj->b_username = $b_username;
+			$customer_obj->b_password = $b_password;
+			$customer_obj->b_user_type = $b_user_type;
+			$customer_obj->b_user_data = $b_user_data;
+			$customer_obj->b_stock_quantity = $b_stock_quantity;
+			$customer_obj->net_due_amount = $net_due_amount;
+			$customer_obj->zone_id = $zone_id;
+
+			if($b_user_type == 5){
+				array_push($customers, $customer_obj);
+			}
+		}//end while
+
+		$return_result['customers'] = $customers;
+		$return_result['status'] = $status;
+
+		echo json_encode($return_result);
+	}//end function
 
 	if($fn == 'populateZoneDD'){
 		$user_type = $_POST["user_type"];
@@ -1141,16 +1212,24 @@
 		$zones = array();
 		
 		
-		$sql = "SELECT * FROM zone_master WHERE created_by = '".$login_id."' ORDER BY zone_name ASC";	
+		//$sql = "SELECT * FROM zone_master WHERE created_by = '".$login_id."' ORDER BY zone_name ASC";	
+		$sql = "SELECT zone_master.zone_id, zone_master.salesman_id, zone_master.zone_name, zone_master.zone_area, zone_master.zone_pincode, zone_master.created_by, login.user_data FROM zone_master JOIN login ON zone_master.salesman_id = login.login_id WHERE zone_master.created_by = '".$login_id."' ORDER BY zone_master.zone_name ASC";
 		$result = $mysqli->query($sql);
 		while($row_customer = $result->fetch_array()){
 			$zone_id = $row_customer['zone_id'];
 			$zone_name = $row_customer['zone_name']; 
+			$user_data = json_decode($row_customer['user_data']);
+			$org_name = str_replace(" ", "_", $user_data->org_name);
+			$phone_number = $user_data->phone_number;
+			$whatsapp_number = $user_data->whatsapp_number;
 			
 			$zone = new stdClass();
 
 			$zone->zone_id = $zone_id;
 			$zone->zone_name = $zone_name; 
+			$zone->org_name = $org_name; 
+			$zone->phone_number = $phone_number; 
+			$zone->whatsapp_number = $whatsapp_number; 
 			
 			array_push($zones, $zone);
 		}//end while
