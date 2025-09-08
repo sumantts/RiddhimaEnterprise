@@ -1074,6 +1074,7 @@
 		$user_type = $_POST["user_type"];
 		$login_id = $_POST["login_id"];
 		$created_by = $_POST["created_by"];
+		$zone_id = $_POST["zone_id"];
 
 		$return_result = array();
 		$status = true;	
@@ -1081,7 +1082,7 @@
 		
 		$salesman_type = 5;	
 		if($user_type == '5'){
-			$get_sql = "SELECT * FROM login WHERE login_id = '" .$created_by. "'";
+			$get_sql = "SELECT * FROM login WHERE login_id = '" .$created_by. "' AND zone_id = '" .$zone_id. "' ";
 			$get_sql_result = $mysqli->query($get_sql);
 			$get_sql_row = $get_sql_result->fetch_array();
 			$user_type_temp = $get_sql_row['user_type'];
@@ -1095,10 +1096,10 @@
 				$salesman_type = $user_type_temp;
 			}
 
-			$sql = "SELECT * FROM login WHERE created_by = '".$login_id_temp."' ORDER BY login_id DESC";	
+			$sql = "SELECT * FROM login WHERE created_by = '".$login_id_temp."' AND zone_id = '" .$zone_id. "' ORDER BY login_id DESC";	
 			$result = $mysqli->query($sql);
 		}else{
-			$sql = "SELECT * FROM login WHERE created_by = '".$login_id."' ORDER BY login_id DESC";	
+			$sql = "SELECT * FROM login WHERE created_by = '".$login_id."' AND zone_id = '" .$zone_id. "' ORDER BY login_id DESC";	
 			$result = $mysqli->query($sql);
 		}
 		while($row_customer = $result->fetch_array()){

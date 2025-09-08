@@ -43,12 +43,14 @@
 	    $from_date = date('Y-m-d');
 	    $to_date = date('Y-m-d');
 		$collectionReport = 0;
-		$create_date = date("Y-m-d H:i:s", strtotime("-2 months"));
+		//$create_date = date("Y-m-d H:i:s", strtotime("-1 months"));
+		$create_date = date('Y-m-d').' 00:01:01';
+		$create_date1 = date('Y-m-d').' 23:58:01';
 		$search_cu_id = 0;
 		if($user_type == '5'){
-			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date > '".$create_date."' ORDER BY bill_id DESC";	
+			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date >= '".$create_date."' AND create_date <= '".$create_date1."' ORDER BY bill_id DESC";	
 		}else{
-			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date > '".$create_date."' ORDER BY bill_id DESC";
+			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date >= '".$create_date."' AND create_date <= '".$create_date1."' ORDER BY bill_id DESC";
 		}
 	}
 	
