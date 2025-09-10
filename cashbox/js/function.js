@@ -1256,7 +1256,45 @@
 					if($billDetail.zone_id){
 						$('#zone_id').val($billDetail.zone_id).trigger('change');
 						$('#bill_customer_id').prop('disabled', true);
-					}
+						$bill_customer_id = $res1.customer_id;
+						$('#bill_customer_id_h').val($bill_customer_id);
+
+						
+						$.ajax({
+							method: "POST",
+							url: "assets/php/function.php",
+							data: { fn: "getCustomerList_New", user_type: $user_type, login_id: $login_id, created_by: $created_by, bill_customer_id: $bill_customer_id}
+						})
+						.done(function( res ) {
+							//console.log(res);
+							$res1 = JSON.parse(res);
+							if($res1.status == true){
+								$customers = $res1.customers;
+								
+								$('#bill_customer_id').html(''); 
+								for(var i = 0; i < $customers.length; i++){						
+									$b_user_data = $customers[i].b_user_data;
+									$b_stock_quantity = $customers[i].b_stock_quantity;
+									$org_name = $b_user_data.org_name;
+									$contact_person1 = $b_user_data.contact_person;
+									$contact_person = $contact_person1.replace(/ /g, "_");
+									$phone_number = $b_user_data.phone_number? $b_user_data.phone_number: '9999999999';
+									$whatsapp_number = $b_user_data.whatsapp_number? $b_user_data.whatsapp_number: '9999999999';
+									$email_id = $b_user_data.email_id? $b_user_data.email_id: 'xxx@xxxx.com';
+									$address1 = $b_user_data.address;
+									$address = $address1.replace(/ /g, "_");
+									$pin_code = $b_user_data.pin_code;
+									$gstin_no = $b_user_data.gstin_no? $b_user_data.gstin_no: '0000000000';
+									$b_user_type = $customers[i].b_user_type;
+
+									$options += "<option value="+$customers[i].b_login_id+" customer_name="+$contact_person+" phone_number="+$phone_number+" whatsapp_number="+$whatsapp_number+" email_id="+$email_id+" pin_code="+$pin_code+" customer_gstin_no="+$gstin_no+" customer_address="+$address+" b_user_type="+$b_user_type+" net_due_amount="+$customers[i].net_due_amount+" selected>"+$org_name+"</option>";
+								}
+								$('#bill_customer_id').html($options);					
+								$('#bill_customer_id').prop('disabled', false);
+								$populate_customer = true;
+							}
+						});//end ajax
+					}//end if
 					
 
 					//Payment Type Part
@@ -1727,6 +1765,7 @@
 	//Calculate Net Metal Quantity
 	function calculateNetMetalQuantity(){
 		$bill_id = $('#current_bill_id').val();	
+		console.log('bill_id: ' + $bill_id);
 
 		if(parseInt($bill_id) == 0){
 			var bill_customer_id = $('#bill_customer_id').find('option:selected'); 
@@ -1738,6 +1777,12 @@
 		}else{
 			$customer_id_n = $billDetail.customer_id;
 		}
+
+		if($customer_id_n == '' || $customer_id_n == '0'){
+			$customer_id_n = $('#bill_customer_id_h').val();
+		}
+
+		console.log('customer_id_n: ' + $customer_id_n);
 
 		//calculate Due adjustment start
 		$totalCash = $('#totalCash').val();	
@@ -1933,12 +1978,19 @@
 		$bill_customer_id = $('#bill_customer_id').val();
 		$create_date_new = $('#create_date_new').val();
 		$billDetail.create_date_new = $create_date_new;
-		$final_bill = 1;
+		$final_bill = 1;		
+
+		if($bill_customer_id == '' || $bill_customer_id == '0'){
+			$bill_customer_id = $('#bill_customer_id_h').val();
+		}
+
+
 		if(parseInt($bill_customer_id) == 0){
-			$('#customer_id_error').html('Please select Customer Name');
-			//$('#guestUserPhone_error').html('Please select Ph.No.');			
+			alert('Please select Customer Name');
+			//$('#customer_id_error').html('Please select Customer Name'); 		
 		}else if(parseInt($billDetail.fineItemsSubTotal) < 1){
-			$('#addBillItem_error').html('Please Add Item/product');
+			//$('#addBillItem_error').html('Please Add Item/product');
+			alert('Please Add Item/product');
 		}else{			
 			calculateNetMetalQuantity();
 			modalCustomer.style.display = "none";

@@ -1135,6 +1135,77 @@
 
 		echo json_encode($return_result);
 	}//end function getCustomerList 
+	
+	if($fn == 'getCustomerList_New'){
+		$user_type = $_POST["user_type"];
+		$login_id = $_POST["login_id"];
+		$created_by = $_POST["created_by"];
+		$zone_id = $_POST["zone_id"];
+		$bill_customer_id = $_POST["bill_customer_id"];
+
+		$return_result = array();
+		$status = true;	
+		$customers = array();
+		
+		$salesman_type = 5;	
+		/*if($user_type == '5'){
+			$get_sql = "SELECT * FROM login WHERE login_id = '" .$created_by. "' AND zone_id = '" .$zone_id. "' ";
+			$get_sql_result = $mysqli->query($get_sql);
+			$get_sql_row = $get_sql_result->fetch_array();
+			$user_type_temp = $get_sql_row['user_type'];
+			$login_id_temp = $get_sql_row['login_id'];
+
+			if($user_type_temp == '0'){
+				$next_user_type1 = $user_type_temp;
+				$salesman_type = 0;
+			}else{
+				$next_user_type1 = $user_type_temp + 1;
+				$salesman_type = $user_type_temp;
+			}
+
+			$sql = "SELECT * FROM login WHERE created_by = '".$login_id_temp."' AND zone_id = '" .$zone_id. "' ORDER BY login_id DESC";	
+			$result = $mysqli->query($sql);
+		}else{
+			$sql = "SELECT * FROM login WHERE created_by = '".$login_id."' AND zone_id = '" .$zone_id. "' ORDER BY login_id DESC";	
+			$result = $mysqli->query($sql);
+		}*/
+
+		$sql = "SELECT * FROM login WHERE login_id = '".$bill_customer_id."' ";	
+		$result = $mysqli->query($sql);
+
+		while($row_customer = $result->fetch_array()){
+			$b_login_id = $row_customer['login_id'];
+			$b_username = $row_customer['username'];
+			$b_password = $row_customer['password'];
+			$b_user_type = $row_customer['user_type'];
+			$b_user_data1 = $row_customer['user_data'];			
+			$b_stock_quantity1 = $row_customer['stock_quantity'];
+			$b_user_data = json_decode($b_user_data1);
+			$b_stock_quantity = json_decode($b_stock_quantity1);		
+			$net_due_amount = $row_customer['net_due_amount'];		
+			$zone_id = $row_customer['zone_id'];
+			
+			$customer_obj = new stdClass();
+
+			$customer_obj->b_login_id = $b_login_id;
+			$customer_obj->b_username = $b_username;
+			$customer_obj->b_password = $b_password;
+			$customer_obj->b_user_type = $b_user_type;
+			$customer_obj->b_user_data = $b_user_data;
+			$customer_obj->b_stock_quantity = $b_stock_quantity;
+			$customer_obj->net_due_amount = $net_due_amount;
+			$customer_obj->zone_id = $zone_id;
+
+			if($b_user_type > 0 && $b_user_type  < 5){
+				array_push($customers, $customer_obj);
+			}
+		}//end while
+
+		$return_result['customers'] = $customers;
+		$return_result['status'] = $status;
+
+		echo json_encode($return_result);
+	}//end function getCustomerList 
 
 
 	if($fn == 'populateSalesManDD'){

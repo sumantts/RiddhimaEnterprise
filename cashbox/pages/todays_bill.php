@@ -16,8 +16,8 @@
 	$result_item = $mysqli->query($sql_item);
 
 	if(isset($_POST["search_cu_id"])){
-		$from_date = $_POST["from_date"];
-		$to_date = $_POST["to_date"];
+		$from_date = date('Y-m-d', strtotime($_POST["from_date"]));
+		$to_date = date('Y-m-d', strtotime($_POST["to_date"]));
 		$search_cu_id = $_POST["search_cu_id"];
 		$user_type = $_POST["ser_user_type"];
 		$created_by = $_POST["ser_created_by"];
@@ -25,17 +25,19 @@
 
 		if($user_type == '5'){
 			if($search_cu_id > 0){
-				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND customer_id = '" .$search_cu_id. "' AND create_date BETWEEN '".$from_date." 00:00:01' AND '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
+				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND customer_id = '" .$search_cu_id. "' AND create_date >= '".$from_date." 00:00:01' AND create_date <= '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
 			}else{
-				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date BETWEEN '".$from_date." 00:00:01' AND  '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
+				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date >= '".$from_date." 00:00:01' AND  create_date <= '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
 			}
 		}else{
 			if($search_cu_id > 0){
-				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND customer_id = '" .$search_cu_id. "' AND create_date BETWEEN '".$from_date." 00:00:01' AND '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
+				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND customer_id = '" .$search_cu_id. "' AND create_date >= '".$from_date." 00:00:01' AND create_date <= '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
 			}else{
-				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date BETWEEN '".$from_date." 00:00:01' AND  '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
+				$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date >= '".$from_date." 00:00:01' AND  create_date <= '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";
 			}
 		}
+
+		$result_bill = $mysqli->query($sql_bill);
 
 		//Collection Report
 		$collectionReport = 1;
@@ -52,9 +54,10 @@
 		}else{
 			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date >= '".$create_date."' AND create_date <= '".$create_date1."' ORDER BY bill_id DESC";
 		}
+		$result_bill = $mysqli->query($sql_bill);
 	}
 	
-	$result_bill = $mysqli->query($sql_bill);
+	
 	
 	if($user_type == '5'){
 		$sql = "SELECT * FROM login WHERE created_by = '".$created_by."' ORDER BY login_id DESC";	
@@ -102,6 +105,12 @@
 	.select2-selection__arrow {
 	height: 38px !important;
 	}
+
+	.modal-body {
+		max-height: calc(100vh - 150px); /* leave space for header/footer */
+		overflow-y: auto;
+	}
+
 
 </style>
 
@@ -216,7 +225,7 @@
 														$create_date = $row_bill['create_date'];
 
 														if(isset($_POST["search_cu_id"])){
-															if(strtotime($create_date) >= strtotime($from_date) && strtotime($create_date) <= strtotime($to_date)){
+															//if(strtotime($create_date) >= strtotime($from_date) && strtotime($create_date) <= strtotime($to_date)){
 																$formated_bill_no = 'RE/'.date('M', strtotime($create_date)).'/'.$bill_id;
 																if(isset($bill_description->discountAmount)){
 																	$discountAmount = $bill_description->discountAmount;
@@ -244,7 +253,7 @@
 																	</td>
 																</tr>
 																<?php 
-															} //end 
+															//} //end 
 														}else{
 															//if(strtotime($create_date) >= strtotime($from_date) && strtotime($create_date) <= strtotime($to_date)){
 																$formated_bill_no = 'RE/'.date('M', strtotime($create_date)).'/'.$bill_id;
@@ -321,6 +330,7 @@
                         <div class="col-md-4">
 							<div class="form-group" id="bill_customer_id_block1">
 								<label for="exampleInputEmail1">Customer Name*</label>
+								<input type="hidden" name="bill_customer_id_h" id="bill_customer_id_h">
 								<select class="form-control" id="bill_customer_id"></select>
 								<small id="customer_id_error" class="form-text text-muted"></small>
 							</div>

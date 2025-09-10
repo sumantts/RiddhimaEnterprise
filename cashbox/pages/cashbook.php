@@ -20,6 +20,9 @@
 			$sql = "SELECT * FROM cashbook_entry WHERE cb_created_by = '".$login_id."' AND cb_date BETWEEN '".$from_date." 00:00:01' AND '" .$to_date. " 23:59:00' ";
 		}
 	}else{
+		$from_date = date('Y-m-d');
+		$to_date = date('Y-m-d');
+
 		$create_date = date('Y-m-d').' 00:00:01';
 		$create_date1 = date('Y-m-d').' 23:58:01';
 		if($user_type == 5){
@@ -27,8 +30,7 @@
 		}else{
 			$sql = "SELECT * FROM cashbook_entry WHERE cb_created_by = '" .$login_id. "' AND cb_date >= '".$create_date."' AND cb_date <= '".$create_date1."' ORDER BY cb_id DESC";
 		}	
-	}
-
+	} 
 	$result = $mysqli->query($sql);
 ?>
         <div id="layoutSidenav">
