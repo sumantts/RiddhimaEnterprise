@@ -7,7 +7,7 @@
 	$login_id = $_SESSION["login_id"];
 	$created_by = $_SESSION["created_by"];
 
-	$sql = "SELECT * FROM employee_list ORDER BY emp_id DESC";	
+	$sql = "SELECT * FROM employee_list WHERE activity_status = '1' ORDER BY emp_id DESC";	
 	$result = $mysqli->query($sql);
 
 ?>
@@ -42,6 +42,9 @@
 														<th>Phone</th>
 														<th>Email</th>
 														<th>Address</th>	
+														<th>Joining Date</th>	
+														<th>Left Date</th>	
+														<th>Status</th>	
 														<th>Action</th>
 													</tr>
 												</thead>
@@ -56,6 +59,9 @@
 														<td><?=$row['emp_ph_primary']?> / <?=$row['emp_ph_secondary']?></td>
 														<td><?=$row['emp_email']?></td>
 														<td><?=$row['emp_address']?></td>
+														<td><?php if($row['joining_date'] != ''){echo date('d-F-Y', strtotime($row['joining_date'])); } ?></td>
+														<td><?php if($row['left_date'] != ''){echo date('d-F-Y', strtotime($row['left_date'])); } ?></td>
+														<td><?=($row['activity_status'] == '1')? 'Active' : 'Inactive' ?></td>
 														<td>
 															<a onclick="updateEmpModal('<?=$row['emp_id']?>')" style="cursor: pointer;"><i class="fa fa-edit" aria-hidden="true"></i></a>
 															<a onclick="deleteEmployee('<?=$row['emp_id']?>')" style="cursor: pointer;"><i class="fa fa-trash" aria-hidden="true"></i></a>
@@ -176,7 +182,38 @@
 								<small id="emp_address_error" class="form-text text-muted"></small>
 							</div>
 						</div>
-					</div>
+					</div>	
+
+					<div class="form-row">	
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="joining_date" >Joining Date</label>
+								<input type="date" class="form-control" id="joining_date" name="joining_date" >
+								<small id="joining_date_error" class="form-text text-muted"></small>
+							</div>
+						</div>	
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="left_date" >left date</label>
+								<input type="date" class="form-control" id="left_date" name="left_date" >
+								<small id="left_date_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="activity_status" >Activity Status</label>
+								<select class="form-control" id="activity_status" name="activity_status">
+									<option value="0">Select</option>
+									<option value="1">Active</option>
+									<option value="2">Inactive</option>
+								</select>
+								<small id="activity_status_error" class="form-text text-muted"></small>
+							</div>
+						</div>
+					</div>	
 
 					<div class="form-row">							
 						<div class="col-md-12">

@@ -54,13 +54,17 @@
 		$payment_type = $_POST['payment_type'];
 		$emp_address = $_POST['emp_address'];
 		$created_by = $_POST['created_by'];
+		
+		$joining_date = $_POST['joining_date'];
+		$left_date = $_POST['left_date'];
+		$activity_status = $_POST['activity_status'];
 
 		$message = '';
 		
 		if ($emp_id > 0) {
 			$status = true;	
 			//update
-			$sql_update = "UPDATE employee_list SET emp_name = '".$emp_name."', emp_ph_primary = '".$emp_ph_primary."', emp_ph_secondary = '".$emp_ph_secondary."', emp_email = '".$emp_email."', emp_aadhar_no = '".$emp_aadhar_no."', emp_pan_no = '".$emp_pan_no."', emp_pf_no = '".$emp_pf_no."', emp_basic_pay = '".$emp_basic_pay."', payment_type = '".$payment_type."', emp_address = '" .$emp_address. "' WHERE emp_id = '" .$emp_id. "' ";
+			$sql_update = "UPDATE employee_list SET emp_name = '".$emp_name."', emp_ph_primary = '".$emp_ph_primary."', emp_ph_secondary = '".$emp_ph_secondary."', emp_email = '".$emp_email."', emp_aadhar_no = '".$emp_aadhar_no."', emp_pan_no = '".$emp_pan_no."', emp_pf_no = '".$emp_pf_no."', emp_basic_pay = '".$emp_basic_pay."', payment_type = '".$payment_type."', emp_address = '" .$emp_address. "', joining_date = '" .$joining_date. "', left_date = '" .$left_date. "', activity_status = '" .$activity_status. "' WHERE emp_id = '" .$emp_id. "' ";
 			$mysqli->query($sql_update);
 		} else {
 			$sql = "SELECT * FROM employee_list WHERE emp_ph_primary = '".$emp_ph_primary."'";
@@ -71,7 +75,7 @@
 				$message = 'Primary Phone No Duplicate';
 			}else{	
 				//Insert
-				$sql_insert = "INSERT INTO employee_list (emp_name, emp_ph_primary,	emp_ph_secondary, emp_email, emp_aadhar_no,	emp_pan_no, emp_pf_no, emp_basic_pay, payment_type, emp_address, created_by) VALUES('".$emp_name."', '".$emp_ph_primary."', '".$emp_ph_secondary."', '".$emp_email."', '".$emp_aadhar_no."', '".$emp_pan_no."', '".$emp_pf_no."', '".$emp_basic_pay."', '".$payment_type."', '".$emp_address."', '".$created_by. "')";
+				$sql_insert = "INSERT INTO employee_list (emp_name, emp_ph_primary,	emp_ph_secondary, emp_email, emp_aadhar_no,	emp_pan_no, emp_pf_no, emp_basic_pay, payment_type, emp_address, created_by, joining_date, left_date, activity_status) VALUES('".$emp_name."', '".$emp_ph_primary."', '".$emp_ph_secondary."', '".$emp_email."', '".$emp_aadhar_no."', '".$emp_pan_no."', '".$emp_pf_no."', '".$emp_basic_pay."', '".$payment_type."', '".$emp_address."', '".$created_by. "', '".$joining_date. "', '".$left_date. "', '".$activity_status. "')";
 				$result_insert = $mysqli->query($sql_insert);
 				$emp_id = $mysqli->insert_id;
 
@@ -318,6 +322,10 @@
 			$emp_basic_pay = $row['emp_basic_pay'];
 			$payment_type = $row['payment_type'];
 			$emp_address = $row['emp_address'];
+			
+			$joining_date = $row['joining_date'];
+			$left_date = $row['left_date'];
+			$activity_status = $row['activity_status'];
 		}
 
 		$return_result['emp_name'] = $emp_name;
@@ -330,6 +338,10 @@
 		$return_result['emp_basic_pay'] = $emp_basic_pay;
 		$return_result['payment_type'] = $payment_type;
 		$return_result['emp_address'] = $emp_address;
+		
+		$return_result['joining_date'] = $joining_date;
+		$return_result['left_date'] = $left_date;
+		$return_result['activity_status'] = $activity_status;
 
 		$return_result['status'] = $status;
 		//sleep(1);

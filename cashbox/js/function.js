@@ -120,6 +120,10 @@
 		$payment_type = $('#payment_type').val();
 		$emp_address = $('#emp_address').val();
 		$created_by = $('#created_by').val();
+		
+		$joining_date = $('#joining_date').val();
+		$left_date = $('#left_date').val();
+		$activity_status = $('#activity_status').val();
 
 		$('#emp_form_error').html('');
 
@@ -137,7 +141,7 @@
 			$.ajax({
 				method: "POST",
 				url: "assets/php/function.php",
-				data: { fn: "saveEmployee", emp_id: $emp_id, emp_name: $emp_name, emp_ph_primary: $emp_ph_primary, emp_ph_secondary: $emp_ph_secondary, emp_email: $emp_email, emp_aadhar_no: $emp_aadhar_no, emp_pan_no: $emp_pan_no, emp_pf_no: $emp_pf_no, emp_basic_pay: $emp_basic_pay, payment_type: $payment_type, emp_address: $emp_address, created_by: $created_by }
+				data: { fn: "saveEmployee", emp_id: $emp_id, emp_name: $emp_name, emp_ph_primary: $emp_ph_primary, emp_ph_secondary: $emp_ph_secondary, emp_email: $emp_email, emp_aadhar_no: $emp_aadhar_no, emp_pan_no: $emp_pan_no, emp_pf_no: $emp_pf_no, emp_basic_pay: $emp_basic_pay, payment_type: $payment_type, emp_address: $emp_address, created_by: $created_by, joining_date: $joining_date, left_date: $left_date, activity_status: $activity_status }
 			})
 			.done(function( res ) {
 				//console.log(res);
@@ -155,13 +159,13 @@
 						//start
 						const table = $("#dataTable").DataTable();
 						// or using tr
-						const tr = $("<tr id=emp_id_"+$res1.emp_id+"> <td>1</td> <td>"+$emp_name+"</td><td>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td><a style='cursor: pointer;' onclick=updateEmpModal("+$res1.emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteEmployee("+$res1.emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td></tr>");
+						const tr = $("<tr id=emp_id_"+$res1.emp_id+"> <td>1</td> <td>"+$emp_name+"</td><td>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td>"+$joining_date+"</td><td>"+$left_date+"</td><td>Active</td><td><a style='cursor: pointer;' onclick=updateEmpModal("+$res1.emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteEmployee("+$res1.emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td></tr>");
 						table.row.add(tr[0]).draw();
 					} else{
 						console.log('Updatre the table row');
 						$('#emp_id_'+$emp_id).html('');
 
-						$('#emp_id_'+$emp_id).html("<td>1</td> <td>"+$emp_name+"</td><td>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td><a style='cursor: pointer;' onclick=updateEmpModal("+$emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteEmployee("+$emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td>");
+						$('#emp_id_'+$emp_id).html("<td>1</td> <td>"+$emp_name+"</td><td>"+$emp_ph_primary+" / "+$emp_ph_secondary+"</td><td>"+$emp_email+"</td><td>"+$emp_address+"</td> <td>"+$joining_date+"</td><td>"+$left_date+"</td><td>Active</td><td><a style='cursor: pointer;' onclick=updateEmpModal("+$emp_id+")><i class='fa fa-edit' aria-hidden='true'></i></a><a style='cursor: pointer;' onclick=deleteEmployee("+$emp_id+")><i class='fa fa-trash' aria-hidden='true'></i></a></td>");
 					}	
 					modal.style.display = "none";
 					//closeEmployeeModal();
@@ -316,6 +320,10 @@
 				$('#emp_basic_pay').val($res1.emp_basic_pay);
 				$('#payment_type').val($res1.payment_type).trigger('change');
 				$('#emp_address').val($res1.emp_address);
+								
+				$('#joining_date').val($res1.joining_date);
+				$('#left_date').val($res1.left_date);
+				$('#activity_status').val($res1.activity_status).trigger('change');
 
 				modal.style.display = "block";
 			}else{
