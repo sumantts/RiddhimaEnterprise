@@ -8,13 +8,27 @@
 		$user_type = $_GET['user_type'];
 		$created_by = $_GET['created_by'];
 		$login_id = $_GET['login_id'];
+		$search_zone_id = $_GET['search_zone_id'];
 	}
 
-	if($user_type == '5'){		
-		$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date BETWEEN '".$from_date." 00:00:01' AND  '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";		
-	}else{
-		$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date BETWEEN '".$from_date." 00:00:01' AND  '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";	
+	$zone_name = '';
+	$zone_area = '';
+
+	if($user_type == '5'){	
+		if($search_zone_id > 0){
+			$sql_bill = "SELECT bill_details.bill_id, bill_details.customer_id, bill_details.bill_description, bill_details.create_date, bill_details.created_by, bill_details.salesman_id, zone_master.zone_name, zone_master.zone_area, login.zone_id FROM bill_details JOIN login ON bill_details.customer_id = login.login_id JOIN zone_master ON login.zone_id = zone_master.zone_id WHERE zone_master.zone_id = '".$search_zone_id."' AND bill_details.created_by = '".$created_by."' AND bill_details.create_date BETWEEN '".$from_date." 00:00:01' AND '" .$to_date. " 23:59:00' ORDER BY bill_details.bill_id DESC";
+		}else{	
+			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date BETWEEN '".$from_date." 00:00:01' AND  '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";		
+		}
+	}else{	
+		if($search_zone_id > 0){
+			$sql_bill = "SELECT bill_details.bill_id, bill_details.customer_id, bill_details.bill_description, bill_details.create_date, bill_details.created_by, bill_details.salesman_id, zone_master.zone_name, zone_master.zone_area, login.zone_id FROM bill_details JOIN login ON bill_details.customer_id = login.login_id JOIN zone_master ON login.zone_id = zone_master.zone_id WHERE zone_master.zone_id = '".$search_zone_id."' AND bill_details.created_by = '".$login_id."' AND bill_details.create_date BETWEEN '".$from_date." 00:00:01' AND '" .$to_date. " 23:59:00' ORDER BY bill_details.bill_id DESC";
+		}else{	
+			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$login_id."' AND create_date BETWEEN '".$from_date." 00:00:01' AND  '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";	
+		}
 	}
+	//echo $sql_bill;
+	//SELECT bill_details.bill_id, bill_details.customer_id, bill_details.bill_description, bill_details.create_date, bill_details.created_by, bill_details.salesman_id, zone_master.zone_name, zone_master.zone_area, login.zone_id FROM bill_details JOIN login ON bill_details.customer_id = login.login_id JOIN zone_master ON login.zone_id = zone_master.zone_id WHERE zone_master.zone_id = '6' AND bill_details.created_by = '2' AND bill_details.create_date BETWEEN '2025-10-28 00:00:01' AND '2025-10-28 23:59:00' ORDER BY bill_details.bill_id DESC
 
 	$result_bill = $mysqli->query($sql_bill);							
 		
@@ -37,12 +51,16 @@
 				//echo 'virtual_create_date: '.$virtual_create_date;
 				//echo "<br>";
 
-				for($j = 0; $j < sizeof($fineItems); $j++){
-					
+				for($j = 0; $j < sizeof($fineItems); $j++){					
 					array_push($fineItemsArr, $fineItems[$j]);
 				}//end for
 			}//end if
 		}//end if
+
+		if($search_zone_id > 0){
+			$zone_name = $row_bill['zone_name'];
+			$zone_area = $row_bill['zone_area'];
+		}
 	}//end while
 
 	//echo json_encode($fineItemsArr);

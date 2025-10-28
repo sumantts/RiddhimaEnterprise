@@ -2258,8 +2258,9 @@
 		$ser_user_type = $('#ser_user_type').val();
 		$ser_created_by = $('#ser_created_by').val();
 		$ser_login_id = $('#ser_login_id').val();
+		$search_zone_id = $('#search_zone_id').val();
 		
-		window.open('pages/bill_printer/product_report_pdf.php?from_date='+$from_date+'&to_date='+$to_date+'&search_cu_id='+$search_cu_id+'&user_type='+$ser_user_type+'&created_by='+$ser_created_by+'&login_id='+$ser_login_id, '_blank');
+		window.open('pages/bill_printer/product_report_pdf.php?from_date='+$from_date+'&to_date='+$to_date+'&search_cu_id='+$search_cu_id+'&user_type='+$ser_user_type+'&created_by='+$ser_created_by+'&login_id='+$ser_login_id+'&search_zone_id='+$search_zone_id, '_blank');
 	}//end function
 
 	////////////////// REPORT SECTION END //////////////////

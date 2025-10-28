@@ -21,7 +21,11 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 		$message .="<thead>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='8' style='text-align: center;'>Riddhima Enterprise - Product report</th>";
+		if($search_zone_id > 0){
+			$message .="<th colspan='8' style='text-align: center;'>Riddhima Enterprise - Product report<br>From: ".date('d-F-Y', strtotime($from_date))." To: ".date('d-F-Y', strtotime($to_date))."<br> Zone: ".$zone_name."(".$zone_area.")</th>";
+		}else{
+			$message .="<th colspan='8' style='text-align: center;'>Riddhima Enterprise - Product report<br>From: ".date('d-F-Y', strtotime($from_date))." To: ".date('d-F-Y', strtotime($to_date))."</th>";
+		}
 		$message .="</tr>";
 		
 		$message .="<tr>";
@@ -36,6 +40,7 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 		$message .="<tbody>";
 
 		$a = 0;
+		$sl = 1;
 		for($x = 0; $x < sizeof($masterItems); $x++){
 			$item_id = $masterItems[$x]->item_id;
 			$item_name = $masterItems[$x]->item_name;
@@ -55,7 +60,7 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 
 			if($productNewQty > 0){
 				$message .="<tr>";
-				$message .="<td style='text-align: right; padding-right: 5px;'>".($x + 1)."</td>";
+				$message .="<td style='text-align: right; padding-right: 5px;'>".$sl."</td>";
 				$message .="<td style='text-align: right; padding-right: 5px;'>".$item_id."</td>";
 				if (strpos($item_name, 'GOTA') !== false) {
 					$message .="<td colspan='2' style='padding-left: 5px;'>".$item_name." ( " .$gotaMoslaQty." )</td>";
@@ -65,6 +70,7 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 				$message .="<td>".$hs_code."</td>";						
 				$message .="<td style='text-align: right; padding-right: 5px;'>".$productNewQty."</td>";
 				$message .="</tr>";	
+				$sl++;
 			}
 
 		}//end for x

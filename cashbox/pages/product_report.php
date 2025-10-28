@@ -23,6 +23,7 @@
 		$user_type = $_POST["ser_user_type"];
 		$created_by = $_POST["ser_created_by"];
 		$login_id = $_POST["ser_login_id"];
+		$search_zone_id = $_POST["search_zone_id"];
 
 		if($user_type == '5'){		
 			$sql_bill = "SELECT * FROM bill_details WHERE created_by = '".$created_by."' AND create_date BETWEEN '".$from_date." 00:00:01' AND  '" .$to_date. " 23:59:00' ORDER BY bill_id DESC";		
@@ -35,6 +36,7 @@
 		
 		$from_date = date('d-m-Y');
 		$to_date = date('d-m-Y');
+		$search_zone_id = 0;
 		
 	}
 	
@@ -84,6 +86,22 @@
 									<label for="inputCity">To Date(dd-mm-YYYY)</label>
 									<input type="date" class="form-control" id="to_date" name="to_date" value="<?=date('Y-m-d', strtotime($to_date))?>">
 									</div>
+									
+
+									<div class="form-group col-md-3">
+									<label for="inputState">Zone</label>
+									<select id="search_zone_id" class="form-control" name="search_zone_id">
+										<option value="0"> Select Zone </option>
+										<?php
+										$sql = "SELECT * FROM zone_master WHERE created_by = '" .$login_id. "' ORDER BY zone_id DESC";	
+										$result = $mysqli->query($sql);
+										while ($row = $result->fetch_array()){  
+										?>
+										<option value="<?=$row['zone_id']?>" <?php if($row['zone_id'] == $search_zone_id){?> selected <?php } ?> ><?=$row['zone_name']?></option>
+										<?php } ?>
+									</select>
+									</div>
+									
 
 									<div class="form-group col-md-3" style="margin-top: 25px;">	
 									<label for="inputState">&nbsp;</label>	
