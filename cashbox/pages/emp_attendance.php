@@ -12,11 +12,11 @@
 
 	if(isset($_POST['search_present_date'])){
 		$search_present_date = $_POST['search_present_date'];
-		$sql = "SELECT employee_attendance.emp_att_id, employee_attendance.present_status, employee_attendance.half_day, employee_attendance.full_day, employee_attendance.late_hours, employee_attendance.overtime_hours, employee_attendance.attendance_note, employee_list.emp_name, employee_list.emp_id FROM employee_attendance JOIN employee_list ON employee_list.emp_id = employee_attendance.emp_id WHERE employee_attendance.present_date = '" .$search_present_date. "' ";	
+		$sql = "SELECT employee_attendance.emp_att_id, employee_attendance.present_status, employee_attendance.half_day, employee_attendance.full_day, employee_attendance.late_hours, employee_attendance.overtime_hours, employee_attendance.attendance_note, employee_list.emp_name, employee_list.emp_id FROM employee_attendance JOIN employee_list ON employee_list.emp_id = employee_attendance.emp_id WHERE employee_attendance.present_date = '" .$search_present_date. "' AND employee_list.activity_status = '1'";	
 		$result = $mysqli->query($sql);
 	}else{
 		$search_present_date = date('Y-m-d');
-		$sql = "SELECT * FROM employee_list ORDER BY emp_id DESC";	
+		$sql = "SELECT * FROM employee_list WHERE activity_status = '1' ORDER BY emp_id DESC";	
 		$result = $mysqli->query($sql);
 	}//end if
 
