@@ -1299,6 +1299,7 @@
 		//$sql = "SELECT * FROM zone_master WHERE created_by = '".$login_id."' ORDER BY zone_name ASC";	
 		$sql = "SELECT zone_master.zone_id, zone_master.salesman_id, zone_master.zone_name, zone_master.zone_area, zone_master.zone_pincode, zone_master.created_by, login.user_data FROM zone_master JOIN login ON zone_master.salesman_id = login.login_id WHERE zone_master.created_by = '".$login_id."' ORDER BY zone_master.zone_name ASC";
 		$result = $mysqli->query($sql);
+		if ($result->num_rows > 0) {
 		while($row_customer = $result->fetch_array()){
 			$zone_id = $row_customer['zone_id'];
 			$zone_name = $row_customer['zone_name']; 
@@ -1317,6 +1318,7 @@
 			
 			array_push($zones, $zone);
 		}//end while
+		}
 
 		$return_result['zones'] = $zones;
 		$return_result['status'] = $status;

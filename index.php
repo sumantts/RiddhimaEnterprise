@@ -5,13 +5,13 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Riddhima Enterprise</title>
+  <title>Origin Enterprise</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/riddhima_logo32.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/favicon_origin.png" rel="icon">
+  <link href="assets/img/favicon_origin.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -43,7 +43,7 @@
 
       <!-- <h1 class="logo me-auto"><a href="index.php">Riddhima</a></h1> -->
       <!-- Uncomment below if you prefer to use an image logo -->
-      <a href="index.php" class="logo me-auto"><img src="assets/img/riddhima_logo32.png" alt="" class="img-fluid"></a>
+      <a href="index.php" class="logo me-auto"><img src="assets/img/origin_enterprises_logo_256x128_v2.png" alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -86,7 +86,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-          <h1>Riddhima Enterprise</h1>
+          <h1>Origin Enterprise</h1>
           <h2>রান্নার সাতকাহন, যাচাই করা বাছাই মশলা</h2>
           <div class="d-flex justify-content-center justify-content-lg-start">
             <!-- <a href="#about" class="btn-get-started scrollto">Get Started</a> -->
@@ -151,11 +151,11 @@
         <div class="row content">
           <div class="col-lg-6">
             <p>
-            RiddhimaEntripses a name which stands for the best quality of spices brings to you the most authentic and freshly prepared spices right from the house of the manufacturers to that of the consumers. 
+            Origin Entripses a name which stands for the best quality of spices brings to you the most authentic and freshly prepared spices right from the house of the manufacturers to that of the consumers. 
             </p>
 
             <p>
-            Equipped with the latest technology and process Riddhima makes sure that their quality of spices is at a part with the best in the market. Our products ensure that the consumers love what they eat and we ensure that our products are prepared with the best. 
+            Equipped with the latest technology and process Origin makes sure that their quality of spices is at a part with the best in the market. Our products ensure that the consumers love what they eat and we ensure that our products are prepared with the best. 
             </p>
             <!--<ul>
               <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat</li>
@@ -216,7 +216,7 @@
                   <a data-bs-toggle="collapse" data-bs-target="#accordion-list-3" class="collapsed"><span>03</span>What if I am not satisfied with the product ? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
                   <div id="accordion-list-3" class="collapse" data-bs-parent=".accordion-list">
                     <p>
-                    In case you are not satisfied please write to us at ( riddhimaenterprise@theriddhi.com ) Or call us at Phone: +91 78901 01632
+                    In case you are not satisfied please WhatsApp to us Or call us at Phone: +91 78901 01632
                     </p>
                   </div>
                 </li>
@@ -758,7 +758,7 @@
               <div class="email">
                 <i class="bi bi-envelope"></i>
                 <h4>Email:</h4>
-                <p>riddhimaenterprise@theriddhi.com</p>
+                <p>rajibsimabiswas@gmail.com</p>
               </div>
 
               <div class="phone">
@@ -830,13 +830,13 @@
         <div class="row">
 
           <div class="col-lg-3 col-md-6 footer-contact">
-            <h3>Riddhima</h3>
+            <h3>Origin</h3>
             <p>
               1637,Babanpur lock gate <br>
               Bengal Enamel, 24 pgs(N) 743122<br>
               West Bengal, India <br><br>
               <strong>Phone:</strong> +91 78901 01632<br>
-              <strong>Email:</strong> riddhimaenterprise@theriddhi.com<br>
+              <strong>Email:</strong> rajibsimabiswas@gmail.com<br>
             </p>
           </div>
 
@@ -879,7 +879,7 @@
 
     <div class="container footer-bottom clearfix">
       <div class="copyright">
-        &copy; Copyright <strong><span>Riddhima</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>Origin</span></strong>. All Rights Reserved
       </div>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->

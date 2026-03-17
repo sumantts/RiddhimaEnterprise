@@ -6,7 +6,7 @@ $message .="<html lang='en'>";
 
 $message .="<head>";
 	$message .="<meta charset='utf-8'>";
-	$message .="<title>Riddhima Enterprise - Product report</title>";
+	$message .="<title>Origin Enterprise - Product report</title>";
 	$message .="<style type='text/css'>";
     $message .="table { page-break-inside:auto }";
     $message .="tr    { page-break-inside:avoid; page-break-after:auto }";
@@ -21,7 +21,7 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 		$message .="<thead>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='8' style='text-align: center;'>Riddhima Enterprise - GST report (From: ".date('d/m/Y', strtotime($from_date))." To: ".date('d/m/Y', strtotime($to_date)).")</th>";
+			$message .="<th colspan='8' style='text-align: center;'>Origin Enterprise - GST report (From: ".date('d/m/Y', strtotime($from_date))." To: ".date('d/m/Y', strtotime($to_date)).")</th>";
 		$message .="</tr>";
 		
 		$message .="<tr>";

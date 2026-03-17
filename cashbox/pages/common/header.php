@@ -7,6 +7,13 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title><?=$sitename?> - <?=$title?></title>
+
+        
+
+        <!-- Favicons -->
+        <link href="../assets/img/favicon_origin.png" rel="icon">
+        <link href="../assets/img/favicon_origin.png" rel="apple-touch-icon">
+        
         <link href="css/styles.css" rel="stylesheet" />
         <?php
 		if($p == 'users'){
@@ -24,7 +31,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-light">
-			<img src="../assets/img/riddhima_logo_original.png" style="width: 200px;" alt="<?=$sitename?>">            
+			<img src="../assets/img/origin_enterprises_logo_256x128_v2.png" style="width: 200px;" alt="<?=$sitename?>">            
             <!-- <a class="navbar-brand" href="?p=dashboard"><?=$sitename?></a> -->
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->

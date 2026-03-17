@@ -6,7 +6,9 @@ $message .="<html lang='en'>";
 
 $message .="<head>";
 	$message .="<meta charset='utf-8'>";
-	$message .="<title>Riddhima Enterprise - Tax Invoice</title>";
+	$message .="<title>Origin Enterprise - Tax Invoice</title>"; 
+        $message .="<link href='../../../assets/img/favicon_origin.png' rel='icon'>";
+        $message .="<link href='../../../assets/img/favicon_origin.png' rel='apple-touch-icon'>";
 $message .="</head>";
 
 $message .="<body class='watermark'>";
@@ -16,7 +18,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 		$message .="<thead>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='16' style='text-align: center;'>Riddhima Enterprise - Tax Invoice</th>";
+			$message .="<th colspan='16' style='text-align: center;'>Origin Enterprise - Tax Invoice</th>";
 		$message .="</tr>";
 		
 		// $message .="<tr>";
@@ -28,7 +30,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 		// $message .="</tr>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='4'><img src='../../../assets/img/riddhima_logo32.png'></th>
+			$message .="<th colspan='4'><img src='../../../assets/img/origin_enterprises_logo_256x128_v2.png'></th>
 			<th colspan='6' style='text-align: center; width: 50%;'>
 			BILL NO: ".strtoupper($formated_bill_no)."</br> 
 			SHIP TO </br> 

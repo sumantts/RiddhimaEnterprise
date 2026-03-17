@@ -58,7 +58,7 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header" style="text-align: center;">
                                     <!-- <h3 class="text-center font-weight-light my-4">Login</h3> -->
-									<img src="../assets/img/riddhima_logo_original.png" style="width: 200px;" alt="Riddhi">
+									<img src="../assets/img/origin_enterprises_logo_256x128_v2.png" style="width: 200px;" alt="Riddhi">
                                     </div>
                                     <div class="card-body">
 									<span class="text-warning" id="error_text"></span>

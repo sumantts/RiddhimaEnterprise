@@ -6,7 +6,7 @@ $message .="<html lang='en'>";
 
 $message .="<head>";
 	$message .="<meta charset='utf-8'>";
-	$message .="<title>Riddhima Enterprise - Product report</title>";
+	$message .="<title>Origin Enterprise - Product report</title>";
 	$message .="<style type='text/css'>";
     $message .="table { page-break-inside:auto }";
     $message .="tr    { page-break-inside:avoid; page-break-after:auto }";
@@ -22,9 +22,9 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 		
 		$message .="<tr>";
 		if($search_zone_id > 0){
-			$message .="<th colspan='8' style='text-align: center;'>Riddhima Enterprise - Product report<br>From: ".date('d-F-Y', strtotime($from_date))." To: ".date('d-F-Y', strtotime($to_date))."<br> Zone: ".$zone_name."(".$zone_area.")</th>";
+			$message .="<th colspan='8' style='text-align: center;'>Origin Enterprise - Product report<br>From: ".date('d-F-Y', strtotime($from_date))." To: ".date('d-F-Y', strtotime($to_date))."<br> Zone: ".$zone_name."(".$zone_area.")</th>";
 		}else{
-			$message .="<th colspan='8' style='text-align: center;'>Riddhima Enterprise - Product report<br>From: ".date('d-F-Y', strtotime($from_date))." To: ".date('d-F-Y', strtotime($to_date))."</th>";
+			$message .="<th colspan='8' style='text-align: center;'>Origin Enterprise - Product report<br>From: ".date('d-F-Y', strtotime($from_date))." To: ".date('d-F-Y', strtotime($to_date))."</th>";
 		}
 		$message .="</tr>";
 		

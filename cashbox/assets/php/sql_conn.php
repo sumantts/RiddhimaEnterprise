@@ -6,15 +6,15 @@
 		//Localhost connection
 		$username = 'root';
 		$password = '';
-		$dbname = 'theriddh_db';
+		$dbname = 'origin_enterprises';
 	}else{
 		//Server connection
-		$username = 'theriddhi_riddhi';
-		$password = 'riddhi123!@#';
-		$dbname = 'theriddhi_riddhi';
+		$username = 'theriddh_origin';
+		$password = 'origin123!@#';
+		$dbname = 'theriddh_origin_enterprises';
 	}
 	
-	$sitename = 'Riddhi Enterprise';
+	$sitename = 'Origin Enterprise';
 
 	// $bank_name = 'SBI';
 	// $branch_name = 'Anandamath, Icchapore';

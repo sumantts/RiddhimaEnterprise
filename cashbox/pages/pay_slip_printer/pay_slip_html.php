@@ -6,7 +6,7 @@ $message .="<html lang='en'>";
 
 $message .="<head>";
 	$message .="<meta charset='utf-8'>";
-	$message .="<title>Riddhima Enterprise - PaySlip</title>";
+	$message .="<title>Origin Enterprise - PaySlip</title>";
 $message .="</head>";
 
 $message .="<body class='watermark'>";
@@ -16,8 +16,8 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 		$message .="<thead>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='3'><img src='../../../assets/img/riddhima_logo32.png'></th>
-			<th colspan='5' style='text-align: center;'>Riddhima Enterprise <br>
+			$message .="<th colspan='3'><img src='../../../assets/img/origin_enterprises_logo_256x128_v2.png'></th>
+			<th colspan='5' style='text-align: center;'>Origin Enterprise <br>
 			Address: 1637,Babanpur Lock Gate. Bengal Enamel, 24 pgs(N), Pin - 743122 West Bengal, India</th>			
 			<th colspan='4' style='text-align: left; padding-left: 5px;'>
 			Ph. No: 7890101632<br>

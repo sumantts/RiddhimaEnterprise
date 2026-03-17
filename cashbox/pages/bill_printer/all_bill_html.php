@@ -6,7 +6,7 @@ $message .="<html lang='en'>";
 
 $message .="<head>";
 	$message .="<meta charset='utf-8'>";
-	$message .="<title>Riddhima Enterprise - Tax Invoice</title>";
+	$message .="<title>Origin Enterprise - Tax Invoice</title>";
 $message .="</head>";
 
 //$message .="<body style='background-image: url(../../../assets/img/logo.jpg); background-repeat: no-repeat; background-attachment: fixed;  background-size: 100% 100%;'>";
@@ -16,7 +16,7 @@ $message .="<table border='1' style='border-collapse:collapse;font-size: 12px;wi
 		$message .="<thead>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='9' style='text-align: center;'>Riddhima Enterprise - Tax Invoice</th>";
+			$message .="<th colspan='9' style='text-align: center;'>Origin Enterprise - Tax Invoice</th>";
 		$message .="</tr>";
 		
 		
