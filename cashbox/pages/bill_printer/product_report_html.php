@@ -17,7 +17,7 @@ $message .="</head>";
 
 $message .="<body>";
 	
-$message .="<table border='1' style='border-collapse:collapse;font-size: 12px;width: 100%;'>";
+$message .="<table border='1' style='border-collapse:collapse;font-size: 12px;width: 100%; border: 2px solid #000;'>";
 		$message .="<thead>";
 		
 		$message .="<tr>";

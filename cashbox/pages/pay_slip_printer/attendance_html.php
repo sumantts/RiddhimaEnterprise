@@ -12,7 +12,7 @@ $message .="</head>";
 $message .="<body class='watermark'>";
 $message .="<body>";
 	
-$message .="<table border='1' style='border-collapse:collapse; font-size: 14px; width: 100%;'>";
+$message .="<table border='1' style='border-collapse:collapse;font-size: 14px;width: 100%;border: 2px solid #000;'>";
 		$message .="<thead>";
 		
 		$message .="<tr>";
