@@ -18,7 +18,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 		$message .="<thead>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='16' style='text-align: center;'>Origin Enterprise - Tax Invoice</th>";
+			$message .="<th colspan='16' style='text-align: center;'>Origin Enterprise - Invoice</th>";
 		$message .="</tr>";
 		
 		// $message .="<tr>";
