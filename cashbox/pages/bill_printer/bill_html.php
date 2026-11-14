@@ -40,7 +40,7 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 			<th colspan='6' style='text-align: center;'>
 			STATE CODE: 19 | DATE: ".date('d-M-Y h:i A', strtotime($create_date))."</br> 
 			BILL FROM </br> 
-			".$bill_description->createdBy->org_name."</br> 
+			Origin Enterprise</br> 
 			Address: ".$bill_description->createdBy->address."</th>";
 		$message .="</tr>";
 		
@@ -61,11 +61,11 @@ $message .="<table border='1' style='border-collapse:collapse; font-size: 14px; 
 		$message .="</tr>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='4' style='text-align: center;'> GSTIN No: </th><th colspan='4' style='text-align: center;'> ".$customer_gstin_no." </th><th colspan='4' style='text-align: center;'> GSTIN No: </th><th colspan='4' style='text-align: center;'> ".$bill_description->createdBy->gstin_no." </th>";
+			$message .="<th colspan='4' style='text-align: center;'> GSTIN No: </th><th colspan='4' style='text-align: center;'> ".$customer_gstin_no." </th><th colspan='4' style='text-align: center;'> GSTIN No: </th><th colspan='4' style='text-align: center;'> XXXXXXXXXX </th>";
 		$message .="</tr>";
 		
 		$message .="<tr>";
-			$message .="<th colspan='4' style='text-align: center;'> Email Id: </th><th colspan='4' style='text-align: center;'> ".$customer_email." </th><th colspan='4' style='text-align: center;'> Email Id: </th><th colspan='4' style='text-align: center;'> ".$bill_description->createdBy->email." </th>";
+			$message .="<th colspan='4' style='text-align: center;'> Email Id: </th><th colspan='4' style='text-align: center;'> ".$customer_email." </th><th colspan='4' style='text-align: center;'> Email Id: </th><th colspan='4' style='text-align: center;'> rajibsimabiswas@gmail.com </th>";
 		$message .="</tr>";
 		
 		if($zone_user_name != ''){
