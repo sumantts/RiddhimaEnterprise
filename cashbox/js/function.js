@@ -3068,8 +3068,11 @@
 
 	$(document).ready(function() {
 		//populateCustomerDD();
-		populateZoneDD();
-		populateSalesManDD();
+		$login_id = $('#login_id').val();
+		if(parseInt($login_id) > 0){
+			populateZoneDD();
+			populateSalesManDD();
+		}
 	});
 
 	//Loading screen
